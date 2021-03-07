@@ -162,8 +162,8 @@
         DELETE FROM movie_favorite WHERE user_id =#{userId} AND movie_id=#{movieId}
     </delete>
 
-    <select id="queryFavorite" resultType="Long">
-        SELECT COUNT(*) FROM movie_favorite WHERE user_id=${userId} AND movie_id = #{movieId}
+    <select id="isFavorite" resultType="Long">
+        SELECT COUNT(*) as total FROM movie_favorite WHERE user_id=#{userId} AND movie_id = #{movieId}
     </select>
 </mapper>
 

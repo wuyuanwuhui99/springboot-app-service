@@ -373,5 +373,4 @@ public class MovieService implements IMovieService {
         }
         return ResultUtil.success(movieMapper.isFavorite(movieId,userEntity.getUserId()));
     }
-
 }
