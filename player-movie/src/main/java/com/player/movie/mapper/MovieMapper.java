@@ -84,10 +84,11 @@ public interface MovieMapper {
 
     Long savePlayRecord(MovieEntity movieEntity);
 
-    List<MovieEntity> getFavorite(String userId);
+    List<MovieEntity> getFavoriteList(String userId);
 
     Long saveFavorite(MovieEntity movieEntity);
 
     Long deleteFavorite(String movieId,String userId);
 
+    Long isFavorite(String movieId, String userId);
 }

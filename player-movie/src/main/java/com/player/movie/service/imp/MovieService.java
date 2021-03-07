@@ -307,27 +307,37 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity savePlayRecord(MovieEntity movieEntity,String token) {
-//        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
-//        if(userEntity == null){
-//            return ResultUtil.fail(null,"用户错误");
-//        }
-        Date date = new Date();
-        movieEntity.setCreateTime(date);
-        movieEntity.setUpdateTime(date);
-//        movieEntity.setUserId(userEntity.getUserId());
-        ResultEntity resultEntity = ResultUtil.success(movieMapper.savePlayRecord(movieEntity));
-        return resultEntity;
-    }
-
-    @Override
-    public ResultEntity getFavorite(String token) {
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
-        return ResultUtil.success(movieMapper.getFavorite(userEntity.getUserId()));
+        Date date = new Date();
+        movieEntity.setCreateTime(date);
+        movieEntity.setUpdateTime(date);
+        movieEntity.setUserId(userEntity.getUserId());
+        ResultEntity resultEntity = ResultUtil.success(movieMapper.savePlayRecord(movieEntity));
+        return resultEntity;
     }
 
+    /**
+     * @author: wuwenqiang
+     * @description: 查询收藏列表
+     * @date: 2020-12-25 22:29
+     */
+    @Override
+    public ResultEntity getFavoriteList(String token) {
+        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        if(userEntity == null){
+            return ResultUtil.fail(null,"用户错误");
+        }
+        return ResultUtil.success(movieMapper.getFavoriteList(userEntity.getUserId()));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 添加收藏
+     * @date: 2020-12-25 22:29
+     */
     @Override
     public ResultEntity saveFavorite(MovieEntity movieEntity, String token) {
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
@@ -341,6 +351,11 @@ public class MovieService implements IMovieService {
         return ResultUtil.success(movieMapper.saveFavorite(movieEntity));
     }
 
+    /**
+     * @author: wuwenqiang
+     * @description: 删除收藏
+     * @date: 2021-03-07 16:10
+     */
     @Override
     public ResultEntity deleteFavorite(String movieId,String token) {
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
@@ -349,4 +364,14 @@ public class MovieService implements IMovieService {
         }
         return ResultUtil.success(movieMapper.deleteFavorite(movieId,userEntity.getUserId()));
     }
+
+    @Override
+    public ResultEntity isFavorite(String movieId,String token) {
+        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        if(userEntity == null){
+            return ResultUtil.fail(null,"用户错误");
+        }
+        return ResultUtil.success(movieMapper.isFavorite(movieId,userEntity.getUserId()));
+    }
+
 }
