@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.player.movie.mapper.MovieMapper">
+
+    <sql id="recordSql">
+        (
+            movie_id,
+            director,
+            star,
+            `type`,
+            country_language,
+            viewing_state,
+            release_time,
+            plot,
+            update_time,
+            `name`,
+            is_recommend,
+            img,classify,
+            source_name,
+            source_url,
+            create_time,
+            local_img,
+            label,
+            original_href,
+            description,
+            target_href,
+            use_status,
+            score,
+            category,
+            rank,
+            user_id,
+            douban_url
+            )VALUES(
+            #{movieId},
+             #{director},
+            #{star},
+            #{type},
+            #{countryLanguage},
+            #{viewingState},
+            #{releaseTime},
+            #{plot},
+            #{updateTime},
+            #{name},
+            #{isRecommend},
+            #{img},
+            #{classify},
+            #{sourceName},
+            #{sourceUrl},
+            #{createTime},
+            #{localImg},
+            #{label},
+            #{originalHref},
+            #{description},
+            #{targetHref},
+            #{useStatus},
+            #{score},
+            #{category},
+            #{rank},
+            #{userId},
+            #{doubanUrl})
+    </sql>
+
+    <sql id="search">
+        WHERE name like CONCAT('%',#{keyword},'%') OR star like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%')  OR type like CONCAT('%',#{keyword},'%') ORDER BY update_time DESC
+    </sql>
+
+    <select id="findClassify"  resultType="Map">
+        SELECT classify FROM movie GROUP BY classify
+    </select>
+
+    <select id="getKeyWord"  resultType="Map">
+        SELECT name,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify}
+    </select>
+
+    <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
+        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE role ='public'  order by rand() LIMIT 1
+    </select>
+
+    <select id="getUserMsg"  resultType="Map">
+        SELECT CAST(u.userAge as char) AS userAge,CAST(r.recordCount AS char) AS recordCount,CAST(p.playCount AS char) AS playCount,CAST(f.favoriteCount AS char) AS favoriteCount FROM (
+            (SELECT TIMESTAMPDIFF(DAY,a.create_date,now()) as userAge from user a where user_id=#{userId}) u,
+            (SELECT count(*) as recordCount FROM record_movie WHERE user_id = #{userId} )r,
+            (SELECT count(*) as playCount FROM record_movie WHERE user_id = #{userId} AND is_play = 'Y') p,
+            (SELECT count(*) as favoriteCount FROM favorite_movie WHERE user_id =#{userId} ) f)
+    </select>
+
+    <select id="getAllCategoryByClassify" resultType="Map">
+        SELECT category,classify FROM category WHERE category != '轮播' AND classify = #{classify} ORDER BY last_update ASC
+    </select>
+
+    <select id="getAllCategoryListByPageName" resultType="Map">
+        SELECT category,classify FROM category WHERE page_name = #{pageName} AND category != '轮播' AND status = '1' order by last_update asc
+    </select>
+
+    <select id="getCategoryList" resultType="MovieEntity">
+        SELECT * FROM movie_network WHERE category = #{category} AND classify = #{classify}
+    </select>
+
+    <select id="search" resultType="MovieEntity">
+        SELECT * FROM movie
+        <include refid="search"></include>
+         limit #{start}, #{pageSize}
+    </select>
+
+    <select id="total" resultType="Map">
+        SELECT count(*) as total FROM movie
+        <include refid="search"></include>
+    </select>
+
+    <select id="login" resultType="com.player.common.entity.UserEntity">
+       SELECT user_id AS userId,create_date AS createDate,update_date AS updateDate,username,telephone,email,avater,birthday,sex,role from  user WHERE user_id=#{userId} and password=#{password}
+    </select>
+
+    <insert id="register" parameterType="com.player.common.entity.UserEntity">
+       INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex) SELECT #{userId},#{password},#{createDate},#{updateDate},#{username},#{telephone},#{email},#{avater},#{birthday},#{sex} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
+    </insert>
+
+    <select id="getUserById" resultType="com.player.common.entity.UserEntity">
+       SELECT user_id ,create_date ,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE user_id = #{userId}
+    </select>
+
+    <insert id="log" parameterType="com.player.common.entity.LogEntity">
+       INSERT INTO log(method,url,headers,ip,params,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
+    </insert>
+
+    <select id="getStar" resultType="MovieStarEntity">
+       SELECT * FROM movie_stars WHERE movie_id = #{movieId}
+    </select>
+
+    <select id="getMovieUrl" resultType="MovieUrlEntity">
+       SELECT * FROM movie_url WHERE movie_id = #{movie_id}
+    </select>
+
+    <select id="getViewRecord" resultType="MovieEntity">
+       SELECT * FROM movie_view_record WHERE user_id = #{userId}
+    </select>
+
+    <insert id="saveViewRecord" parameterType="MovieEntity">
+       INSERT INTO movie_view_record
+       <include refid="recordSql"></include>
+    </insert>
+
+    <select id="getPlayRecord" resultType="MovieEntity">
+        SELECT * FROM movie_play_record WHERE user_id = #{userId}
+    </select>
+
+    <insert id="savePlayRecord" parameterType="MovieEntity">
+        INSERT INTO movie_play_record
+        <include refid="recordSql"></include>
+    </insert>
+
+    <select id="getFavorite" resultType="MovieEntity">
+        SELECT * FROM movie_favorite WHERE user_id = #{userId}
+    </select>
+
+    <insert id="saveFavorite" parameterType="MovieEntity">
+        INSERT INTO movie_favorite
+        <include refid="recordSql"></include>
+    </insert>
+
+    <delete id="deleteFavorite">
+        DELETE FROM movie_favorite WHERE user_id =#{userId} AND movie_id=#{movieId}
+    </delete>
+</mapper>
+

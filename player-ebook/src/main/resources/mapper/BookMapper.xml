@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.player.ebook.mapper.BookMapper">
+
+    <sql id="findBookListSql">
+        <if test="category !=null and category!=''">
+            AND category  = #{category}
+        </if >
+        <if test="classify !=null and classify!=''">
+            AND classify  = #{classify}
+        </if >
+        <if test="keyword !=null and keyword !=''">
+            AND name LIKE concat('%',#{keyword},'%')
+        </if >
+
+    </sql>
+
+    <select id="findBookList" resultType="com.player.ebook.entity.BookEntity">
+        SELECT * FROM ebook WHERE 1=1
+        <include refid="findBookListSql"></include>
+         LIMIT #{pageNum},#{pageSize}
+    </select>
+
+    <select id="findBookListTotal" resultType="Long">
+        SELECT count(*) FROM ebook WHERE 1=1
+        <include refid="findBookListSql"></include>
+    </select>
+
+    <insert id="log" parameterType="com.player.common.entity.LogEntity">
+        INSERT INTO log(method,url,headers,ip,params,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
+    </insert>
+
+    <select id="findAllByClassifyGroup" resultType="Map">
+         SELECT '首页' AS classify FROM dual
+            UNION ALL SELECT '前端' AS classify FROM dual
+	        UNION ALL SELECT '后端' AS classify FROM dual
+            UNION ALL SELECT '移动端' AS classify FROM dual
+            UNION ALL SELECT '数据库' AS classify FROM dual
+	        UNION ALL SELECT classify FROM ebook WHERE classify NOT IN ('前端','后端','移动端','数据库','轮播') GROUP BY classify
+    </select>
+    
+    <select id="getBanner" resultType="com.player.ebook.entity.BannerEntity">
+        SELECT * FROM ebook_banner WHERE is_used = 1 ORDER BY rank ASC
+    </select>
+</mapper>
+
