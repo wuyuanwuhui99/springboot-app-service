@@ -1,7 +1,7 @@
 package com.player.playermusic.service;
 
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.Entity.RecordEntity;
-import com.player.playermusic.Entity.ResultEntity;
 
 public interface IRecordService {
     /**
@@ -12,5 +12,5 @@ public interface IRecordService {
      * @return: ResultEntity
      * @date: 2020-07-25 8:26
      */
-    public ResultEntity record(RecordEntity recordEntity);
+    ResultEntity record(RecordEntity recordEntity);
 }

@@ -1,7 +1,7 @@
 package com.player.playermusic.service;
 
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.Entity.FavoriteMusicEntity;
-import com.player.playermusic.Entity.ResultEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface IFavoriteMusicService {
@@ -14,7 +14,7 @@ public interface IFavoriteMusicService {
      * @return: ResultEntity
      * @date: 2020-07-25 8:26
      */
-    public ResultEntity queryFavorite(String userId, String mid);
+    ResultEntity queryFavorite(String userId, String mid);
 
     /**
      * @param : mid歌曲mid
@@ -26,7 +26,7 @@ public interface IFavoriteMusicService {
      * @date: 2020-07-25 8:26
      */
     @Transactional
-    public ResultEntity addFavorite(FavoriteMusicEntity favoriteMusicEntity, String userId);
+    ResultEntity addFavorite(FavoriteMusicEntity favoriteMusicEntity, String userId);
 
 
     /**

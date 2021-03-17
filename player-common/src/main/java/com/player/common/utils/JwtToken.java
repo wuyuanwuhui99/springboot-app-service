@@ -17,16 +17,21 @@ import java.util.Date;
 @Component
 public class JwtToken {
 
-    private  String secret = "wuwenqiang";
+    public JwtToken(String secret,Long expirationTime){
+        this.secret = secret;
+        this.expirationTime = expirationTime;
+    }
+
+    private  String secret;
+
+    private Long expirationTime;
 
     /**
      * 生成jwt token
-     *
      * @param value
-     * @param expirationTime
      * @return
      */
-    public String createToken(Object value, long expirationTime) {
+    public String createToken(Object value) {
         // 生成SecretKey 对象
         SecretKey secretKey = this.createSecretKey();
         String jsonValue = JSONObject.toJSONString(value);

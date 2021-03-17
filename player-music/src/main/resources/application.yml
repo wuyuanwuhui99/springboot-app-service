@@ -1,5 +1,16 @@
+static:
+  file-path: E:/
 server:
   port: 4000
+token:
+  expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
+  secret: wuwenqiang #token秘钥
+cookie:
+  name: token #cookie名称
+  expiry: 2592000000 #tcookie失效时间一个月 1000 * 60 * 60 * 24 * 30
+app:
+  appId: com.play.music
+  appName: 在线音乐
 spring:
   jpa:
     show-sql: true
@@ -7,7 +18,7 @@ spring:
     name: player-music
   datasource:
     druid:
-      url: jdbc:mysql://192.168.0.101:3306/play?characterEncoding=utf-8
+      url: jdbc:mysql://192.168.0.102:3306/play?characterEncoding=utf-8
       username: root
       password: wwq_2021
       driverClassName: com.mysql.jdbc.Driver

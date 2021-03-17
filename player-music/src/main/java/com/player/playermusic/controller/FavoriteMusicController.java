@@ -1,7 +1,7 @@
 package com.player.playermusic.controller;
 
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.Entity.FavoriteMusicEntity;
-import com.player.playermusic.Entity.ResultEntity;
 import com.player.playermusic.service.IFavoriteMusicService;
 import feign.Param;
 import io.swagger.annotations.Api;

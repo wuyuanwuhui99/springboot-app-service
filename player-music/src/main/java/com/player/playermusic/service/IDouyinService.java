@@ -1,8 +1,7 @@
 package com.player.playermusic.service;
 
-import com.player.playermusic.Entity.DouyinEntity;
-import com.player.playermusic.Entity.RecordEntity;
-import com.player.playermusic.Entity.ResultEntity;
+
+import com.player.common.entity.ResultEntity;
 
 public interface IDouyinService {
     /**

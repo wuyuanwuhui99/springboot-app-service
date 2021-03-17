@@ -1,15 +1,15 @@
 package com.player.playermusic.service.imp;
 
+import com.player.common.entity.ResultEntity;
+import com.player.common.entity.ResultUtil;
 import com.player.playermusic.Entity.DouyinEntity;
 import com.player.playermusic.Entity.FavoriteMusicEntity;
-import com.player.playermusic.Entity.ResultEntity;
 import com.player.playermusic.Entity.UserEntity;
 import com.player.playermusic.dao.DouyinDao;
 import com.player.playermusic.dao.FavoriteMusicDao;
 import com.player.playermusic.dao.UserDao;
 import com.player.playermusic.service.IFavoriteMusicService;
 import com.player.playermusic.utils.HttpUtils;
-import com.player.playermusic.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,9 +1,7 @@
 package com.player.playermusic.controller;
 
-import com.player.playermusic.Entity.RecordEntity;
-import com.player.playermusic.Entity.ResultEntity;
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.service.IDouyinService;
-import com.player.playermusic.utils.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

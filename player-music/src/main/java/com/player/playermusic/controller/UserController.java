@@ -1,7 +1,6 @@
 package com.player.playermusic.controller;
 
-import com.player.playermusic.Entity.ResultEntity;
-import com.player.playermusic.Entity.UserEntity;
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.service.imp.UserService;
 import feign.Param;
 import io.swagger.annotations.Api;
@@ -22,10 +21,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation("播放记录")
+    @ApiOperation("获取用户登录信息")
     @GetMapping("/music/getUserData")
-    public ResultEntity getUserData(HttpServletResponse response, @CookieValue(value = "userId", required = false) String userId) {
-        return userService.getUserData(response, userId);
+    public ResultEntity getUserData(HttpServletResponse response, @CookieValue(value = "token", required = false) String token) {
+        return userService.getUserData(response, token);
     }
 
     @ApiOperation("登录")

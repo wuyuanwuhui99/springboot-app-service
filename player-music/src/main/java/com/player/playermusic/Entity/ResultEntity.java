@@ -14,5 +14,4 @@ public class ResultEntity {
 
     @ApiModelProperty(value = "信息")
     private String msg;
-
 }

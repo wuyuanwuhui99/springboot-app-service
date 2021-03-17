@@ -19,10 +19,10 @@ public interface DouyinDao extends JpaRepository<DouyinEntity, Long> {
      * @return: ResultEntity
      * @date: 2020-07-25 8:26
      */
-    public List<DouyinEntity> findAllByDisabled(String disabled, Sort sort);
+    List<DouyinEntity> findAllByDisabled(String disabled, Sort sort);
 
     @Modifying
     @Transactional
     @Query("UPDATE DouyinEntity SET lyric=?1 WHERE mid=?2 AND lyric IS NULL")
-    public int updateLyric(String lyric, String mid);
+    int updateLyric(String lyric, String mid);
 }

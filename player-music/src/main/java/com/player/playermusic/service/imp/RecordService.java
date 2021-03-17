@@ -1,10 +1,10 @@
 package com.player.playermusic.service.imp;
 
+import com.player.common.entity.ResultEntity;
+import com.player.common.entity.ResultUtil;
 import com.player.playermusic.Entity.RecordEntity;
-import com.player.playermusic.Entity.ResultEntity;
 import com.player.playermusic.dao.RecordDao;
 import com.player.playermusic.service.IRecordService;
-import com.player.playermusic.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +27,6 @@ public class RecordService implements IRecordService {
     public ResultEntity record(RecordEntity recordEntity) {
         RecordEntity entity = recordDao.save(recordEntity);
         int time = recordDao.updateTime(recordEntity.getId());
-        return ResultUtil.success(1);
+        return ResultUtil.success(time);
     }
 }

@@ -9,6 +9,7 @@ import com.player.movie.service.IMovieService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,13 +19,19 @@ public class TokenTest {
     @Autowired
     private IMovieService movieService;
 
-    JwtToken jwtToken = new JwtToken();
+    @Value("${token.secret}")
+    private String secret;
+
+    @Value("${token.expiration-time}")
+    private Long expirationTime;
+
+    private JwtToken jwtToken = new JwtToken(secret,expirationTime);
 
     @Test
     public void createToken() {
         ResultEntity resultEntity = movieService.getUserData(null);
         UserEntity userEntity = (UserEntity) resultEntity.getData();
-        String token = jwtToken.createToken(userEntity, 1000 * 60 * 60);
+        String token = jwtToken.createToken(userEntity);
         System.out.println(token);
     }
 

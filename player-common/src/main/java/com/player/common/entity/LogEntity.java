@@ -25,6 +25,9 @@ public class LogEntity implements Serializable {
     @ApiModelProperty(value = "请求参数")
     private String params;
 
+    @ApiModelProperty(value = "url上面的参数")
+    private String queryString;
+
     @ApiModelProperty(value = "请求结果")
     private String result;
 
@@ -46,11 +49,30 @@ public class LogEntity implements Serializable {
     @ApiModelProperty(value = "请求类型，get,post,put")
     private String type;
 
-    @ApiModelProperty(value = "url上面的参数")
-    private String queryString;
-
     @ApiModelProperty(value = "用户id")
     private String userId;
+
+    @ApiModelProperty(value = "应用id")
+    private String appId;
+
+    @ApiModelProperty(value = "应用名称")
+    private String appName;
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 
     public int getId() {
         return id;
@@ -98,6 +120,14 @@ public class LogEntity implements Serializable {
 
     public void setParams(String params) {
         this.params = params;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
     }
 
     public String getResult() {
@@ -154,14 +184,6 @@ public class LogEntity implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getQueryString() {
-        return queryString;
-    }
-
-    public void setQueryString(String queryString) {
-        this.queryString = queryString;
     }
 
     public String getUserId() {

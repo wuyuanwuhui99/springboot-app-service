@@ -1,11 +1,11 @@
-package com.player.movie.aspect;
+package com.player.playermusic.aspect;
 
 import com.alibaba.fastjson.JSON;
-import com.player.common.entity.LogEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
-import com.player.movie.mapper.MovieMapper;
+import com.player.playermusic.Entity.LogEntity;
+import com.player.playermusic.dao.LogDao;
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 @Component
 public class LogAspect {
     @Autowired
-    private MovieMapper movieMapper;
+    private LogDao logDao;
 
     @Value("${app.appId}")
     private String appId;
@@ -122,11 +122,11 @@ public class LogAspect {
             Object result = proceedingJoinPoint.proceed();
             sysLog.setEndTime(new Date());
             sysLog.setResult(JSON.toJSONString(result));
-            movieMapper.log(sysLog);
+            logDao.save(sysLog);
             return result;
         } catch (Throwable throwable) {
             sysLog.setResult(throwable.getMessage());
-            movieMapper.log(sysLog);
+            logDao.save(sysLog);
             throwable.printStackTrace();
         }
         return null;

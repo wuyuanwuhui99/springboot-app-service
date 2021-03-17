@@ -10,6 +10,7 @@ import com.player.movie.entity.MovieEntity;
 import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,13 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class MovieService implements IMovieService {
-    private JwtToken jwtToken = new JwtToken();
+    @Value("${token.secret}")
+    private String secret;
+
+    @Value("${token.expiration-time}")
+    private Long expirationTime;
+
+    private JwtToken jwtToken;
 
     @Autowired
     private MovieMapper movieMapper;
@@ -74,7 +81,9 @@ public class MovieService implements IMovieService {
     public ResultEntity login(String userId, String passsword) {
         UserEntity userEntity = movieMapper.login(userId, passsword);
         if (userEntity != null) {
-            String token = jwtToken.createToken(userEntity, 1000 * 60 * 60 * 24);//token有效期一天
+
+            if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
+            String token = jwtToken.createToken(userEntity);//token有效期一天
             return ResultUtil.success(movieMapper.login(userId, passsword), "登录成功", token);
         } else {
             return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.LOGOUT);
@@ -114,6 +123,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserData(String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = null;
         if (token == null || StringUtils.isEmpty(token)) {
             userEntity = movieMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
@@ -123,7 +133,7 @@ public class MovieService implements IMovieService {
                 userEntity = movieMapper.getUserData();
             }
         }
-        String newToken = jwtToken.createToken(userEntity, 1000 * 60 * 60 * 24);
+        String newToken = jwtToken.createToken(userEntity);
         return ResultUtil.success(userEntity, null, newToken);
     }
 
@@ -134,6 +144,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserMsg(String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(movieMapper.getUserMsg(userEntity.getUserId()));
     }
@@ -256,6 +267,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getViewRecord(String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -272,6 +284,7 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity saveViewRecord(MovieEntity movieEntity,String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -291,6 +304,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getPlayRecord(String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -307,6 +321,7 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity savePlayRecord(MovieEntity movieEntity,String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -326,6 +341,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getFavoriteList(String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -340,6 +356,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity saveFavorite(MovieEntity movieEntity, String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -358,6 +375,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity deleteFavorite(String movieId,String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -367,6 +385,7 @@ public class MovieService implements IMovieService {
 
     @Override
     public ResultEntity isFavorite(String movieId,String token) {
+        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");

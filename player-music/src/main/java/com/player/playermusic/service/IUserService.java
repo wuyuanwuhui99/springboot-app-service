@@ -1,12 +1,12 @@
 package com.player.playermusic.service;
 
-import com.player.playermusic.Entity.ResultEntity;
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.Entity.UserEntity;
 
 import javax.servlet.http.HttpServletResponse;
 
 public interface IUserService {
-    public ResultEntity findUserByUserId(String userId);
+    ResultEntity findUserByUserId(String userId);
 
     ResultEntity getUserData(HttpServletResponse response, String userId);
 

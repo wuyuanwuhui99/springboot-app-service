@@ -1,7 +1,7 @@
 package com.player.playermusic.controller;
 
+import com.player.common.entity.ResultEntity;
 import com.player.playermusic.Entity.RecordEntity;
-import com.player.playermusic.Entity.ResultEntity;
 import com.player.playermusic.service.IRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

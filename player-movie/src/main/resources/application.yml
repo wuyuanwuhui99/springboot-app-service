@@ -2,6 +2,12 @@ static:
   file-path: E:/
 server:
   port: 5000
+token:
+  expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
+  secret: wuwenqiang #token秘钥
+app:
+  appId: com.play.movie
+  appName: flutter在线电影
 spring:
   redis:
     database: 0 # Redis数据库索引（默认为0）
@@ -19,7 +25,7 @@ spring:
     name: player-movie
   datasource:
     druid:
-      url: jdbc:mysql://192.168.0.101:3306/play?characterEncoding=utf-8
+      url: jdbc:mysql://192.168.0.102:3306/play?characterEncoding=utf-8
       username: root
       password: wwq_2021
       driverClassName: com.mysql.jdbc.Driver

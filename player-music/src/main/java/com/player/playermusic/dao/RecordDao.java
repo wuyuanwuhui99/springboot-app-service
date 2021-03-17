@@ -16,5 +16,5 @@ public interface RecordDao extends JpaRepository<RecordEntity, Long> {
      */
     @Modifying
     @Query(value = "UPDATE DouyinEntity SET timer = timer+1 WHERE id = ?1")
-    public int updateTime(Long id);
+    int updateTime(Long id);
 }

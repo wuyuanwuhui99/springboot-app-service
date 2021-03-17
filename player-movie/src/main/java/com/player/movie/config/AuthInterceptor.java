@@ -6,6 +6,7 @@ import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,13 @@ import java.io.PrintWriter;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private JwtToken jwtToken = new JwtToken();
+    @Value("${token.secret}")
+    private String secret;
+
+    @Value("${token.expiration-time}")
+    private Long expirationTime;
+
+    private JwtToken jwtToken = new JwtToken(secret,expirationTime);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
