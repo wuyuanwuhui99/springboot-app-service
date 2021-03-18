@@ -25,7 +25,7 @@ public class RecordService implements IRecordService {
     @Override
     @Transactional
     public ResultEntity record(RecordEntity recordEntity) {
-        RecordEntity entity = recordDao.save(recordEntity);
+        recordDao.save(recordEntity);
         int time = recordDao.updateTime(recordEntity.getId());
         return ResultUtil.success(time);
     }

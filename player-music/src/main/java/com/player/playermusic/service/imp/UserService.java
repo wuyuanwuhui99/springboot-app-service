@@ -27,9 +27,6 @@ import org.springframework.web.client.RestTemplate;
 public class UserService implements IUserService {
 
     @Autowired
-    private JwtToken jwtToken;
-
-    @Autowired
     private UserDao userDao;
 
     @Autowired

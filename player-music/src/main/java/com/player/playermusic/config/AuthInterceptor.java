@@ -1,4 +1,4 @@
-package com.player.movie.config;
+package com.player.playermusic.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.player.common.entity.ResultEntity;
@@ -7,13 +7,13 @@ import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
@@ -22,22 +22,26 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("Athorization");
-        if (token == null) {
-            renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
-            return false;
+        if(request.getServletPath().indexOf("queryFavorite")==-1){
+            String token = request.getHeader("Athorization");
+            if (token == null) {
+                renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
+                return false;
+            }
+            UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+            if (userEntity == null) {
+                response.setContentType("application/json;charset=UTF-8");
+                //设置编码格式
+                response.setCharacterEncoding("UTF-8");
+                response.setStatus(401);
+                response.getWriter().write("未通过登录认证，请在登录页面登录");
+                renderJson(response, ResultUtil.fail("未通过登录认证", ResultCode.LOGOUT));
+                return false;
+            }
+            return true;
+        }else {
+            return true;
         }
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
-        if (userEntity == null) {
-            response.setContentType("application/json;charset=UTF-8");
-            //设置编码格式
-            response.setCharacterEncoding("UTF-8");
-            response.setStatus(401);
-            response.getWriter().write("未通过登录认证，请在登录页面登录");
-            renderJson(response, ResultUtil.fail("未通过登录认证", ResultCode.LOGOUT));
-            return false;
-        }
-        return true;
     }
 
     protected void renderJson(HttpServletResponse response, ResultEntity resultEntity) {

@@ -6,6 +6,7 @@ import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
 import com.player.playermusic.Entity.LogEntity;
 import com.player.playermusic.dao.LogDao;
+import com.player.playermusic.utils.CookieUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -41,15 +42,8 @@ public class LogAspect {
     @Value("${app.appName}")
     private String appName;
 
-    @Value("${token.secret}")
-    private String secret;
-
-    @Value("${token.expiration-time}")
-    private Long expirationTime;
-
-    private JwtToken jwtToken = new JwtToken(secret,expirationTime);
-
-    private static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
+    @Autowired
+    private JwtToken jwtToken;
 
     //定义切点 @Pointcut
     //在注解的位置切入代码
@@ -107,6 +101,7 @@ public class LogAspect {
             UserEntity userEntity =jwtToken.parserToken(token, UserEntity.class);
             if(userEntity != null && !"".equals(userEntity)){
                 sysLog.setUserId(userEntity.getUserId());
+                CookieUtils.setTokenCookie(attributes.getResponse(),token);
             }
         }
         // 记录下请求内容

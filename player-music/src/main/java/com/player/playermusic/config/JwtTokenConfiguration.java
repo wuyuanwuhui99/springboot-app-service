@@ -1,4 +1,4 @@
-package com.player.playmusic.config;
+package com.player.playermusic.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
