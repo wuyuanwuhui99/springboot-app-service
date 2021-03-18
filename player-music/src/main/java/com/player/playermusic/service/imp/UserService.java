@@ -26,13 +26,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class UserService implements IUserService {
 
-    @Value("${token.secret}")
-    private String secret;
-
-    @Value("${token.expiration-time}")
-    private Long expirationTime;
-
-    private JwtToken jwtToken = new JwtToken(secret,expirationTime);
+    @Autowired
+    private JwtToken jwtToken;
 
     @Autowired
     private UserDao userDao;
