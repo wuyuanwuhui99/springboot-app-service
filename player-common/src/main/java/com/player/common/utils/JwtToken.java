@@ -2,8 +2,6 @@ package com.player.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.*;
-import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -14,17 +12,16 @@ import java.util.Date;
  * @version 1.0
  * @create_at 2020/4/19 15:31
  */
-@Component
 public class JwtToken {
+
+    private String secret;
+
+    private Long expirationTime;
 
     public JwtToken(String secret,Long expirationTime){
         this.secret = secret;
         this.expirationTime = expirationTime;
     }
-
-    private  String secret;
-
-    private Long expirationTime;
 
     /**
      * 生成jwt token

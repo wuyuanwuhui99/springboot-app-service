@@ -1,19 +1,18 @@
-package com.player.movie.aspect;
+package com.player.music.aspect;
 
 import com.alibaba.fastjson.JSON;
-import com.player.common.entity.LogEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
-import com.player.movie.mapper.MovieMapper;
+import com.player.music.Entity.LogEntity;
+import com.player.music.dao.LogDao;
+import com.player.music.utils.CookieUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ import java.util.stream.Stream;
 @Component
 public class LogAspect {
     @Autowired
-    private MovieMapper movieMapper;
+    private LogDao logDao;
 
     @Value("${app.appId}")
     private String appId;
@@ -43,8 +42,6 @@ public class LogAspect {
 
     @Autowired
     private JwtToken jwtToken;
-
-    private static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
     //定义切点 @Pointcut
     //在注解的位置切入代码
@@ -102,6 +99,7 @@ public class LogAspect {
             UserEntity userEntity =jwtToken.parserToken(token, UserEntity.class);
             if(userEntity != null && !"".equals(userEntity)){
                 sysLog.setUserId(userEntity.getUserId());
+                CookieUtils.setTokenCookie(attributes.getResponse(),token);
             }
         }
         // 记录下请求内容
@@ -117,11 +115,11 @@ public class LogAspect {
             Object result = proceedingJoinPoint.proceed();
             sysLog.setEndTime(new Date());
             sysLog.setResult(JSON.toJSONString(result));
-            movieMapper.log(sysLog);
+            logDao.save(sysLog);
             return result;
         } catch (Throwable throwable) {
             sysLog.setResult(throwable.getMessage());
-            movieMapper.log(sysLog);
+            logDao.save(sysLog);
             throwable.printStackTrace();
         }
         return null;

@@ -10,7 +10,6 @@ import com.player.movie.entity.MovieEntity;
 import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,8 +76,6 @@ public class MovieService implements IMovieService {
     public ResultEntity login(String userId, String passsword) {
         UserEntity userEntity = movieMapper.login(userId, passsword);
         if (userEntity != null) {
-
-            if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
             String token = jwtToken.createToken(userEntity);//token有效期一天
             return ResultUtil.success(movieMapper.login(userId, passsword), "登录成功", token);
         } else {

@@ -1,5 +1,6 @@
 package com.player.common.utils;
 
+import javax.servlet.http.HttpServletRequest;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,19 +16,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
-@Component
 public class HttpUtils {
 
-    private PoolingHttpClientConnectionManager cm;
-
-    public HttpUtils() {
-        this.cm = new PoolingHttpClientConnectionManager();
-
+    public static PoolingHttpClientConnectionManager getCm(){
+        PoolingHttpClientConnectionManager cm =  new PoolingHttpClientConnectionManager();
         //设置最大连接数
-        this.cm.setMaxTotal(100);
-
+        cm.setMaxTotal(100);
         //设置每个主机的最大连接数
-        this.cm.setDefaultMaxPerRoute(10);
+        cm.setDefaultMaxPerRoute(10);
+        return cm;
     }
 
     /**
@@ -36,15 +33,15 @@ public class HttpUtils {
      * @param url
      * @return 页面数据
      */
-    public String doGet(String url) {
+    public static String doGet(String url) {
         //获取HttpClient对象
-        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(this.cm).build();
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(getCm()).build();
 
         //创建httpGet请求对象，设置url地址
         HttpGet httpGet = new HttpGet(url);
 
         //设置请求信息
-        httpGet.setConfig(this.getConfig());
+        httpGet.setConfig(getConfig());
         httpGet.addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
 //        httpGet.addHeader("content-type" ,"application/json;charset=utf-8");
         httpGet.addHeader("Referer", "https://c.y.qq.com/");
@@ -75,8 +72,6 @@ public class HttpUtils {
         }
         //返回空串
         return "";
-
-
     }
 
     /**
@@ -85,15 +80,15 @@ public class HttpUtils {
      * @param url
      * @return 图片名称
      */
-    public String doGetFile(String url, String path) {
+    public static String doGetFile(String url, String path) {
         //获取HttpClient对象
-        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(this.cm).build();
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(getCm()).build();
 
         //创建httpGet请求对象，设置url地址
         HttpGet httpGet = new HttpGet(url);
 
         //设置请求信息
-        httpGet.setConfig(this.getConfig());
+        httpGet.setConfig(getConfig());
 //        httpGet.addHeader("Host","im-x.jd.com");
 //        httpGet.addHeader("Referer","https://search.jd.com/Search?keyword=%E6%89%8B%E6%9C%BA&wq=%E6%89%8B%E6%9C%BA&page=1&s=1&click=0");
         httpGet.addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
@@ -143,7 +138,7 @@ public class HttpUtils {
     }
 
     //设置请求信息
-    private RequestConfig getConfig() {
+    public static RequestConfig getConfig() {
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(1000)    //创建连接的最长时间
                 .setConnectionRequestTimeout(500)  // 获取连接的最长时间
@@ -151,5 +146,11 @@ public class HttpUtils {
                 .build();
 
         return config;
+    }
+
+    public static String getPath(HttpServletRequest request){
+        String requestURI = request.getRequestURI();
+        String queryString = request.getQueryString();
+        return requestURI + "?" + queryString;
     }
 }

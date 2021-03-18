@@ -3,10 +3,10 @@ package com.player.movie.controller;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
+import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.service.IMovieService;
-import com.player.movie.utils.MovieUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class MovieController {
             @RequestParam("classify") String classify,
             HttpServletRequest request
     ) {
-        return movieService.getKeyWord(classify,MovieUtils.getPath(request));
+        return movieService.getKeyWord(classify, HttpUtils.getPath(request));
     }
 
     @OperLog(message = "登录校验", operation = OperationType.LOGIN)
@@ -71,7 +71,7 @@ public class MovieController {
             @RequestParam("classify") String classsify,
             HttpServletRequest request
     ) {
-        return movieService.getAllCategoryByClassify(classsify,MovieUtils.getPath(request));
+        return movieService.getAllCategoryByClassify(classsify,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "按页面获取要展示的category小类", operation = OperationType.QUERY)
@@ -81,7 +81,7 @@ public class MovieController {
             @RequestParam("pageName") String pageName,
             HttpServletRequest request
     ) {
-        return movieService.getAllCategoryListByPageName(pageName,MovieUtils.getPath(request));
+        return movieService.getAllCategoryListByPageName(pageName,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "获取大类中的小类", operation = OperationType.QUERY)
@@ -92,7 +92,7 @@ public class MovieController {
             @RequestParam("category") String category,
             HttpServletRequest request
     ) {
-        return movieService.getCategoryList(classify, category,MovieUtils.getPath(request));
+        return movieService.getCategoryList(classify, category,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "搜索", operation = OperationType.QUERY)
@@ -104,7 +104,7 @@ public class MovieController {
             @RequestParam("pageSize") int pageSize,
             HttpServletRequest request
     ) {
-        return movieService.search(keyword, pageNum, pageSize,MovieUtils.getPath(request));
+        return movieService.search(keyword, pageNum, pageSize,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "注册", operation = OperationType.QUERY)
@@ -128,7 +128,7 @@ public class MovieController {
             @RequestParam("movieId") String movieId,
             HttpServletRequest request
     ) {
-        return movieService.getStar(movieId,MovieUtils.getPath(request));
+        return movieService.getStar(movieId,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "获取播放列表", operation = OperationType.QUERY)
@@ -138,7 +138,7 @@ public class MovieController {
             @RequestParam("movieId") String movieId,
             HttpServletRequest request
     ) {
-        return movieService.getMovieUrl(movieId,MovieUtils.getPath(request));
+        return movieService.getMovieUrl(movieId,HttpUtils.getPath(request));
     }
 
 

@@ -117,7 +117,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.player.playermusic.PlayerMovieApplication</mainClass>
+                    <mainClass>com.player.music.PlayerMovieApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

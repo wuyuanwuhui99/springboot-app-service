@@ -48,6 +48,11 @@
             <artifactId>spring-beans</artifactId>
             <version>5.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>8.5.29</version>
+        </dependency>
     </dependencies>
     <name>player-common</name>
     <description>player-movie project for Spring Boot</description>
