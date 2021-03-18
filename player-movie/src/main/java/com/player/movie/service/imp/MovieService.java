@@ -28,6 +28,7 @@ public class MovieService implements IMovieService {
     @Value("${token.expiration-time}")
     private Long expirationTime;
 
+    @Autowired
     private JwtToken jwtToken;
 
     @Autowired
@@ -123,7 +124,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = null;
         if (token == null || StringUtils.isEmpty(token)) {
             userEntity = movieMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
@@ -144,7 +144,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserMsg(String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(movieMapper.getUserMsg(userEntity.getUserId()));
     }
@@ -267,7 +266,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getViewRecord(String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -284,7 +282,6 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity saveViewRecord(MovieEntity movieEntity,String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -304,7 +301,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getPlayRecord(String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -321,7 +317,6 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity savePlayRecord(MovieEntity movieEntity,String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -341,7 +336,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getFavoriteList(String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -356,7 +350,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity saveFavorite(MovieEntity movieEntity, String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -375,7 +368,6 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity deleteFavorite(String movieId,String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
@@ -385,7 +377,6 @@ public class MovieService implements IMovieService {
 
     @Override
     public ResultEntity isFavorite(String movieId,String token) {
-        if(jwtToken == null) jwtToken = new JwtToken(secret,expirationTime);
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
