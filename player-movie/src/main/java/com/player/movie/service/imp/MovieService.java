@@ -22,11 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class MovieService implements IMovieService {
-    @Value("${token.secret}")
-    private String secret;
-
-    @Value("${token.expiration-time}")
-    private Long expirationTime;
 
     @Autowired
     private JwtToken jwtToken;
