@@ -33,7 +33,7 @@ public class IndexController {
 
     @RequestMapping(value = {"/static/**"}, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public byte[] proxyImage(HttpServletRequest request) {
+    public byte[] proxyStatic(HttpServletRequest request) {
         File file = new File(rootPath + request.getServletPath());
         FileInputStream inputStream = null;
         try {
