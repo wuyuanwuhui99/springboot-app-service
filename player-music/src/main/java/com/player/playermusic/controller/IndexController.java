@@ -28,29 +28,13 @@ public class IndexController {
         return "forward:index.html";
     }
     
-    @Value("${app.path}")
+    @Value("${static.file-path}")
     private String rootPath;
 
-    @RequestMapping(value = {"/images/*/*/*", "/images/*/*"}, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = {"/static/**"}, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] proxyImage(HttpServletRequest request) {
         File file = new File(rootPath + request.getServletPath());
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes, 0, inputStream.available());
-            return bytes;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @RequestMapping(value = "/audio/*", produces = "audio/mp4a-latm")
-    @ResponseBody
-    public byte[] getFile(HttpServletRequest request) {
-        String file = rootPath + request.getServletPath();
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
