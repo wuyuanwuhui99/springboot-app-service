@@ -16,13 +16,8 @@ import java.io.PrintWriter;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
-    @Value("${token.secret}")
-    private String secret;
-
-    @Value("${token.expiration-time}")
-    private Long expirationTime;
-
-    private JwtToken jwtToken = new JwtToken(secret,expirationTime);
+    @Autowired
+    private JwtToken jwtToken;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
