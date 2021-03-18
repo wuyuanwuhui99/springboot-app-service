@@ -1,24 +1,27 @@
 package com.player.playermusic.controller;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileInputStream;
+import java.net.URL;
 
-@Controller
-@RequestMapping("/")
-public class IndexController {
+@RestController
+public class FileStaticController {
     @Autowired
     ResourceLoader loader;
 
-    @GetMapping("/")
+    @Value("${static.file-path}")
+    private String root;
+    
+     @GetMapping("/")
     public String home() {
         return "redirect:music";
     }
@@ -27,23 +30,25 @@ public class IndexController {
     public String index() {
         return "forward:index.html";
     }
-    
-    @Value("${static.file-path}")
-    private String rootPath;
 
-    @RequestMapping(value = {"/static/**"}, produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] proxyStatic(HttpServletRequest request) {
-        File file = new File(rootPath + request.getServletPath());
-        FileInputStream inputStream = null;
+    @GetMapping("/static/**")
+    public ResponseEntity<byte[]> getFile(HttpServletRequest request) {
         try {
-            inputStream = new FileInputStream(file);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes, 0, inputStream.available());
-            return bytes;
+            String servletPath = request.getServletPath();
+            String filePath = root.replace("/","") + servletPath;
+            File file = new File(filePath);
+            ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.ok();
+            bodyBuilder.contentLength(file.length());
+            // 二进制数据流
+            bodyBuilder.contentType(MediaType.APPLICATION_OCTET_STREAM);
+            // 在浏览器中打开
+            URL url = new URL("file:///" + file);
+            bodyBuilder.header("Content-Type", url.openConnection().getContentType());
+            String fileName = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length());
+            bodyBuilder.header("Content-Disposition", "inline;filename*=UTF-8''" + fileName);
+            return bodyBuilder.body(FileUtils.readFileToByteArray(file));
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }
