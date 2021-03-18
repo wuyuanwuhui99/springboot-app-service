@@ -27,11 +27,14 @@ public class IndexController {
     public String index() {
         return "forward:index.html";
     }
+    
+    @Value("${app.path}")
+    private String rootPath;
 
     @RequestMapping(value = {"/images/*/*/*", "/images/*/*"}, produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] proxyImage(HttpServletRequest request) {
-        File file = new File("E:/Node/music/public/" + request.getServletPath());
+        File file = new File(rootPath + request.getServletPath());
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -47,7 +50,7 @@ public class IndexController {
     @RequestMapping(value = "/audio/*", produces = "audio/mp4a-latm")
     @ResponseBody
     public byte[] getFile(HttpServletRequest request) {
-        String file = "E:/Node/music/public/" + request.getServletPath();
+        String file = rootPath + request.getServletPath();
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
