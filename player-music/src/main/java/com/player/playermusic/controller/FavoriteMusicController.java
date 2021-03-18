@@ -26,7 +26,7 @@ public class FavoriteMusicController {
      * @date: 2020-07-25 8:26
      */
     @ApiOperation("根据用户命名和mid查询收藏的歌曲 ")
-    @GetMapping("/music/queryFavorite")
+    @GetMapping("/music-getway/queryFavorite")
     public ResultEntity queryFavorite(@CookieValue(value = "userId", required = false) String userId, @Param("mid") String mid) {
         return favoriteMusicService.queryFavorite(userId, mid);
     }
@@ -40,7 +40,7 @@ public class FavoriteMusicController {
      * @date: 2020-07-30 23:58
      */
     @ApiOperation("添加收藏,如果是管理员账户，添加到抖音歌曲表")
-    @PostMapping("/music/addFavorite")
+    @PostMapping("/music-getway/addFavorite")
     public ResultEntity addFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity, @CookieValue(value = "userId", required = false) String userId) {
         return favoriteMusicService.addFavorite(favoriteMusicEntity, userId);
     }
@@ -54,7 +54,7 @@ public class FavoriteMusicController {
      * @date: 2020-07-30 23:58
      */
     @ApiOperation("取消收藏")
-    @DeleteMapping("/music/deleteFavorite")
+    @DeleteMapping("/music-getway/deleteFavorite")
     public ResultEntity deleteFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity) {
         return favoriteMusicService.deleteFavorite(favoriteMusicEntity);
     }
@@ -68,7 +68,7 @@ public class FavoriteMusicController {
      * @date: 2020-07-30 23:58
      */
     @ApiOperation("根据用户id查询该用户收藏的列表")
-    @GetMapping("/music/getFavorite")
+    @GetMapping("/music-getway/getFavorite")
     public ResultEntity getFavorite(@CookieValue(value = "userId", required = false) String userId) {
         return favoriteMusicService.getFavorite(userId);
     }
