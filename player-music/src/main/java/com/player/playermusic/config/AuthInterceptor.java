@@ -22,7 +22,16 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(request.getServletPath().indexOf("queryFavorite")==-1){
+        String[] paths = {"queryFavorite","addFavorite","deleteFavorite","getFavorite"};
+        boolean verification = false;
+        for(int i = 0; i < paths.length; i++){
+            String path = request.getServletPath();
+            if(path.indexOf(paths[i]) != -1){
+                verification = true;
+                break;
+            }
+        }
+        if(verification){
             String token = request.getHeader("Athorization");
             if (token == null) {
                 renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
