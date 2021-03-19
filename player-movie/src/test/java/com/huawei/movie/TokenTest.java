@@ -25,7 +25,7 @@ public class TokenTest {
     @Value("${token.expiration-time}")
     private Long expirationTime;
 
-    private JwtToken jwtToken = new JwtToken(secret,expirationTime);
+    private JwtToken jwtToken = new JwtToken();
 
     @Test
     public void createToken() {

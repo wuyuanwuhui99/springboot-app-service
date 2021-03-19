@@ -9,6 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -151,6 +152,10 @@ public class HttpUtils {
     public static String getPath(HttpServletRequest request){
         String requestURI = request.getRequestURI();
         String queryString = request.getQueryString();
-        return requestURI + "?" + queryString;
+        if(!StringUtils.isEmpty(queryString)){
+            return requestURI + "?" + queryString;
+        }else{
+            return requestURI;
+        }
     }
 }

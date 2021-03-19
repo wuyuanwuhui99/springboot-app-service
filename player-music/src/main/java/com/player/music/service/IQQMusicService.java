@@ -1,27 +1,29 @@
 package com.player.music.service;
 
+import com.player.common.entity.ResultEntity;
+
 public interface IQQMusicService {
-    String getDiscList();
+    ResultEntity getDiscList();
 
-    String getLyric(String songmid);
+    ResultEntity getLyric(String songmid);
 
-    String getSingerList();
+    ResultEntity getSingerList();
 
-    String getHotKey();
+    ResultEntity getHotKey();
 
-    String search(String keyword);
+    ResultEntity search(String catZhida,String p,String n, String w);
 
-    String getSingerDetail(String singermid);
+    ResultEntity getSingerDetail(String singermid);
 
-    String getRecommend();
+    ResultEntity getRecommend();
 
-    String getSongList(String disstid);
+    ResultEntity getSongList(String disstid);
 
-    String getTopList();
+    ResultEntity getTopList();
 
-    String getMusicList(String topid);
+    ResultEntity getMusicList(String topid);
 
-    String getAudioUrl(String mid, String filename);
+    ResultEntity getAudioUrl(String mid, String filename);
 
-    String getSingleSong(String mid);
+    ResultEntity getSingleSong(String mid);
 }

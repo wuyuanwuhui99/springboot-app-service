@@ -2,7 +2,9 @@ package com.player.common.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class ResultEntity {
+import java.io.Serializable;
+
+public class ResultEntity implements Serializable {
 
     @ApiModelProperty(value = "数据")
     private Object data;

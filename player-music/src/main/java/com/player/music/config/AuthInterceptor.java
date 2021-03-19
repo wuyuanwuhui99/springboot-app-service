@@ -24,7 +24,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String path = request.getServletPath();
         if(path.indexOf("music-getway") != -1){
-            String token = CookieUtils.getCookie(request,"token")
+            String token = CookieUtils.getCookie(request,"token");
             if (token == null) {
                 renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
                 return false;

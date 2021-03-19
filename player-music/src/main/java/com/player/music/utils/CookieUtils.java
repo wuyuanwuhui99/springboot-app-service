@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
@@ -35,14 +36,14 @@ public class CookieUtils {
         response.addCookie(cookie);
     }
     
-    **
+    /**
      * @author: wuwenqiang
      * @methodsName: fail
      * @description: 获取cookie方法
      * @return: ResultEntity
      * @date: 2020-07-25 8:26
      */
-    public static String getCookie(HttpServletResponse request, String name) {
+    public static String getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies =  request.getCookies();
         if(cookies != null){
             for(Cookie cookie : cookies){
@@ -51,6 +52,6 @@ public class CookieUtils {
                 }
             }
         }
-        return null
+        return null;
     }
 }

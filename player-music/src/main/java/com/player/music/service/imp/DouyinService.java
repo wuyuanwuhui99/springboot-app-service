@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class DouyinService implements IDouyinService {
@@ -31,13 +32,15 @@ public class DouyinService implements IDouyinService {
     @Override
     public ResultEntity getDouyinList(String path) {
         String result = (String) redisTemplate.opsForValue().get(path);
+        ResultEntity resultEntity;
         if(result != null && !"".equals(result)){
-            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
-            return resultEntity;
+            resultEntity= JSON.parseObject(result,ResultEntity.class);
         }else{
             List<DouyinEntity> douyinEntityList = douyinDao.findAllByDisabled("0", Sort.by("updateTime").descending());
-            return ResultUtil.success(douyinEntityList);
+            resultEntity = ResultUtil.success(douyinEntityList);
+            redisTemplate.opsForValue().set(path,resultEntity,1, TimeUnit.DAYS);
         }
+        return resultEntity;
     }
 
 }

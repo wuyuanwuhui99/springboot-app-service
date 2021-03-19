@@ -1,19 +1,21 @@
 package com.player.music.service.imp;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
-import com.player.music.dao.DouyinDao;
 import com.player.music.service.IQQMusicService;
-import org.apache.commons.lang.StringUtils;
+import com.player.music.utils.RedisUitls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class QQMusicService implements IQQMusicService {
 
-    @Autowired
-    private DouyinDao douyinDao;
-    
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -29,8 +31,8 @@ public class QQMusicService implements IQQMusicService {
         String url = "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=json&platform=yqq&hostUin=0&sin=0&ein=29&sortId=5&needNewCode=0&categoryId=10000000";
         String result = (String) redisTemplate.opsForValue().get(url);
         if(result == null || !"".equals(result)){
-            result =  HttpUtils.doGet(url+"&rnd=0.6219561219093992");
-            redisTemplate.opsForValue().set(url,result,1, TimeUnit.DAYS);
+            result =  HttpUtils.doGet(url+"&rnd="+Math.random());
+            return RedisUitls.getRedis(redisTemplate,url, result, "获取推荐音乐数据失败");
         }
         return JSON.parseObject(result,ResultEntity.class);
     }
@@ -44,12 +46,11 @@ public class QQMusicService implements IQQMusicService {
      */
     @Override
     public ResultEntity getLyric(String songmid) {
-        String url = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=json&songmid=" + songmid + "&platform=yqq&hostUin=0&needNewCode=0&categoryId=10000000";
+        String url = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=json&songmid="+songmid+"&platform=yqq&hostUin=0&needNewCode=0&categoryId=10000000";
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(result == null || !"".equals(result)){
+        if(StringUtils.isEmpty(result)){
             result = HttpUtils.doGet(url+"&pcachetime=" + System.currentTimeMillis());
-            result =  result.replaceAll("getSingerList\\(|\\)$", "");
-            redisTemplate.opsForValue().set(url,result,1, TimeUnit.DAYS);
+            JSONObject jsonObject = JSON.parseObject(result);
         }
         return JSON.parseObject(result,ResultEntity.class);
     }
@@ -66,7 +67,7 @@ public class QQMusicService implements IQQMusicService {
         String url = "https://c.y.qq.com/v8/fcg-bin/v8.fcg?jsonpCallback=getSingerList&g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&channel=singer&page=list&key=all_all_all&pagesize=100&pagenum=1&hostUin=0&needNewCode=0&platform=yqq";
         String result = (String) redisTemplate.opsForValue().get(url);
         if(result == null || !"".equals(result)){
-             String result = HttpUtils.doGet(url);
+            result = HttpUtils.doGet(url);
             result =  result.replaceAll("getSingerList\\(|\\)$", "");
             redisTemplate.opsForValue().set(url,result,1, TimeUnit.DAYS);
         }
@@ -82,14 +83,14 @@ public class QQMusicService implements IQQMusicService {
      */
     @Override
     public ResultEntity getHotKey() {
-        String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?jsonpCallback=getHotKey&uin=0&needNewCode=1&platform=h5&g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp"
+        String url = "https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&uin=0&needNewCode=1&platform=h5&jsonpCallback=getHotKey";
         String result = (String) redisTemplate.opsForValue().get(url);        
-        if(result == null || !"".equals(result)){
+        if(StringUtils.isEmpty(result)){
             result = HttpUtils.doGet(url);
             result =  result.replaceAll("getHotKey\\(|\\)$", "");
-            redisTemplate.opsForValue().set(url,result,1, TimeUnit.DAYS);
+            return RedisUitls.getRedis(redisTemplate,url, result, "获取推荐数据失败");
         }
-        return JSON.parseObject(result,ResultEntity.class);
+        return JSON.parseObject(result, ResultEntity.class);
     }
 
     /**
@@ -100,13 +101,13 @@ public class QQMusicService implements IQQMusicService {
      * @date: 2020-08-02 22:25
      */
     @Override
-    public ResultEntity search(String w) {
-        String url = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?jsonpCallback=search&g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.center&searchid=37276201631470540&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w=" + w + "&loginUin=0&hostUin=0&platform=yqq&needNewCode=1";
-        String result = (String) redisTemplate.opsForValue().get(url); 
-        if(result == null || !"".equals(result)){
+    public ResultEntity search(String catZhida,String p,String n, String w) {
+        String url = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.center&searchid=37276201631470540&t=0&aggr=1&cr=1&lossless=0&flag_qc=0&loginUin=0&hostUin=0&platform=yqq&needNewCode=1&jsonpCallback=search&catZhida="+catZhida+"&p="+p+"&n="+n+"&w="+w;
+        String result = (String) redisTemplate.opsForValue().get(url);
+        if(StringUtils.isEmpty(result)){
             result = HttpUtils.doGet(url);
             result = result.replaceAll("search\\(|\\)$", "");
-            redisTemplate.opsForValue().set(url,result,1, TimeUnit.DAYS);
+            return RedisUitls.getRedis(redisTemplate,url,result,"获取搜索数据失败");
         }
         return JSON.parseObject(result,ResultEntity.class);
     }
@@ -122,10 +123,10 @@ public class QQMusicService implements IQQMusicService {
     public ResultEntity getSingerDetail(String singermid) {
         String url = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?jsonpCallback=getSingerDetail&g_tk=5381&inCharset=utf-8&outCharset=utf-8&notice=0&format=jsonp&hostUin=0&needNewCode=0&platform=yqq&order=listen&begin=0&num=80&songstatus=1&singermid=" + singermid;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(result == null || !"".equals(result)){
+        if(StringUtils.isEmpty(result)){
             result = HttpUtils.doGet(url);
             result = result.replaceAll("getSingerDetail\\(|\\)$", "");
-            redisTemplate.opsForValue().set(url,result,1, TimeUnit.DAYS);
+            return RedisUitls.getRedis(redisTemplate,url,result,"获取歌手的歌曲");
         }
         return JSON.parseObject(result,ResultEntity.class);
     }
