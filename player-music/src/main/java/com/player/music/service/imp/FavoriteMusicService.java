@@ -28,6 +28,9 @@ public class FavoriteMusicService implements IFavoriteMusicService {
 
     @Autowired
     private UserDao userDao;
+    
+    @Autowired
+    private JwtToken jwtToken;
 
     /**
      * @param : mid歌曲mid
@@ -39,10 +42,8 @@ public class FavoriteMusicService implements IFavoriteMusicService {
      * @date: 2020-07-25 8:26
      */
     @Override
-    public ResultEntity queryFavorite(String userId, String mid) {
-        if (StringUtils.isEmpty(userId)) {
-            return ResultUtil.fail("用户为空");
-        }
+    public ResultEntity queryFavorite(String token, String mid) {
+        String userId = jwtToken.getUserId(token);
         List<FavoriteMusicEntity> favoriteMusicEntities = favoriteMusicDao.findAllByUserIdAndMid(userId, mid);
         return ResultUtil.success(favoriteMusicEntities);
     }
@@ -58,68 +59,66 @@ public class FavoriteMusicService implements IFavoriteMusicService {
      */
     @Transactional
     @Override
-    public ResultEntity addFavorite(FavoriteMusicEntity favoriteMusicEntity, String userId) {
-        if (StringUtils.isEmpty(userId)) {
-            return ResultUtil.fail(null, "请先登录");
-        } else {
-            List<FavoriteMusicEntity> favoriteMusicEntities = favoriteMusicDao.findAllByUserIdAndMid(userId, favoriteMusicEntity.getMid());
-            if (favoriteMusicEntities.size() != 0) {
-                return ResultUtil.fail("已经收藏过，请勿重复收藏");
-            }
-            FavoriteMusicEntity musicEntity = favoriteMusicDao.save(favoriteMusicEntity);
+    public ResultEntity addFavorite(FavoriteMusicEntity favoriteMusicEntity, String token) {
+        String userId = jwtToken.getUserId(token);
+        List<FavoriteMusicEntity> favoriteMusicEntities = favoriteMusicDao.findAllByUserIdAndMid(userId, favoriteMusicEntity.getMid());
+        if (favoriteMusicEntities.size() != 0) {
+            return ResultUtil.fail("已经收藏过，请勿重复收藏");
+        }
+        FavoriteMusicEntity musicEntity = favoriteMusicDao.save(favoriteMusicEntity);
 
-            Optional<UserEntity> userEntityOptional = userDao.findById(userId);
+        Optional<UserEntity> userEntityOptional = userDao.findById(userId);
 
-            if (userEntityOptional.isPresent()) {//查询用户是否是管理员，如果是管理员才能插入
-                UserEntity userEntity = userEntityOptional.get();
+        if (userEntityOptional.isPresent()) {//查询用户是否是管理员，如果是管理员才能插入
+            UserEntity userEntity = userEntityOptional.get();
 
-                if (userEntity.getRole() == "admin") {
-                    Optional<DouyinEntity> douyinEntityOptional = douyinDao.findById(favoriteMusicEntity.getId());
-                    if (douyinEntityOptional.isPresent() == false) {//如果抖音歌曲表里面没有这首歌，才能插入
-                        DouyinEntity douyinEntity = new DouyinEntity();
-                        String audioName = null;
-                        String picName = null;
-                        if (!StringUtils.isEmpty(favoriteMusicEntity.getUrl())) {//如果有url地址，下载歌曲
-                            audioName = HttpUtils.doGetFile(favoriteMusicEntity.getUrl(), "E:\\Node\\music\\public\\audio\\");
-                            douyinEntity.setLocalUrl("/audio/" + audioName);
-                        } else {//如果没有歌曲地址，设置默认的歌曲地址
-                            douyinEntity.setLocalUrl("/audio/" + favoriteMusicEntity.getName() + ".m4a");
-                        }
-                        if (!StringUtils.isEmpty(favoriteMusicEntity.getImage())) {//如果有图片地址，下载图片
-                            picName = HttpUtils.doGetFile(favoriteMusicEntity.getImage(), "E:\\Node\\music\\public\\images\\song\\");
-                            douyinEntity.setLocalImage("/images/song/" + audioName);
-                        } else {//如果没有图片，设置默认的图片的地址
-                            douyinEntity.setLocalImage("/images/song/" + favoriteMusicEntity.getName() + ".jpg");
-                        }
-                        douyinEntity.setPlayMode("local");
-                        douyinEntity.setLocalUrl(picName);
-                        douyinEntity.setId(favoriteMusicEntity.getId());
-                        douyinEntity.setAlbummid(favoriteMusicEntity.getAlbummid());
-                        douyinEntity.setDuration(favoriteMusicEntity.getDuration());
-                        douyinEntity.setImage(favoriteMusicEntity.getImage());
-                        douyinEntity.setMid(favoriteMusicEntity.getMid());
-                        douyinEntity.setSinger(favoriteMusicEntity.getSinger());
-                        douyinEntity.setUrl(favoriteMusicEntity.getUrl());
-                        douyinEntity.setCreateTime(favoriteMusicEntity.getCreateTime());
-                        douyinEntity.setTimer(0);
-                        douyinEntity.setUpdateTime(favoriteMusicEntity.getUpdateTime());
-                        douyinEntity.setKugouUrl(favoriteMusicEntity.getKugouUrl());
-                        douyinEntity.setPlayMode(favoriteMusicEntity.getPlayMode());
-                        douyinEntity.setOtherUrl(favoriteMusicEntity.getOtherUrl());
-                        douyinEntity.setLocalUrl(favoriteMusicEntity.getLocalUrl());
-                        douyinEntity.setDisabled("0");
-                        douyinEntity.setLyric(favoriteMusicEntity.getLyric());
-                        douyinEntity.setLocalImage(favoriteMusicEntity.getLocalImage());
-                        douyinDao.save(douyinEntity);
+            if (userEntity.getRole() == "admin") {
+                Optional<DouyinEntity> douyinEntityOptional = douyinDao.findById(favoriteMusicEntity.getId());
+                if (douyinEntityOptional.isPresent() == false) {//如果抖音歌曲表里面没有这首歌，才能插入
+                    DouyinEntity douyinEntity = new DouyinEntity();
+                    String audioName = null;
+                    String picName = null;
+                    if (!StringUtils.isEmpty(favoriteMusicEntity.getUrl())) {//如果有url地址，下载歌曲
+                        audioName = HttpUtils.doGetFile(favoriteMusicEntity.getUrl(), "E:\\Node\\music\\public\\audio\\");
+                        douyinEntity.setLocalUrl("/audio/" + audioName);
+                    } else {//如果没有歌曲地址，设置默认的歌曲地址
+                        douyinEntity.setLocalUrl("/audio/" + favoriteMusicEntity.getName() + ".m4a");
                     }
+                    if (!StringUtils.isEmpty(favoriteMusicEntity.getImage())) {//如果有图片地址，下载图片
+                        picName = HttpUtils.doGetFile(favoriteMusicEntity.getImage(), "E:\\Node\\music\\public\\images\\song\\");
+                        douyinEntity.setLocalImage("/images/song/" + audioName);
+                    } else {//如果没有图片，设置默认的图片的地址
+                        douyinEntity.setLocalImage("/images/song/" + favoriteMusicEntity.getName() + ".jpg");
+                    }
+                    douyinEntity.setPlayMode("local");
+                    douyinEntity.setLocalUrl(picName);
+                    douyinEntity.setId(favoriteMusicEntity.getId());
+                    douyinEntity.setAlbummid(favoriteMusicEntity.getAlbummid());
+                    douyinEntity.setDuration(favoriteMusicEntity.getDuration());
+                    douyinEntity.setImage(favoriteMusicEntity.getImage());
+                    douyinEntity.setMid(favoriteMusicEntity.getMid());
+                    douyinEntity.setSinger(favoriteMusicEntity.getSinger());
+                    douyinEntity.setUrl(favoriteMusicEntity.getUrl());
+                    douyinEntity.setCreateTime(favoriteMusicEntity.getCreateTime());
+                    douyinEntity.setTimer(0);
+                    douyinEntity.setUpdateTime(favoriteMusicEntity.getUpdateTime());
+                    douyinEntity.setKugouUrl(favoriteMusicEntity.getKugouUrl());
+                    douyinEntity.setPlayMode(favoriteMusicEntity.getPlayMode());
+                    douyinEntity.setOtherUrl(favoriteMusicEntity.getOtherUrl());
+                    douyinEntity.setLocalUrl(favoriteMusicEntity.getLocalUrl());
+                    douyinEntity.setDisabled("0");
+                    douyinEntity.setLyric(favoriteMusicEntity.getLyric());
+                    douyinEntity.setLocalImage(favoriteMusicEntity.getLocalImage());
+                    douyinDao.save(douyinEntity);
                 }
             }
-            if (musicEntity != null) {
-                return ResultUtil.success("收藏成功");
-            } else {
-                return ResultUtil.fail("收藏失败");
-            }
         }
+        if (musicEntity != null) {
+            return ResultUtil.success("收藏成功");
+        } else {
+            return ResultUtil.fail("收藏失败");
+        }
+        
 
     }
 
@@ -133,15 +132,14 @@ public class FavoriteMusicService implements IFavoriteMusicService {
      */
     @Override
     public ResultEntity deleteFavorite(FavoriteMusicEntity favoriteMusicEntity,String token) {
-        favoriteMusicDao.deleteAllByMidAndUserId(favoriteMusicEntity.getMid(), favoriteMusicEntity.getUserId());
+        String userId = jwtToken.getUserId(token);
+        favoriteMusicDao.deleteAllByMidAndUserId(favoriteMusicEntity.getMid(), userId);
         return ResultUtil.success("删除成功");
     }
 
     @Override
-    public ResultEntity getFavorite(String userId) {
-        if (StringUtils.isEmpty(userId)) {
-            return ResultUtil.fail(null, "请先登录");
-        }
+    public ResultEntity getFavorite(String token) {
+        String userId = jwtToken.getUserId(token);
         return ResultUtil.success(favoriteMusicDao.findAllByUserId(userId));
     }
 }
