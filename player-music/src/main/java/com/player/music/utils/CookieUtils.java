@@ -34,4 +34,23 @@ public class CookieUtils {
         cookie.setMaxAge(expiry);
         response.addCookie(cookie);
     }
+    
+    **
+     * @author: wuwenqiang
+     * @methodsName: fail
+     * @description: 获取cookie方法
+     * @return: ResultEntity
+     * @date: 2020-07-25 8:26
+     */
+    public static String getCookie(HttpServletResponse request, String name) {
+        Cookie[] cookies =  request.getCookies();
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals(name)){
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null
+    }
 }
