@@ -6,6 +6,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
+import com.player.common.entity.UserEntity;
 
 /**
  * @author zengjintao
@@ -70,5 +71,11 @@ public class JwtToken {
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    public String getUserId(String token){
+        UserEntity userEntity = parserToken(token,UserEntity.class);
+        if(userEntity != null)return userEntity.getUserId();
+        return null;
     }
 }
