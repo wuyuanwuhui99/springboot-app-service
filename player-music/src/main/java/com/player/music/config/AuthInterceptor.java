@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import com.player.music.utils.CookieUtils;
+    
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -21,17 +22,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String[] paths = {"queryFavorite","addFavorite","deleteFavorite","getFavorite"};
-        boolean verification = false;
-        for(int i = 0; i < paths.length; i++){
-            String path = request.getServletPath();
-            if(path.indexOf(paths[i]) != -1){
-                verification = true;
-                break;
-            }
-        }
-        if(verification){
-            String token = request.getHeader("Athorization");
+        String path = request.getServletPath();
+        if(path.indexOf("music-getway") != -1){
+            String token = CookieUtils.getCookie(request,"token")
             if (token == null) {
                 renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
                 return false;
