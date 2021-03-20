@@ -34,6 +34,13 @@ public interface MovieMapper {
 
     /**
      * @author: wuwenqiang
+     * @description: 查询用户数据
+     * @date: 2020-12-24 23:50
+     */
+    UserEntity getMyUserData(String userId);
+
+    /**
+     * @author: wuwenqiang
      * @description: 查询用户访问记录
      * @date: 2020-12-24 23:50
      */

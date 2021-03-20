@@ -1,13 +1,19 @@
 package com.player.music.controller;
 
 import com.player.common.entity.ResultEntity;
-import com.player.music.service.imp.UserService;
+import com.player.common.entity.ResultUtil;
+import com.player.common.utils.JwtToken;
+import com.player.music.Entity.UserEntity;
+import com.player.music.service.IUserService;
 import feign.Param;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -17,20 +23,21 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @ApiOperation("获取用户登录信息")
     @GetMapping("/music/getUserData")
-    public ResultEntity getUserData(HttpServletResponse response, @CookieValue(value = "token", required = false) String token) {
-        return userService.getUserData(response, token);
+    public ResultEntity getUserData(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return userService.getUserData(token);
     }
 
     @ApiOperation("登录")
     @PostMapping("/music/login")
-    public ResultEntity login(HttpServletResponse response, @RequestBody Map userMap) {
-        String userId = (String) userMap.get("userId");
-        String password = (String) userMap.get("password");
-        return userService.login(response, userId, password);
+    public ResultEntity login(HttpServletResponse response, @RequestBody UserEntity userEntity) {
+        String userId =  userEntity.getUserId();
+        String password = userEntity.getPassword();
+        return userService.login(userId, password);
     }
 
     @ApiOperation("退出登录")
@@ -43,5 +50,30 @@ public class UserController {
     @GetMapping("/music/findUser")
     public ResultEntity findUser(@Param("userId") String userId) {
         return userService.findUser(userId);
+    }
+
+    @ApiOperation("更新用户")
+    @PutMapping("/music-getway/findUser")
+    public ResultEntity updateUser(@RequestBody UserEntity userEntity) {
+        return userService.updateUser(userEntity);
+    }
+
+    @ApiOperation("修改密码")
+    @PutMapping("/music-getway/updatePassword")
+    public ResultEntity updatePassword(
+            HttpServletRequest request,
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("oldPassword") String oldPassword
+    ) {
+        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        return userService.updatePassword(userId,newPassword,oldPassword);
+    }
+
+    @ApiOperation("修改密码")
+    @PostMapping("/music-getway/upload")
+    public ResultEntity upload(HttpServletRequest request, @RequestParam("img") MultipartFile file) {
+        String token = request.getHeader("Authorization");
+        String userId = JwtToken.getUserId(token);
+        return userService.upload(userId,token,file);
     }
 }

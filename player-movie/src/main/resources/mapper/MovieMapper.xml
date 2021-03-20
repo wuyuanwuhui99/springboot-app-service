@@ -76,6 +76,10 @@
         SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE role ='public'  order by rand() LIMIT 1
     </select>
 
+    <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">
+        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE user_id = #{userId}
+    </select>
+
     <select id="getUserMsg"  resultType="Map">
         SELECT CAST(u.userAge as char) AS userAge,CAST(r.recordCount AS char) AS recordCount,CAST(p.playCount AS char) AS playCount,CAST(f.favoriteCount AS char) AS favoriteCount FROM (
             (SELECT TIMESTAMPDIFF(DAY,a.create_date,now()) as userAge from user a where user_id=#{userId}) u,

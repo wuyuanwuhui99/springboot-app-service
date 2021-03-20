@@ -120,6 +120,8 @@ public class MovieService implements IMovieService {
             userEntity = JwtToken.parserToken(token, UserEntity.class);
             if (userEntity == null) {//如果用户签名为空，随机从数据库中查询一个公共的账号
                 userEntity = movieMapper.getUserData();
+            }else{
+                userEntity = movieMapper.getMyUserData(userEntity.getUserId());
             }
         }
         String newToken = JwtToken.createToken(userEntity);

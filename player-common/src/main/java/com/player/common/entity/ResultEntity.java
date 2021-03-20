@@ -37,7 +37,7 @@ public class ResultEntity implements Serializable {
         this.status = status;
     }
 
-    public String getMsg() {
+    public String getMsg(String msg) {
         return msg;
     }
 
