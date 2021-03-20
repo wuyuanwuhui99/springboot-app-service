@@ -6,30 +6,25 @@ import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import com.player.music.utils.CookieUtils;
-    
-public class AuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private JwtToken jwtToken;
+public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String path = request.getServletPath();
         if(path.indexOf("music-getway") != -1){
-            String token = CookieUtils.getCookie(request,"token");
+            String token = request.getHeader("Authorization");
             if (token == null) {
                 renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
                 return false;
             }
-            UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+            UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
             if (userEntity == null) {
                 response.setContentType("application/json;charset=UTF-8");
                 //设置编码格式

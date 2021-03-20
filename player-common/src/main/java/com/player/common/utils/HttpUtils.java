@@ -8,7 +8,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -47,6 +46,53 @@ public class HttpUtils {
 //        httpGet.addHeader("content-type" ,"application/json;charset=utf-8");
         httpGet.addHeader("Referer", "https://c.y.qq.com/");
         httpGet.addHeader("Host", "c.y.qq.com");
+        CloseableHttpResponse response = null;
+
+        try {
+            response = httpClient.execute(httpGet);
+            //解析响应，返回结果
+            if (response.getStatusLine().getStatusCode() == 200) {
+                //判断响应体Entity是否不为空，如果不为空就可以使用EntityUtils
+                if (response.getEntity() != null) {
+                    String content = EntityUtils.toString(response.getEntity(), "utf8");
+                    return content;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //关闭response
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //返回空串
+        return "";
+    }
+
+    /**
+     * 根据请求地址下载页面数据
+     *
+     * @param url
+     * @return 页面数据
+     */
+    public static String doGet(String url,String host) {
+        //获取HttpClient对象
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(getCm()).build();
+
+        //创建httpGet请求对象，设置url地址
+        HttpGet httpGet = new HttpGet(url);
+
+        //设置请求信息
+        httpGet.setConfig(getConfig());
+        httpGet.addHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36");
+//        httpGet.addHeader("content-type" ,"application/json;charset=utf-8");
+        httpGet.addHeader("Referer", "https://"+host+"/");
+        httpGet.addHeader("Host", host);
         CloseableHttpResponse response = null;
 
         try {
@@ -157,5 +203,10 @@ public class HttpUtils {
         }else{
             return requestURI;
         }
+    }
+
+    public static String getRandom(){
+        String random = Math.random()+"";
+        return random.substring(2,random.length());
     }
 }

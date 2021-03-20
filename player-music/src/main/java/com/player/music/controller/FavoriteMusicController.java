@@ -1,6 +1,7 @@
 package com.player.music.controller;
 
 import com.player.common.entity.ResultEntity;
+import com.player.common.utils.JwtToken;
 import com.player.music.Entity.FavoriteMusicEntity;
 import com.player.music.service.IFavoriteMusicService;
 import feign.Param;
@@ -8,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/service")
@@ -27,8 +30,9 @@ public class FavoriteMusicController {
      */
     @ApiOperation("根据用户命名和mid查询收藏的歌曲 ")
     @GetMapping("/music-getway/queryFavorite")
-    public ResultEntity queryFavorite(@CookieValue(value = "token", required = true) String token, @Param("mid") String mid) {
-        return favoriteMusicService.queryFavorite(token, mid);
+    public ResultEntity queryFavorite(HttpServletRequest request, @Param("mid") String mid) {
+        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        return favoriteMusicService.queryFavorite(userId, mid);
     }
 
     /**
@@ -41,8 +45,9 @@ public class FavoriteMusicController {
      */
     @ApiOperation("添加收藏,如果是管理员账户，添加到抖音歌曲表")
     @PostMapping("/music-getway/addFavorite")
-    public ResultEntity addFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity, @CookieValue(value = "token", required = true) String token) {
-        return favoriteMusicService.addFavorite(favoriteMusicEntity, token);
+    public ResultEntity addFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity,HttpServletRequest request) {
+        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        return favoriteMusicService.addFavorite(favoriteMusicEntity, userId);
     }
 
     /**
@@ -55,8 +60,9 @@ public class FavoriteMusicController {
      */
     @ApiOperation("取消收藏")
     @DeleteMapping("/music-getway/deleteFavorite")
-    public ResultEntity deleteFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity, @CookieValue(value = "token", required = true) String token) {
-        return favoriteMusicService.deleteFavorite(favoriteMusicEntity,token);
+    public ResultEntity deleteFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity,HttpServletRequest request) {
+        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        return favoriteMusicService.deleteFavorite(favoriteMusicEntity,userId);
     }
 
     /**
@@ -69,7 +75,8 @@ public class FavoriteMusicController {
      */
     @ApiOperation("根据用户id查询该用户收藏的列表")
     @GetMapping("/music-getway/getFavorite")
-    public ResultEntity getFavorite(@CookieValue(value = "token", required = true) String token) {
-        return favoriteMusicService.getFavorite(token);
+    public ResultEntity getFavorite(HttpServletRequest request) {
+        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        return favoriteMusicService.getFavorite(userId);
     }
 }

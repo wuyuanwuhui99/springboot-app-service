@@ -4,12 +4,10 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.entity.UserEntity;
 import com.player.movie.PlayerMovieApplication;
-import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,12 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TokenTest {
     @Autowired
     private IMovieService movieService;
-
-    @Value("${token.secret}")
-    private String secret;
-
-    @Value("${token.expiration-time}")
-    private Long expirationTime;
 
     private JwtToken jwtToken = new JwtToken();
 
@@ -37,7 +29,7 @@ public class TokenTest {
 
     @Test
     public void parseToken() {
-        String token = " eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDk0Nzc4MTUsInN1YiI6IntcImF2YXRlclwiOlwiL2ltYWdlcy9hdmF0ZXIvdXNlci_liJ3mmZPlvq7oipIuanBnXCIsXCJiaXJ0aGRheVwiOlwiMTk5MC0xMC04XCIsXCJjcmVhdGVEYXRlXCI6XCIyMDIwLTAxLTExIDE4OjQ3OjAxLjBcIixcImVtYWlsXCI6XCIyNzUwMTg3MjNAcXEuY29tXCIsXCJyb2xlXCI6XCJwdWJsaWNcIixcInNleFwiOlwi5aWzXCIsXCJ0ZWxlcGhvbmVcIjpcIjE1MzAyNjg2OTQ3XCIsXCJ1cGRhdGVEYXRlXCI6XCIyMDIwLTAxLTExIDE4OjQ3OjAzLjBcIixcInVzZXJJZFwiOlwi5Yid5pmT5b6u6IqSXCIsXCJ1c2VybmFtZVwiOlwi5Yid5pmT5b6u6IqSXCJ9IiwiZXhwIjoxNjA5NTY0MjE1fQ.-Jw-5cdMUARbOoigQbcx9710rti6z83GF24jeVuHJRI";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTYyMDM4NzEsInN1YiI6IntcImF2YXRlclwiOlwiL3N0YXRpYy91c2VyL2F2YXRlci_lkLTlsL3lkLTnqbcuanBnXCIsXCJiaXJ0aGRheVwiOlwiMTk5MC0xMC04XCIsXCJjcmVhdGVEYXRlXCI6MTU2NjE0NzU2ODAwMCxcImVtYWlsXCI6XCIyNzUwMTg3MjNAcXEuY29tXCIsXCJyb2xlXCI6XCJwdWJsaWNcIixcInNleFwiOlwi55S3XCIsXCJ0ZWxlcGhvbmVcIjpcIjE1MzAyNjg2OTQ3XCIsXCJ1cGRhdGVEYXRlXCI6MTU2NjE0NzU3MjAwMCxcInVzZXJJZFwiOlwi5ZC05bC95ZC056m3XCIsXCJ1c2VybmFtZVwiOlwi5ZC05bC95ZC056m3XCJ9IiwiZXhwIjoxNjE4Nzk1ODcxfQ.FB9Ru3j1Y2_VUUy-eVn1e9DGbj1bZhZxnRfWI3QhVl4";
         UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
         System.out.println(userEntity.toString());
     }

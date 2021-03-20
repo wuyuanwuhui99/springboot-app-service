@@ -6,8 +6,6 @@ import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +15,6 @@ import java.io.PrintWriter;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private JwtToken jwtToken;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -27,7 +23,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
             return false;
         }
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if (userEntity == null) {
             response.setContentType("application/json;charset=UTF-8");
             //设置编码格式

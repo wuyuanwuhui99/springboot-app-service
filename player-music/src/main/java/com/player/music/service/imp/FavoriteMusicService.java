@@ -30,8 +30,7 @@ public class FavoriteMusicService implements IFavoriteMusicService {
     @Autowired
     private UserDao userDao;
     
-    @Autowired
-    private JwtToken jwtToken;
+    private JwtToken jwtToken = new JwtToken();
 
     /**
      * @param : mid歌曲mid
@@ -43,8 +42,7 @@ public class FavoriteMusicService implements IFavoriteMusicService {
      * @date: 2020-07-25 8:26
      */
     @Override
-    public ResultEntity queryFavorite(String token, String mid) {
-        String userId = jwtToken.getUserId(token);
+    public ResultEntity queryFavorite(String userId, String mid) {
         List<FavoriteMusicEntity> favoriteMusicEntities = favoriteMusicDao.findAllByUserIdAndMid(userId, mid);
         return ResultUtil.success(favoriteMusicEntities);
     }
@@ -60,8 +58,7 @@ public class FavoriteMusicService implements IFavoriteMusicService {
      */
     @Transactional
     @Override
-    public ResultEntity addFavorite(FavoriteMusicEntity favoriteMusicEntity, String token) {
-        String userId = jwtToken.getUserId(token);
+    public ResultEntity addFavorite(FavoriteMusicEntity favoriteMusicEntity, String userId) {
         List<FavoriteMusicEntity> favoriteMusicEntities = favoriteMusicDao.findAllByUserIdAndMid(userId, favoriteMusicEntity.getMid());
         if (favoriteMusicEntities.size() != 0) {
             return ResultUtil.fail("已经收藏过，请勿重复收藏");
@@ -132,15 +129,13 @@ public class FavoriteMusicService implements IFavoriteMusicService {
      * @date: 2020-07-30 23:58
      */
     @Override
-    public ResultEntity deleteFavorite(FavoriteMusicEntity favoriteMusicEntity,String token) {
-        String userId = jwtToken.getUserId(token);
+    public ResultEntity deleteFavorite(FavoriteMusicEntity favoriteMusicEntity,String userId) {
         favoriteMusicDao.deleteAllByMidAndUserId(favoriteMusicEntity.getMid(), userId);
         return ResultUtil.success("删除成功");
     }
 
     @Override
-    public ResultEntity getFavorite(String token) {
-        String userId = jwtToken.getUserId(token);
+    public ResultEntity getFavorite(String userId) {
         return ResultUtil.success(favoriteMusicDao.findAllByUserId(userId));
     }
 }

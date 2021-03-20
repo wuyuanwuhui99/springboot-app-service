@@ -23,7 +23,7 @@ public class QQMusicController {
     }
 
     @ApiOperation("根据歌曲mid查询歌词")
-    @GetMapping("/music/lyric")
+    @GetMapping("/music/getLyric")
     public ResultEntity getLyric(@Param("songmid") String songmid) {
         return qqMusicService.getLyric(songmid);
     }
@@ -89,7 +89,7 @@ public class QQMusicController {
 
     @ApiOperation("获取歌曲的key")
     @GetMapping("/music/getSingleSong")
-    public ResultEntity getSingleSong(@Param("mid") String mid) {
-        return qqMusicService.getSingleSong(mid);
+    public ResultEntity getSingleSong(@Param("songmid") String songmid) {
+        return qqMusicService.getSingleSong(songmid);
     }
 }

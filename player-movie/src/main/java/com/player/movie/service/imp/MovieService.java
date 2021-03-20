@@ -21,10 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class MovieService implements IMovieService {
-
-    @Autowired
-    private JwtToken jwtToken;
-
+    
     @Autowired
     private MovieMapper movieMapper;
 
@@ -76,7 +73,7 @@ public class MovieService implements IMovieService {
     public ResultEntity login(String userId, String passsword) {
         UserEntity userEntity = movieMapper.login(userId, passsword);
         if (userEntity != null) {
-            String token = jwtToken.createToken(userEntity);//token有效期一天
+            String token = JwtToken.createToken(userEntity);//token有效期一天
             return ResultUtil.success(movieMapper.login(userId, passsword), "登录成功", token);
         } else {
             return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.LOGOUT);
@@ -120,12 +117,12 @@ public class MovieService implements IMovieService {
         if (token == null || StringUtils.isEmpty(token)) {
             userEntity = movieMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
         } else {
-            userEntity = jwtToken.parserToken(token, UserEntity.class);
+            userEntity = JwtToken.parserToken(token, UserEntity.class);
             if (userEntity == null) {//如果用户签名为空，随机从数据库中查询一个公共的账号
                 userEntity = movieMapper.getUserData();
             }
         }
-        String newToken = jwtToken.createToken(userEntity);
+        String newToken = JwtToken.createToken(userEntity);
         return ResultUtil.success(userEntity, null, newToken);
     }
 
@@ -136,7 +133,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserMsg(String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(movieMapper.getUserMsg(userEntity.getUserId()));
     }
 
@@ -258,7 +255,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getViewRecord(String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -274,7 +271,7 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity saveViewRecord(MovieEntity movieEntity,String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -293,7 +290,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getPlayRecord(String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -309,7 +306,7 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity savePlayRecord(MovieEntity movieEntity,String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -328,7 +325,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getFavoriteList(String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -342,7 +339,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity saveFavorite(MovieEntity movieEntity, String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -360,7 +357,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity deleteFavorite(String movieId,String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }
@@ -369,7 +366,7 @@ public class MovieService implements IMovieService {
 
     @Override
     public ResultEntity isFavorite(String movieId,String token) {
-        UserEntity userEntity = jwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if(userEntity == null){
             return ResultUtil.fail(null,"用户错误");
         }

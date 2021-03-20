@@ -7,6 +7,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 import com.player.common.entity.UserEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zengjintao
@@ -15,23 +17,19 @@ import com.player.common.entity.UserEntity;
  */
 public class JwtToken {
 
-    private String secret;
+    private static String secret = "wuwenqiang";
 
-    private Long expirationTime;
+    private static Long expirationTime = 2592000000L;
 
-    public JwtToken(String secret,Long expirationTime){
-        this.secret = secret;
-        this.expirationTime = expirationTime;
-    }
 
     /**
      * 生成jwt token
      * @param value
      * @return
      */
-    public String createToken(Object value) {
+    public static String createToken(Object value) {
         // 生成SecretKey 对象
-        SecretKey secretKey = this.createSecretKey();
+        SecretKey secretKey = createSecretKey();
         String jsonValue = JSONObject.toJSONString(value);
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
@@ -45,7 +43,7 @@ public class JwtToken {
         return jwtBuilder.compact();
     }
 
-    private SecretKey createSecretKey() {
+    private static SecretKey createSecretKey() {
         byte[] bytes = DatatypeConverter.parseBase64Binary(secret);
         return new SecretKeySpec(bytes, 0, bytes.length, "AES");
     }
@@ -58,8 +56,8 @@ public class JwtToken {
      * @param <T>
      * @return
      */
-    public <T> T parserToken(String token, Class<T> clazz) {
-        SecretKey secretKey = this.createSecretKey();
+    public static <T> T parserToken(String token, Class<T> clazz) {
+        SecretKey secretKey = createSecretKey();
         try {
             Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
             String subject = claims.getSubject();
@@ -73,7 +71,7 @@ public class JwtToken {
         }
     }
     
-    public String getUserId(String token){
+    public static String getUserId(String token){
         UserEntity userEntity = parserToken(token,UserEntity.class);
         if(userEntity != null)return userEntity.getUserId();
         return null;

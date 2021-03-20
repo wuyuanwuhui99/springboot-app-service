@@ -5,6 +5,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,12 @@ public class RedisUitls {
         Integer code = (Integer) resultMap.get("code");
         ResultEntity resultEntity;
         if( code == 0){
-            resultEntity = ResultUtil.success(resultMap.get("data"));
+            Object data = resultMap.get("data");
+            if(ObjectUtils.isEmpty(data)){
+                resultEntity = ResultUtil.success(resultMap);
+            }else{
+                resultEntity = ResultUtil.success(data);
+            }
         }else{
             resultEntity = ResultUtil.fail(null, errorMsg);
         }

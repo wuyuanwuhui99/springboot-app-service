@@ -40,8 +40,7 @@ public class LogAspect {
     @Value("${app.appName}")
     private String appName;
 
-    @Autowired
-    private JwtToken jwtToken;
+    private JwtToken jwtToken = new JwtToken();
 
     //定义切点 @Pointcut
     //在注解的位置切入代码

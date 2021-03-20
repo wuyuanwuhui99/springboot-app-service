@@ -41,8 +41,7 @@ public class LogAspect {
     @Value("${app.appName}")
     private String appName;
 
-    @Autowired
-    private JwtToken jwtToken;
+    private JwtToken jwtToken = new JwtToken();
 
     private static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
