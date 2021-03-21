@@ -44,7 +44,7 @@ public class FavoriteMusicService implements IFavoriteMusicService {
     @Override
     public ResultEntity queryFavorite(String userId, String mid) {
         List<FavoriteMusicEntity> favoriteMusicEntities = favoriteMusicDao.findAllByUserIdAndMid(userId, mid);
-        return ResultUtil.success(favoriteMusicEntities);
+        return ResultUtil.success(favoriteMusicEntities.size());
     }
 
     /**

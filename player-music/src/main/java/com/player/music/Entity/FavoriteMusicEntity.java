@@ -13,8 +13,8 @@ public class FavoriteMusicEntity {
     @ApiModelProperty(value = "主键")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "favorite_music_id")
-    private Long favoriteMusicId;
+    @Column(name = "t_id")
+    private Long tId;
 
     @Column(name = "id")
     private Long id;
