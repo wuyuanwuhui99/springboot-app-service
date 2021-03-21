@@ -29,8 +29,6 @@ public class FavoriteMusicService implements IFavoriteMusicService {
 
     @Autowired
     private UserDao userDao;
-    
-    private JwtToken jwtToken = new JwtToken();
 
     /**
      * @param : mid歌曲mid
