@@ -89,11 +89,11 @@
     </select>
 
     <select id="getAllCategoryByClassify" resultType="Map">
-        SELECT category,classify FROM category WHERE category != '轮播' AND classify = #{classify} ORDER BY last_update ASC
+        SELECT category,classify FROM movie_category WHERE category != '轮播' AND classify = #{classify} ORDER BY update_time ASC
     </select>
 
     <select id="getAllCategoryListByPageName" resultType="Map">
-        SELECT category,classify FROM category WHERE page_name = #{pageName} AND category != '轮播' AND status = '1' order by last_update asc
+        SELECT category,classify FROM movie_category WHERE page_name = #{pageName} AND category != '轮播' AND status = '1' order by update_time asc
     </select>
 
     <select id="getCategoryList" resultType="MovieEntity">
