@@ -18,7 +18,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("Athorization");
+        String token = request.getHeader("Authorization");
         if (token == null) {
             renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
             return false;

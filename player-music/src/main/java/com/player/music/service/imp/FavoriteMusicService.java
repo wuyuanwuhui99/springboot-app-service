@@ -12,6 +12,7 @@ import com.player.music.dao.FavoriteMusicDao;
 import com.player.music.dao.UserDao;
 import com.player.music.service.IFavoriteMusicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -29,6 +30,9 @@ public class FavoriteMusicService implements IFavoriteMusicService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * @param : mid歌曲mid
@@ -106,6 +110,7 @@ public class FavoriteMusicService implements IFavoriteMusicService {
                     douyinEntity.setLyric(favoriteMusicEntity.getLyric());
                     douyinEntity.setLocalImage(favoriteMusicEntity.getLocalImage());
                     douyinDao.save(douyinEntity);
+                    redisTemplate.delete("/server/music/getDouyinList");//清除redis缓存
                 }
             }
         }
