@@ -18,20 +18,24 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("Authorization");
-        if (token == null) {
-            renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
-            return false;
-        }
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if (userEntity == null) {
-            response.setContentType("application/json;charset=UTF-8");
-            //设置编码格式
-            response.setCharacterEncoding("UTF-8");
-            response.setStatus(401);
-            response.getWriter().write("未通过登录认证，请在登录页面登录");
-            renderJson(response, ResultUtil.fail("未通过登录认证", ResultCode.LOGOUT));
-            return false;
+        String path = request.getServletPath();
+        if(path.indexOf("music-getway") != -1){
+            String token = request.getHeader("Authorization");
+            if (token == null) {
+                renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
+                return false;
+            }
+            UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+            if (userEntity == null) {
+                response.setContentType("application/json;charset=UTF-8");
+                //设置编码格式
+                response.setCharacterEncoding("UTF-8");
+                response.setStatus(401);
+                response.getWriter().write("未通过登录认证，请在登录页面登录");
+                renderJson(response, ResultUtil.fail("未通过登录认证", ResultCode.LOGOUT));
+                return false;
+            }
+            return true;
         }
         return true;
     }

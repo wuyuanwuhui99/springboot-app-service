@@ -36,7 +36,7 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity findClassify(String path) {
         String result = (String) redisTemplate.opsForValue().get(path);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -55,7 +55,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getKeyWord(String classify,String path) {
         String url = path + "?classify=" + classify;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -149,7 +149,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getAllCategoryByClassify(String classsify,String path) {
         String url = path + "?classsify=" + classsify;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -168,7 +168,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getAllCategoryListByPageName(String pageName,String path) {
         String url = path + "?pageName=" + pageName;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -187,7 +187,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getCategoryList(String classify, String category,String path) {
         String url = path + "?classify=" + classify + "&category=" + category;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -206,7 +206,7 @@ public class MovieService implements IMovieService {
     public ResultEntity search(String keyword, int pageNum, int pageSize,String path) {
         String url = path + "?keyword=" + keyword + "&pageNum=" + pageNum + "&pageSize=" + pageSize;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -228,7 +228,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getStar(String movieId,String path) {
         String url = path + "?movieId=" + movieId;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -247,7 +247,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getMovieUrl(String movieId,String path) {
         String url = path + "?movieId=" + movieId;
         String result = (String) redisTemplate.opsForValue().get(url);
-        if(StringUtils.isEmpty(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{

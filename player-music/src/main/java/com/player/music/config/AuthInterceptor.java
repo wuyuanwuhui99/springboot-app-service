@@ -35,9 +35,8 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return false;
             }
             return true;
-        }else {
-            return true;
         }
+        return true;
     }
 
     protected void renderJson(HttpServletResponse response, ResultEntity resultEntity) {
