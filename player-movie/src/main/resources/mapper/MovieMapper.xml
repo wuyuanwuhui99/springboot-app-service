@@ -136,7 +136,7 @@
     </select>
 
     <select id="getViewRecord" resultType="MovieEntity">
-       SELECT * FROM movie_view_record WHERE user_id = #{userId}
+       SELECT * FROM  (select * from movie_view_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.name ORDER BY create_time DESC
     </select>
 
     <insert id="saveViewRecord" parameterType="MovieEntity">
@@ -145,7 +145,7 @@
     </insert>
 
     <select id="getPlayRecord" resultType="MovieEntity">
-        SELECT * FROM movie_play_record WHERE user_id = #{userId}
+        SELECT * FROM  (select * from movie_play_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.name ORDER BY create_time DESC
     </select>
 
     <insert id="savePlayRecord" parameterType="MovieEntity">
