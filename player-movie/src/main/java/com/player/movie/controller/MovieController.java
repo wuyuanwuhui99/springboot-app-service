@@ -206,10 +206,17 @@ public class MovieController {
         return movieService.isFavorite(movieId,token);
     }
 
-    @OperLog(message = "获取推荐相关的电影", operation = OperationType.QUERY)
-    @ApiOperation("获取推荐相关的电影,请求地地址：/service/movie/getRecommend")
+    @OperLog(message = "获取猜你想看的电影", operation = OperationType.QUERY)
+    @ApiOperation("获取猜你想看的电影,请求地地址：/service/movie/getYourLikes")
+    @GetMapping("/movie/getYourLikes")
+    public ResultEntity getYourLikes(@RequestParam("labels") String labels,HttpServletRequest request) {
+        return movieService.getYourLikes(labels,HttpUtils.getPath(request));
+    }
+
+    @OperLog(message = "获取推荐的电影", operation = OperationType.QUERY)
+    @ApiOperation("获取推荐的电影,请求地地址：/service/movie/getRecommend")
     @GetMapping("/movie/getRecommend")
-    public ResultEntity getRecommend(@RequestParam("labels") String labels,HttpServletRequest request) {
-        return movieService.getRecommend(labels,HttpUtils.getPath(request));
+    public ResultEntity getRecommend(@RequestParam("classify") String classify, HttpServletRequest request) {
+        return movieService.getRecommend(classify, HttpUtils.getPath(request));
     }
 }

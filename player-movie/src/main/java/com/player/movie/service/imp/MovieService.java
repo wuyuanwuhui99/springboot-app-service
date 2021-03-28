@@ -359,7 +359,7 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public ResultEntity getRecommend(String labels,String path) {
+    public ResultEntity getYourLikes(String labels,String path) {
         String url = path + "?labels=" + labels;
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
@@ -368,7 +368,21 @@ public class MovieService implements IMovieService {
         }else{
             labels = labels.replaceAll("^/|/$","");
             String[] myLabels = labels.split("/");
-            ResultEntity resultEntity = ResultUtil.success(movieMapper.getRecommend(myLabels));
+            ResultEntity resultEntity = ResultUtil.success(movieMapper.getYourLikes(myLabels));
+            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
+
+    @Override
+    public ResultEntity getRecommend(String classify,String path) {
+        String url = path + "?classify=" + classify;
+        String result = (String) redisTemplate.opsForValue().get(url);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity = JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            ResultEntity resultEntity = ResultUtil.success(movieMapper.getRecommend(classify));
             redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }

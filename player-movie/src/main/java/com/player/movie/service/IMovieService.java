@@ -48,5 +48,7 @@ public interface IMovieService {
 
     ResultEntity isFavorite(String movieId, String token);
 
-    ResultEntity getRecommend(String labels,String path);
+    ResultEntity getYourLikes(String labels,String path);
+
+    ResultEntity getRecommend(String classify,String path);
 }

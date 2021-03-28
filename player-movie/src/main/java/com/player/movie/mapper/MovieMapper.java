@@ -100,5 +100,7 @@ public interface MovieMapper {
 
     Long isFavorite(String movieId, String userId);
 
-    List<MovieEntity> getRecommend(@Param("labels") String[] labels);
+    List<MovieEntity> getYourLikes(@Param("labels") String[] labels);
+
+    List<MovieEntity> getRecommend(String classify);
 }
