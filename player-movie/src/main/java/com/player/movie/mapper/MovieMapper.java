@@ -6,6 +6,7 @@ import com.player.movie.entity.MovieEntity;
 import com.player.movie.entity.MovieStarEntity;
 import com.player.movie.entity.MovieUrlEntity;
 import com.player.common.entity.UserEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -98,4 +99,6 @@ public interface MovieMapper {
     Long deleteFavorite(String movieId,String userId);
 
     Long isFavorite(String movieId, String userId);
+
+    List<MovieEntity> getRecommend(@Param("labels") String[] labels);
 }

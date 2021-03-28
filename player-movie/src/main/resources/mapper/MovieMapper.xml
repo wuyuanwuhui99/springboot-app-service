@@ -169,5 +169,13 @@
     <select id="isFavorite" resultType="Long">
         SELECT COUNT(*) as total FROM movie_favorite WHERE user_id=#{userId} AND movie_id = #{movieId}
     </select>
+
+    <select id="getRecommend" resultType="MovieEntity">
+        SELECT * FROM movie WHERE
+        <foreach collection="labels" item="item" index="index" open="(" separator="or" close=")">
+            label LIKE CONCAT('%',#{item},'%')
+        </foreach>
+        ORDER BY create_time DESC LIMIT 0,10
+    </select>
 </mapper>
 

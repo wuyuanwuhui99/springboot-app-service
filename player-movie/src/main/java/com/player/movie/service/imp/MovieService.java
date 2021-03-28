@@ -265,9 +265,6 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getViewRecord(String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         ResultEntity resultEntity = ResultUtil.success(movieMapper.getViewRecord(userEntity.getUserId()));
         return resultEntity;
     }
@@ -281,9 +278,6 @@ public class MovieService implements IMovieService {
     @Transactional
     public ResultEntity saveViewRecord(MovieEntity movieEntity,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         Date date = new Date();
         movieEntity.setCreateTime(date);
         movieEntity.setUpdateTime(date);
@@ -300,9 +294,6 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getPlayRecord(String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         ResultEntity resultEntity = ResultUtil.success(movieMapper.getPlayRecord(userEntity.getUserId()));
         return resultEntity;
     }
@@ -316,9 +307,6 @@ public class MovieService implements IMovieService {
     @Transactional
     public ResultEntity savePlayRecord(MovieEntity movieEntity,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         Date date = new Date();
         movieEntity.setCreateTime(date);
         movieEntity.setUpdateTime(date);
@@ -335,9 +323,6 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getFavoriteList(String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         return ResultUtil.success(movieMapper.getFavoriteList(userEntity.getUserId()));
     }
 
@@ -349,9 +334,6 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity saveFavorite(MovieEntity movieEntity, String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         Date date = new Date();
         movieEntity.setCreateTime(date);
         movieEntity.setUpdateTime(date);
@@ -367,18 +349,28 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity deleteFavorite(String movieId,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         return ResultUtil.success(movieMapper.deleteFavorite(movieId,userEntity.getUserId()));
     }
 
     @Override
     public ResultEntity isFavorite(String movieId,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if(userEntity == null){
-            return ResultUtil.fail(null,"用户错误");
-        }
         return ResultUtil.success(movieMapper.isFavorite(movieId,userEntity.getUserId()));
+    }
+
+    @Override
+    public ResultEntity getRecommend(String labels,String path) {
+        String url = path + "?labels=" + labels;
+        String result = (String) redisTemplate.opsForValue().get(url);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            labels = labels.replaceAll("^/|/$","");
+            String[] myLabels = labels.split("/");
+            ResultEntity resultEntity = ResultUtil.success(movieMapper.getRecommend(myLabels));
+            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
     }
 }

@@ -205,4 +205,11 @@ public class MovieController {
         String token = request.getHeader("Authorization");
         return movieService.isFavorite(movieId,token);
     }
+
+    @OperLog(message = "获取推荐相关的电影", operation = OperationType.QUERY)
+    @ApiOperation("获取推荐相关的电影,请求地地址：/service/movie/getRecommend")
+    @GetMapping("/movie/getRecommend")
+    public ResultEntity getRecommend(@RequestParam("labels") String labels,HttpServletRequest request) {
+        return movieService.getRecommend(labels,HttpUtils.getPath(request));
+    }
 }

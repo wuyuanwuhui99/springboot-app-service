@@ -47,4 +47,6 @@ public interface IMovieService {
     ResultEntity deleteFavorite(String movieId,String token);
 
     ResultEntity isFavorite(String movieId, String token);
+
+    ResultEntity getRecommend(String labels,String path);
 }
