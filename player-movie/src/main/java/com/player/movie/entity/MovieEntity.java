@@ -36,7 +36,7 @@ public class MovieEntity {
     private Date updateTime;//更新时间
 
     @ApiModelProperty(value = "电影名称")
-    private String name;//电影名称
+    private String movieName;//电影名称
 
     @ApiModelProperty(value = "是否推荐，0:不推荐，1:推荐")
     private String isRecommend;//是否推荐，0:不推荐，1:推荐
@@ -169,12 +169,12 @@ public class MovieEntity {
         this.updateTime = updateTime;
     }
 
-    public String getName() {
-        return name;
+    public String getMovieName() {
+        return movieName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
     }
 
     public String getIsRecommend() {
@@ -326,7 +326,7 @@ public class MovieEntity {
                 ", releaseTime='" + releaseTime + '\'' +
                 ", plot='" + plot + '\'' +
                 ", updateTime=" + updateTime +
-                ", name='" + name + '\'' +
+                ", movieName='" + movieName + '\'' +
                 ", isRecommend='" + isRecommend + '\'' +
                 ", img='" + img + '\'' +
                 ", classify='" + classify + '\'' +

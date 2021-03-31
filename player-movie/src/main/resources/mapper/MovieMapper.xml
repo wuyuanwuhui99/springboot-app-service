@@ -13,7 +13,7 @@
             release_time,
             plot,
             update_time,
-            `name`,
+            movie_name,
             is_recommend,
             img,classify,
             source_name,
@@ -40,7 +40,7 @@
             #{releaseTime},
             #{plot},
             #{updateTime},
-            #{name},
+            #{movieName},
             #{isRecommend},
             #{img},
             #{classify},
@@ -61,7 +61,7 @@
     </sql>
 
     <sql id="search">
-        WHERE name like CONCAT('%',#{keyword},'%') OR star like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%')  OR type like CONCAT('%',#{keyword},'%') ORDER BY update_time DESC
+        WHERE movie_name like CONCAT('%',#{keyword},'%') OR star like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%')  OR type like CONCAT('%',#{keyword},'%') ORDER BY update_time DESC
     </sql>
 
     <select id="findClassify"  resultType="Map">
@@ -69,7 +69,7 @@
     </select>
 
     <select id="getKeyWord"  resultType="Map">
-        SELECT name,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify}
+        SELECT movie_name,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify}
     </select>
 
     <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
@@ -136,7 +136,7 @@
     </select>
 
     <select id="getViewRecord" resultType="MovieEntity">
-       SELECT * FROM  (select * from movie_view_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.name ORDER BY create_time DESC
+       SELECT * FROM  (select * from movie_view_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.movie_name ORDER BY create_time DESC
     </select>
 
     <insert id="saveViewRecord" parameterType="MovieEntity">
@@ -145,7 +145,7 @@
     </insert>
 
     <select id="getPlayRecord" resultType="MovieEntity">
-        SELECT * FROM  (select * from movie_play_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.name ORDER BY create_time DESC
+        SELECT * FROM  (select * from movie_play_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.movie_name ORDER BY create_time DESC
     </select>
 
     <insert id="savePlayRecord" parameterType="MovieEntity">
