@@ -81,11 +81,11 @@
     </select>
 
     <select id="getUserMsg"  resultType="Map">
-        SELECT CAST(u.userAge as char) AS userAge,CAST(r.recordCount AS char) AS recordCount,CAST(p.playCount AS char) AS playCount,CAST(f.favoriteCount AS char) AS favoriteCount FROM (
-            (SELECT TIMESTAMPDIFF(DAY,a.create_date,now()) as userAge from user a where user_id=#{userId}) u,
-            (SELECT count(*) as recordCount FROM record_movie WHERE user_id = #{userId} )r,
-            (SELECT count(*) as playCount FROM record_movie WHERE user_id = #{userId} AND is_play = 'Y') p,
-            (SELECT count(*) as favoriteCount FROM favorite_movie WHERE user_id =#{userId} ) f)
+        SELECT CAST(u.userAge as char) AS userAge,CAST(r.viewRecordCount AS char) AS viewRecordCount,CAST(p.playRecordCount AS char) AS playRecordCount,CAST(f.favoriteCount AS char) AS favoriteCount FROM (
+            (SELECT TIMESTAMPDIFF(DAY,a.create_date,now()) as userAge from user a where user_id= #{userId}) u,
+            (SELECT count(*) as viewRecordCount FROM movie_view_record WHERE user_id = #{userId} )r,
+            (SELECT count(*) as playRecordCount FROM movie_play_record WHERE user_id = #{userId}) p,
+            (SELECT count(*) as favoriteCount FROM movie_favorite WHERE user_id = #{userId} ) f)
     </select>
 
     <select id="getAllCategoryByClassify" resultType="Map">

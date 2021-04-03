@@ -58,7 +58,7 @@ public class MovieController {
 
     @OperLog(message = "查询当前用户的使用天数，关注数，观看记录数，浏览记录数", operation = OperationType.QUERY)
     @ApiOperation("查询当前用户的使用天数，关注数，观看记录数，浏览记录数")
-    @GetMapping("/movie/getUserMsg")
+    @GetMapping("/movie-getway/getUserMsg")
     public ResultEntity getUserMsg(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return movieService.getUserMsg(token);
