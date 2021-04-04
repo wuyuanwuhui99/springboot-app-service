@@ -69,7 +69,7 @@
     </select>
 
     <select id="getKeyWord"  resultType="Map">
-        SELECT movie_name,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify}
+        SELECT movie_name,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify} LIMIT 1
     </select>
 
     <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
