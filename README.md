@@ -3,7 +3,8 @@
 使用springboot搭建的音乐，电影，书栈，视频教程app的后台项目，所有数据来自互联网，使用python爬虫抓取，涉及，负载均衡，redis缓存，JwtToken权限验证，拦截器，日志记录，erauka服务治理，mybatis,spring-data-jpa,swagger等，持续更新中...
 
 ================================APP界面预览================================
-![整体app预览](https://raw.githubusercontent.com/wuyuanwuhui99/vue_music/main/music.jpg)
+![电影app整体预览](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/%E7%94%B5%E5%BD%B1app%E6%95%B4%E4%BD%93%E9%A2%84%E8%A7%88.jpg)
+![音乐app整体预览](https://raw.githubusercontent.com/wuyuanwuhui99/vue_music/main/music.jpg)
 ![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie1.png)
 ![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie2.png)
 ![app首页](https://github.com/wuyuanwuhui99/react-native-app-ui/raw/main/movie3.png)
@@ -13,3 +14,11 @@
 ================================APP界面预览================================
 
 ![app首页](https://raw.githubusercontent.com/wuyuanwuhui99/springboot-app-service/main/mysql.png)
+
+flutter在线电影项目: https://github.com/wuyuanwuhui99/flutter-movie-app-ui
+
+react native版本在线电影参见: https://github.com/wuyuanwuhui99/react-native-app-ui
+
+vue在线音乐项目：https://github.com/wuyuanwuhui99/vue-music-app-ui
+
+在线音乐后端项目：https://github.com/wuyuanwuhui99/koa2-music-app-service
