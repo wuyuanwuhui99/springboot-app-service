@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RequestMapping("/service")
 @Api(value = "抖音查询和记录的接口", description = "查询抖音列表、播放记录接口")
@@ -20,6 +21,23 @@ import javax.servlet.http.HttpServletRequest;
 public class MovieController {
     @Autowired
     private IMovieService movieService;
+
+    @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
+    @ApiOperation("更新用户信息")
+    @PutMapping("/movie-getway/updateUser")
+    public ResultEntity updateUser(@RequestBody UserEntity userEntity) {
+        return movieService.updateUser(userEntity);
+    }
+
+//    @OperLog(message = "修改密码", operation = OperationType.UPDATE)
+    @ApiOperation("修改密码")
+    @PutMapping("/movie-getway/updatePassword")
+    public ResultEntity updatePassword(@RequestBody Map userMap) {
+        String userId = (String) userMap.get("userId");
+        String newPassword = (String) userMap.get("newPassword");
+        String oldPassword = (String) userMap.get("oldPassword");
+        return movieService.updatePassword(userId,newPassword,oldPassword);
+    }
 
     @OperLog(message = "获取分类信息", operation = OperationType.QUERY)
     @ApiOperation("获取分类信息")

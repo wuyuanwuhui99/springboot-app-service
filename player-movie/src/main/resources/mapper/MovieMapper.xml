@@ -181,5 +181,23 @@
     <select id="getRecommend" resultType="MovieEntity">
         SELECT * FROM movie WHERE classify = #{classify} ORDER BY create_time DESC LIMIT 0,20
     </select>
+
+    <update id="updateUser" parameterType="com.player.common.entity.UserEntity">
+        UPDATE user SET
+            update_date = #{updateDate},
+            username = #{username},
+            telephone = #{telephone},
+            email = #{email},
+            avater = #{email},
+            birthday  = #{birthday},
+            sex = #{sex}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE user SET
+            password = #{newPassword},
+        WHERE user_id = #{userId} AND password = #{oldPassword}
+    </update>
 </mapper>
 

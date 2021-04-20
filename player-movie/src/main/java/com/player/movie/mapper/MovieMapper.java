@@ -103,4 +103,8 @@ public interface MovieMapper {
     List<MovieEntity> getYourLikes(@Param("labels") String[] labels);
 
     List<MovieEntity> getRecommend(String classify);
+
+    Long updateUser(UserEntity userEntity);
+
+    Long updatePassword(String userId,String newPassword,String oldPassword );
 }

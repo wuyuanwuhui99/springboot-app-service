@@ -30,6 +30,26 @@ public class MovieService implements IMovieService {
 
     /**
      * @author: wuwenqiang
+     * @description: 更新用户信息
+     * @date: 2020-12-24 22:40
+     */
+    @Override
+    public ResultEntity updateUser(UserEntity userEntity) {
+       return ResultUtil.success(movieMapper.updateUser(userEntity));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 修改密码
+     * @date: 2020-12-24 22:40
+     */
+    @Override
+    public ResultEntity updatePassword(String userId,String newPassword,String oldPassword) {
+        return ResultUtil.success(movieMapper.updatePassword(userId,newPassword,oldPassword));
+    }
+
+    /**
+     * @author: wuwenqiang
      * @description: 查询电影分类
      * @date: 2020-12-24 22:40
      */

@@ -51,4 +51,8 @@ public interface IMovieService {
     ResultEntity getYourLikes(String labels,String path);
 
     ResultEntity getRecommend(String classify,String path);
+
+    ResultEntity updateUser(UserEntity userEntity);
+
+    ResultEntity updatePassword(String userId,String newPassword,String oldPassword);
 }
