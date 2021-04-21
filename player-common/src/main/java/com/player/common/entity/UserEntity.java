@@ -38,6 +38,12 @@ public class UserEntity {
     @ApiModelProperty(value = "密码")
     private String password;
 
+    @ApiModelProperty(value = "个性签名")
+    private String sign;
+
+    @ApiModelProperty(value = "地区")
+    private String region;
+
     public String getUserId() {
         return userId;
     }
@@ -126,20 +132,19 @@ public class UserEntity {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "userId='" + userId + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", updateDate='" + updateDate + '\'' +
-                ", username='" + username + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", email='" + email + '\'' +
-                ", avater='" + avater + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", sex='" + sex + '\'' +
-                ", role='" + role + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 }
