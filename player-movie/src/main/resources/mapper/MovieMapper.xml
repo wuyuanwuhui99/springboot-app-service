@@ -77,7 +77,7 @@
     </select>
 
     <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">
-        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE user_id = #{userId}
+        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role,sign,region from  user WHERE user_id = #{userId}
     </select>
 
     <select id="getUserMsg"  resultType="Map">
@@ -188,9 +188,11 @@
             username = #{username},
             telephone = #{telephone},
             email = #{email},
-            avater = #{email},
+            avater = #{avater},
             birthday  = #{birthday},
-            sex = #{sex}
+            sex = #{sex},
+            sign = #{sign},
+            region = #{region}
         WHERE user_id = #{userId}
     </update>
 
