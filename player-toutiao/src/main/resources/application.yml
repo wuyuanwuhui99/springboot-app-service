@@ -1,13 +1,11 @@
-static:
-  file-path: E:/
 server:
-  port: 5000
+  port: 8000
 token:
   expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
   secret: wuwenqiang #token秘钥
 app:
-  appId: com.play.movie
-  appName: flutter在线电影
+  appId: com.play.toutiao
+  appName: 明日头条
 spring:
   redis:
     database: 0 # Redis数据库索引（默认为0）
@@ -22,7 +20,7 @@ spring:
         max-idle: 8 # 连接池中的最大空闲连接
         min-idle: 0 # 连接池中的最小空闲连接
   application:
-    name: player-movie
+    name: player-toutiao
   datasource:
     druid:
       url: jdbc:mysql://192.168.0.103:3306/play?characterEncoding=utf-8

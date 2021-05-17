@@ -18,7 +18,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.0.1.RELEASE</spring-boot.version>
-        <mysql-connector-java.version>5.1.6</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.24</mysql-connector-java.version>
         <druid-spring-boot-starter.version>1.1.13</druid-spring-boot-starter.version>
         <lombok.version>1.16.16</lombok.version>
         <log4j.version>1.2.17</log4j.version>
@@ -42,6 +42,7 @@
         <module>../player-common</module>
         <module>../player-learn</module>
         <module>../player-ebook</module>
+        <module>../player-toutiao</module>
     </modules>
     <dependencyManagement>
         <dependencies>

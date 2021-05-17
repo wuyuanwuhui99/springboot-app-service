@@ -21,7 +21,7 @@ spring:
     name: player-learn
   datasource:
     druid:
-      url: jdbc:mysql://192.168.0.101:3306/play?characterEncoding=utf-8
+      url: jdbc:mysql://127.0.0.1:3306/play?characterEncoding=utf-8
       username: root
       password: wwq_2021
       driverClassName: com.mysql.jdbc.Driver
