@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "record_music")
+@Table(name = "music_record")
 public class RecordEntity {
     @ApiModelProperty(value = "主键")
     @Id

@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "douyin")
+@Table(name = "music_douyin")
 public class DouyinEntity implements Serializable {
 
     @ApiModelProperty(value = "主键")
