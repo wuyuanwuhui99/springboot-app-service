@@ -63,7 +63,7 @@ public class BookEntity {
     private String classify;
 
     @ApiModelProperty(value = "排名")
-    private String rank;
+    private String ranks;
 
     @ApiModelProperty(value = "小分类")
     private String categoryName;
@@ -232,12 +232,12 @@ public class BookEntity {
         this.classify = classify;
     }
 
-    public String getRank() {
-        return rank;
+    public String getRanks() {
+        return ranks;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setRanks(String ranks) {
+        this.ranks = ranks;
     }
 
     public String getCategoryName() {

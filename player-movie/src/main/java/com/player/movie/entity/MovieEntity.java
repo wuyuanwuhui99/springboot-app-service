@@ -81,7 +81,7 @@ public class MovieEntity {
     private String category;//类目，值为banner首屏，carousel：滚动轮播
 
     @ApiModelProperty(value = "排名")
-    private String rank;//排名
+    private String ranks;//排名
 
     @ApiModelProperty(value = "用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',")
     private String userId;//用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
@@ -289,12 +289,12 @@ public class MovieEntity {
         this.category = category;
     }
 
-    public String getRank() {
-        return rank;
+    public String getRanks() {
+        return ranks;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setRanks(String ranks) {
+        this.ranks = ranks;
     }
 
     public String getUserId() {
@@ -341,7 +341,7 @@ public class MovieEntity {
                 ", useStatus='" + useStatus + '\'' +
                 ", score='" + score + '\'' +
                 ", category='" + category + '\'' +
-                ", rank='" + rank + '\'' +
+                ", ranks='" + ranks + '\'' +
                 ", userId='" + userId + '\'' +
                 ", doubanUrl='" + doubanUrl + '\'' +
                 '}';

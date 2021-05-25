@@ -28,7 +28,7 @@ public class BannerEntity {
     private String isUsed;
 
     @ApiModelProperty(value = "排名")
-    private Integer rank;
+    private Integer ranks;
 
     public Integer getId() {
         return id;
@@ -86,11 +86,11 @@ public class BannerEntity {
         this.isUsed = isUsed;
     }
 
-    public Integer getRank() {
-        return rank;
+    public Integer getRanks() {
+        return ranks;
     }
 
-    public void setRank(Integer rank) {
-        this.rank = rank;
+    public void setRanks(Integer ranks) {
+        this.ranks = ranks;
     }
 }

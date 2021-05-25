@@ -27,7 +27,7 @@
             use_status,
             score,
             category,
-            rank,
+            ranks,
             user_id,
             douban_url
             )VALUES(
@@ -55,7 +55,7 @@
             #{useStatus},
             #{score},
             #{category},
-            #{rank},
+            #{ranks},
             #{userId},
             #{doubanUrl})
     </sql>
