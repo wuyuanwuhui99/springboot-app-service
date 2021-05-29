@@ -29,7 +29,6 @@ public class MovieController {
         return movieService.updateUser(userEntity);
     }
 
-//    @OperLog(message = "修改密码", operation = OperationType.UPDATE)
     @ApiOperation("修改密码")
     @PutMapping("/movie-getway/updatePassword")
     public ResultEntity updatePassword(@RequestBody Map userMap) {

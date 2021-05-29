@@ -23,7 +23,7 @@ spring:
     name: player-toutiao
   datasource:
     druid:
-      url: jdbc:mysql://192.168.0.103:3306/play?characterEncoding=utf-8
+      url: jdbc:mysql://192.168.0.102:3306/play?characterEncoding=utf-8
       username: root
       password: wwq_2021
       driverClassName: com.mysql.jdbc.Driver
@@ -40,7 +40,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.player.movie.entity
+  type-aliases-package: com.player.toutiao.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

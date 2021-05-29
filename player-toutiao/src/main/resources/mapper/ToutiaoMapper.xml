@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.player.movie.mapper.MovieMapper">
+<mapper namespace="com.player.toutiao.mapper.MovieMapper">
+    <sql id="recordSql">
+        (
+          id,
+          channel_id,
+          content,
+          duration,
+          href,
+          img,
+          img_num,
+          `type` ,
+          isTop,
+          title,
+          create_time,
+          update_time,
+          source,
+          comment_id,
+          labels,
+          user_id,
+          user_avatar,
+          user_href,
+          ranks,
+          )VALUES(
+          #{id},
+          #{channelId},
+          #{content},
+          #{duration},
+          #{href},
+          #{img},
+          #{imgNum},
+          #{type} ,
+          #{isTop},
+          #{title},
+          #{createTime},
+          #{updateTime},
+          #{source},
+          #{commentId},
+          #{labels},
+          #{userId},
+          #{userAvatar},
+          #{userHref},
+          #{ranks})
+    </sql>
 
+    <select id="findArticleList" resultType="ArticleEntity">
+        SELECT * FROM toutiao_article where 1=1
+        <if test="keyword!=null and keyword!=''">
+            and title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
+        </if >
+        <if test="type!=null and type!=''">
+            and type = #{type}
+        </if >
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="findArticleDetail" resultType="ArticleEntity">
+        SELECT * FROM toutiao_article WHERE id = #{id}
+    </select>
+
+    <insert id="log" parameterType="com.player.common.entity.LogEntity">
+       INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
+    </insert>
 </mapper>

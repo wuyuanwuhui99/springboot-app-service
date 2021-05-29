@@ -33,8 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UserService implements IUserService {
 
-    private JwtToken jwtToken = new JwtToken();
-
     @Value("${app.avater-path}")
     private String avaterPath;
 
