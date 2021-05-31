@@ -62,4 +62,20 @@
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
        INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
     </insert>
+
+    <select id="findFavoriteChannels" resultType="ArticleEntity">
+        SELECT * FROM toutiao_favorite_channel WHERE id = #{id} AND disabled = 0 ORDER BY sequence DESC
+    </select>
+
+    <select id="findAllChannels" resultType="ArticleEntity">
+        SELECT * FROM toutiao_all_channel
+    </select>
+
+    <insert id="insertFavoriteChannels">
+        INSERT INTO toutiao_favorite_channel(channel_id,channel_name,href,create_time,update_time,user_id,disabled,status,sequence)
+        VALUES
+        <foreach collection ="list" item="ChannelEntity" separator =",">
+            #{channel_id},#{channel_name},#{href},#{create_time},#{update_time},#{user_id},#{disabled},#{status},#{sequence}
+        </foreach >
+    </insert>
 </mapper>

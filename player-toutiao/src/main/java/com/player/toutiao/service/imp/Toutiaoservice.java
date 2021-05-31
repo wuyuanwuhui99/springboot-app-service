@@ -5,6 +5,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
+import com.player.toutiao.entity.ChannelEntity;
 import com.player.toutiao.mapper.ToutiaoMapper;
 import com.player.toutiao.service.IToutiaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -62,13 +64,30 @@ public class Toutiaoservice implements IToutiaoService {
 
     /**
      * @author: wuwenqiang
-     * @description: 查询用户收藏的频道
+     * @description: 查询用户收藏的频道,如果没有查询到，讲用所有频道里面的数据插入到个人频道列表中
      * @date: 2020-5-29 19:22
      */
     @Override
     public ResultEntity findFavoriteChannels(String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(toutiaoMapper.findFavoriteChannels(userEntity.getUserId()));
+        String key = "findFavoriteChannels_" + userEntity.getUserId();
+        String result = (String) redisTemplate.opsForValue().get(key);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            List<ChannelEntity> favoriteChannels = toutiaoMapper.findFavoriteChannels(userEntity.getUserId());
+            if (favoriteChannels.size() == 0){
+                favoriteChannels = toutiaoMapper.findAllChannels();
+                favoriteChannels.forEach((favoriteChannel)->{
+                    favoriteChannel.setUserId(userEntity.getUserId());
+                });
+                toutiaoMapper.insertFavoriteChannels(favoriteChannels);
+            }
+            ResultEntity resultEntity  = ResultUtil.success(favoriteChannels);
+            redisTemplate.opsForValue().set(key, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
     }
 
     /**

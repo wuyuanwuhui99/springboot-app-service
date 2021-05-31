@@ -5,7 +5,6 @@ import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ToutiaoMapper {
     /**
@@ -22,6 +21,11 @@ public interface ToutiaoMapper {
      */
     ArticleEntity findArticleDetail(int id);
 
+    /**
+     * @author: wuwenqiang
+     * @description: 插入日志
+     * @date: 2020-5-29 19:22
+     */
     Long log(LogEntity logEntity);
 
     /**
@@ -44,4 +48,6 @@ public interface ToutiaoMapper {
      * @date: 2020-5-29 19:22
      */
     List<ArticleEntity> findArticleByUserId(String userId,int start,int pageSize,String keyword);
+
+    int insertFavoriteChannels(List<ChannelEntity> favoriteChannels);
 }

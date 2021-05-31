@@ -1,7 +1,12 @@
 package com.player.toutiao.entity;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.ToString;
+
 import java.util.Date;
 
+@Data
+@ToString
 public class ChannelEntity {
     @ApiModelProperty(value = "主键")
     private int id;
@@ -22,86 +27,14 @@ public class ChannelEntity {
     private Date updateTime;
 
     @ApiModelProperty(value = "用户id")
-    private Date userId;
+    private String userId;
 
     @ApiModelProperty(value = "是否禁用")
-    private Date disabled;
+    private int disabled;
 
-    public int getId() {
-        return id;
-    }
+    @ApiModelProperty(value = "状态，公开:0,推荐:1,默认:2")
+    private int status;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Date getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Date userId) {
-        this.userId = userId;
-    }
-
-    public Date getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(Date disabled) {
-        this.disabled = disabled;
-    }
-
-    @Override
-    public String toString() {
-        return "ChannelEntity{" +
-                "id=" + id +
-                ", channelId='" + channelId + '\'' +
-                ", channelName='" + channelName + '\'' +
-                ", href='" + href + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", userId=" + userId +
-                ", disabled=" + disabled +
-                '}';
-    }
+    @ApiModelProperty(value = "排序")
+    private int sequence;
 }
