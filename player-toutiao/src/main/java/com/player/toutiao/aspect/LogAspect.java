@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 @Component
 public class LogAspect {
     @Autowired
-    private ToutiaoMapper movieMapper;
+    private ToutiaoMapper toutiaoMapper;
 
     @Value("${app.appId}")
     private String appId;
@@ -116,11 +116,11 @@ public class LogAspect {
             Object result = proceedingJoinPoint.proceed();
             sysLog.setEndTime(new Date());
             sysLog.setResult(JSON.toJSONString(result));
-            movieMapper.log(sysLog);
+            toutiaoMapper.log(sysLog);
             return result;
         } catch (Throwable throwable) {
             sysLog.setResult(throwable.getMessage());
-            movieMapper.log(sysLog);
+            toutiaoMapper.log(sysLog);
             throwable.printStackTrace();
         }
         return null;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.player.toutiao.mapper.MovieMapper">
+<mapper namespace="com.player.toutiao.mapper.ToutiaoMapper">
     <sql id="recordSql">
         (
           id,
@@ -63,19 +63,19 @@
        INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
     </insert>
 
-    <select id="findFavoriteChannels" resultType="ArticleEntity">
+    <select id="findFavoriteChannels" resultType="ChannelEntity">
         SELECT * FROM toutiao_favorite_channel WHERE id = #{id} AND disabled = 0 ORDER BY sequence DESC
     </select>
 
-    <select id="findAllChannels" resultType="ArticleEntity">
+    <select id="findAllChannels" resultType="ChannelEntity">
         SELECT * FROM toutiao_all_channel
     </select>
 
     <insert id="insertFavoriteChannels">
         INSERT INTO toutiao_favorite_channel(channel_id,channel_name,href,create_time,update_time,user_id,disabled,status,sequence)
         VALUES
-        <foreach collection ="list" item="ChannelEntity" separator =",">
-            #{channel_id},#{channel_name},#{href},#{create_time},#{update_time},#{user_id},#{disabled},#{status},#{sequence}
+        <foreach collection ="list" item="item" separator =",">
+            (#{item.channelId},#{item.channelName},#{item.href},#{item.createTime},#{item.updateTime},#{item.userId},#{item.disabled},#{item.status},#{item.sequence})
         </foreach >
     </insert>
 </mapper>
