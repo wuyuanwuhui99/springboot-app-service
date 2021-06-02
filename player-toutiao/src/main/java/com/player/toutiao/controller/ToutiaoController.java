@@ -51,7 +51,7 @@ public class ToutiaoController {
     @ApiOperation("查询所有频道")
     @GetMapping("/toutiao/findAllChannels")
     public ResultEntity findAllChannels() {
-        return toutiaoService.findAllChannels();
+        return toutiaoService.findAllChannels(null);
     }
 
     @ApiOperation("获取用户登录信息")

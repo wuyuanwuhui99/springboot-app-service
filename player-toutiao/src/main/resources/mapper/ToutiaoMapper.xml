@@ -64,11 +64,18 @@
     </insert>
 
     <select id="findFavoriteChannels" resultType="ChannelEntity">
-        SELECT * FROM toutiao_favorite_channel WHERE id = #{id} AND disabled = 0 ORDER BY sequence DESC
+        SELECT * FROM toutiao_favorite_channel WHERE id = #{id} AND disabled = 0 ORDER BY sequence ASC
     </select>
 
     <select id="findAllChannels" resultType="ChannelEntity">
-        SELECT * FROM toutiao_all_channel
+        SELECT * FROM toutiao_all_channel WHERE disabled = 0
+        <if test="list != null and list.size() > 0">
+            AND status IN
+            <foreach item="item" index="index" collection="list" open="("  close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+         ORDER BY sequence ASC
     </select>
 
     <insert id="insertFavoriteChannels">

@@ -3,6 +3,7 @@ package com.player.toutiao.mapper;
 import com.player.common.entity.LogEntity;
 import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;
+import feign.Param;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public interface ToutiaoMapper {
      * @description: 查询所有频道
      * @date: 2020-5-29 19:22
      */
-    List<ChannelEntity>  findAllChannels();
+    List<ChannelEntity>  findAllChannels(@Param("list") List<Integer> status);
 
     /**
      * @author: wuwenqiang

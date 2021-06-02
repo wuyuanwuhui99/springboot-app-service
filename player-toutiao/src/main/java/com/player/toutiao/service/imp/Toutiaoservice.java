@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -78,7 +80,8 @@ public class Toutiaoservice implements IToutiaoService {
         }else{
             List<ChannelEntity> favoriteChannels = toutiaoMapper.findFavoriteChannels(userEntity.getUserId());
             if (favoriteChannels.size() == 0){
-                favoriteChannels = toutiaoMapper.findAllChannels();
+                List<Integer> status = new ArrayList<>(Arrays.asList(0,1,2));//状态，公开:0,推荐:1,默认:2,非公开:3
+                favoriteChannels = toutiaoMapper.findAllChannels(status);
                 favoriteChannels.forEach((favoriteChannel)->{
                     favoriteChannel.setUserId(userEntity.getUserId());
                 });
@@ -96,8 +99,8 @@ public class Toutiaoservice implements IToutiaoService {
      * @date: 2020-5-29 19:22
      */
     @Override
-    public ResultEntity findAllChannels() {
-        return ResultUtil.success(toutiaoMapper.findAllChannels());
+    public ResultEntity findAllChannels(List<Integer>  status) {
+        return ResultUtil.success(toutiaoMapper.findAllChannels(status));
     }
 
     /**
