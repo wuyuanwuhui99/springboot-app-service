@@ -41,9 +41,17 @@ public class Toutiaoservice implements IToutiaoService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity findArticleList(int pageSize, int pageNum, String type, String keyword) {
-        int start = pageSize * pageNum;
-        return ResultUtil.success(toutiaoMapper.findArticleList(start,pageSize, type, keyword));
+    public ResultEntity getArticleList(int pageNum, int pageSize,  String type, String channelId,String userId, String keyword,String isTop,String path) {
+        String result = (String) redisTemplate.opsForValue().get(path);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            int start = pageSize * (pageNum-1);
+            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleList(start,pageSize, type, channelId, userId, keyword, isTop));
+            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
+            return  resultEntity;
+        }
     }
 
     /**
@@ -52,13 +60,13 @@ public class Toutiaoservice implements IToutiaoService {
      * @date: 2020-5-29 19:22
      */
     @Override
-    public ResultEntity findArticleDetail(int id,String path) {
+    public ResultEntity getArticleDetail(int id,String path) {
         String result = (String) redisTemplate.opsForValue().get(path);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
-            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.findArticleDetail(id));
+            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleDetail(id));
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
@@ -70,7 +78,7 @@ public class Toutiaoservice implements IToutiaoService {
      * @date: 2020-5-29 19:22
      */
     @Override
-    public ResultEntity findFavoriteChannels(String token) {
+    public ResultEntity getFavoriteChannels(String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         String key = "findFavoriteChannels_" + userEntity.getUserId();
         String result = (String) redisTemplate.opsForValue().get(key);
@@ -78,10 +86,10 @@ public class Toutiaoservice implements IToutiaoService {
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
-            List<ChannelEntity> favoriteChannels = toutiaoMapper.findFavoriteChannels(userEntity.getUserId());
+            List<ChannelEntity> favoriteChannels = toutiaoMapper.getFavoriteChannels(userEntity.getUserId());
             if (favoriteChannels.size() == 0){
                 List<Integer> status = new ArrayList<>(Arrays.asList(0,1,2));//状态，公开:0,推荐:1,默认:2,非公开:3
-                favoriteChannels = toutiaoMapper.findAllChannels(status);
+                favoriteChannels = toutiaoMapper.getAllChannels(status);
                 favoriteChannels.forEach((favoriteChannel)->{
                     favoriteChannel.setUserId(userEntity.getUserId());
                 });
@@ -99,8 +107,8 @@ public class Toutiaoservice implements IToutiaoService {
      * @date: 2020-5-29 19:22
      */
     @Override
-    public ResultEntity findAllChannels(List<Integer>  status) {
-        return ResultUtil.success(toutiaoMapper.findAllChannels(status));
+    public ResultEntity getAllChannels(List<Integer>  status) {
+        return ResultUtil.success(toutiaoMapper.getAllChannels(status));
     }
 
     /**
@@ -118,16 +126,5 @@ public class Toutiaoservice implements IToutiaoService {
                 new HttpEntity<String>(headers),ResultEntity.class
         );
         return  responseEntity.getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 根据用户id查询用户的文章
-     * @date: 2020-5-29 19:22
-     */
-    @Override
-    public ResultEntity findArticleByUserId(String userId,int pageNum,int pageSize,String keyword) {
-        int start = pageNum * pageSize;
-        return ResultUtil.success(toutiaoMapper.findArticleByUserId(userId,start,pageSize,keyword));
     }
 }

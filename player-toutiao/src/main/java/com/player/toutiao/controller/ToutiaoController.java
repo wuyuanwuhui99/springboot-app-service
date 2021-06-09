@@ -1,7 +1,6 @@
 package com.player.toutiao.controller;
 
 import com.player.common.entity.ResultEntity;
-import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
@@ -22,36 +21,41 @@ public class ToutiaoController {
 
     @OperLog(message = "查询文章列表", operation = OperationType.QUERY)
     @ApiOperation("查询文章列表")
-    @GetMapping("/toutiao/findArticleList")
-    public ResultEntity findArticleList(
+    @GetMapping("/toutiao/getArticleList")
+    public ResultEntity getArticleList(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum,
-            @RequestParam("type") String type,
-            @RequestParam("keyword") String keyword
+            @RequestParam(required = false, value="type") String type,
+            @RequestParam(required = false, value="channelId") String channelId,
+            @RequestParam(required = false, value="userId") String userId,
+            @RequestParam(required = false, value="keyword") String keyword,
+            @RequestParam(required = false, value="isTop") String isTop,
+            HttpServletRequest request
     ) {
-        return toutiaoService.findArticleList(pageNum,pageSize,type,keyword);
+        String path = HttpUtils.getPath(request);
+        return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,userId,keyword,isTop,path);
     }
 
     @OperLog(message = "查询文章详情", operation = OperationType.QUERY)
     @ApiOperation("查询文章详情")
     @GetMapping("/toutiao/{id}")
-    public ResultEntity findArticleDetail(@PathVariable("id") int id,HttpServletRequest request) {
+    public ResultEntity getArticleDetail(@PathVariable("id") int id,HttpServletRequest request) {
         String path = HttpUtils.getPath(request);
-        return toutiaoService.findArticleDetail(id,path);
+        return toutiaoService.getArticleDetail(id,path);
     }
 
     @OperLog(message = "查询用户收藏的频道", operation = OperationType.QUERY)
     @ApiOperation("查询用户收藏的频道")
-    @GetMapping("/toutiao/findFavoriteChannels-getway")
-    public ResultEntity findFavoriteChannels(HttpServletRequest request) {
+    @GetMapping("/toutiao/getFavoriteChannels-getway")
+    public ResultEntity getFavoriteChannels(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        return toutiaoService.findFavoriteChannels(token);
+        return toutiaoService.getFavoriteChannels(token);
     }
 
     @ApiOperation("查询所有频道")
-    @GetMapping("/toutiao/findAllChannels")
-    public ResultEntity findAllChannels() {
-        return toutiaoService.findAllChannels(null);
+    @GetMapping("/toutiao/getAllChannels")
+    public ResultEntity getAllChannels() {
+        return toutiaoService.getAllChannels(null);
     }
 
     @ApiOperation("获取用户登录信息")
@@ -59,16 +63,5 @@ public class ToutiaoController {
     public ResultEntity getUserData(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return toutiaoService.getUserData(token);
-    }
-
-    @ApiOperation("按照用户id查询用户的文章")
-    @GetMapping("/toutiao/findArticleByUserId")
-    public ResultEntity findArticleByUserId(
-            @RequestParam("userId") String userId,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize,
-            @RequestParam("keyword") String keyword
-    ) {
-        return toutiaoService.findArticleByUserId(userId,pageNum,pageSize,keyword);
     }
 }

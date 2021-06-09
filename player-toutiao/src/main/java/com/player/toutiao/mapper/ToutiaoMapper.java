@@ -13,14 +13,14 @@ public interface ToutiaoMapper {
      * @description: 获取文章列表
      * @date: 2020-12-25 22:29
      */
-    List<ArticleEntity> findArticleList(int start,int pageSize,String type, String keyword);
+    List<ArticleEntity> getArticleList(int start,int pageSize,String type, String channelId,String userId, String keyword,String isTop);
 
     /**
      * @author: wuwenqiang
      * @description: 获取文章详情
      * @date: 2020-5-29 19:22
      */
-    ArticleEntity findArticleDetail(int id);
+    ArticleEntity getArticleDetail(int id);
 
     /**
      * @author: wuwenqiang
@@ -34,21 +34,15 @@ public interface ToutiaoMapper {
      * @description: 查询用户收藏的频道
      * @date: 2020-5-29 19:22
      */
-    List<ChannelEntity> findFavoriteChannels(String userId);
+    List<ChannelEntity> getFavoriteChannels(String userId);
 
     /**
      * @author: wuwenqiang
      * @description: 查询所有频道
      * @date: 2020-5-29 19:22
      */
-    List<ChannelEntity>  findAllChannels(@Param("list") List<Integer> status);
+    List<ChannelEntity>  getAllChannels(@Param("list") List<Integer> status);
 
-    /**
-     * @author: wuwenqiang
-     * @description: 按照用户id查询用户的文章
-     * @date: 2020-5-29 19:22
-     */
-    List<ArticleEntity> findArticleByUserId(String userId,int start,int pageSize,String keyword);
 
     int insertFavoriteChannels(List<ChannelEntity> favoriteChannels);
 }

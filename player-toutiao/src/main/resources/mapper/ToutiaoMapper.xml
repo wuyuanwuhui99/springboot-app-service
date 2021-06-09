@@ -44,18 +44,46 @@
           #{ranks})
     </sql>
 
-    <select id="findArticleList" resultType="ArticleEntity">
-        SELECT * FROM toutiao_article where 1=1
+    <select id="getArticleList" resultType="ArticleEntity">
+        SELECT
+            id,
+            channel_id,
+            duration,
+            href,
+            img,
+            img_num,
+            `type`,
+            is_top,
+            title,
+            create_time,
+            update_time,
+            source,
+            comment_id,
+            labels,
+            user_id,
+            user_avatar,
+            user_href,
+            ranks
+        FROM toutiao_article where type != 'video'
         <if test="keyword!=null and keyword!=''">
             and title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
         </if >
         <if test="type!=null and type!=''">
             and type = #{type}
         </if >
-        LIMIT #{start}, #{pageSize}
+        <if test="channelId!=null and channelId!=''">
+            and channel_id = #{channelId}
+        </if >
+        <if test="userId!=null and userId!=''">
+            and user_id = #{userId}
+        </if>
+        <if test="isTop!=null and isTop!=''">
+            and is_top = #{isTop}
+        </if >
+        ORDER BY create_time DESC  LIMIT #{start}, #{pageSize}
     </select>
 
-    <select id="findArticleDetail" resultType="ArticleEntity">
+    <select id="getArticleDetail" resultType="ArticleEntity">
         SELECT * FROM toutiao_article WHERE id = #{id}
     </select>
 
@@ -63,11 +91,11 @@
        INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
     </insert>
 
-    <select id="findFavoriteChannels" resultType="ChannelEntity">
+    <select id="getFavoriteChannels" resultType="ChannelEntity">
         SELECT * FROM toutiao_favorite_channel WHERE id = #{id} AND disabled = 0 ORDER BY sequence ASC
     </select>
 
-    <select id="findAllChannels" resultType="ChannelEntity">
+    <select id="getAllChannels" resultType="ChannelEntity">
         SELECT * FROM toutiao_all_channel WHERE disabled = 0
         <if test="list != null and list.size() > 0">
             AND status IN
