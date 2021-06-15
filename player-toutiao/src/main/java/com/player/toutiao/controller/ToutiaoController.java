@@ -29,11 +29,10 @@ public class ToutiaoController {
             @RequestParam(required = false, value="channelId") String channelId,
             @RequestParam(required = false, value="userId") String userId,
             @RequestParam(required = false, value="keyword") String keyword,
-            @RequestParam(required = false, value="isTop") String isTop,
             HttpServletRequest request
     ) {
         String path = HttpUtils.getPath(request);
-        return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,userId,keyword,isTop,path);
+        return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,userId,keyword,path);
     }
 
     @OperLog(message = "查询文章详情", operation = OperationType.QUERY)

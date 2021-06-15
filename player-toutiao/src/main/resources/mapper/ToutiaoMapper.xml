@@ -44,7 +44,7 @@
           #{ranks})
     </sql>
 
-    <select id="getArticleList" resultType="ArticleEntity">
+    <sql id="getArticleListSql">
         SELECT
             id,
             channel_id,
@@ -64,7 +64,15 @@
             user_avatar,
             user_href,
             ranks
-        FROM toutiao_article where type != 'video'
+        FROM toutiao_article
+    </sql>
+
+    <select id="getArticleList" resultType="ArticleEntity">
+        <if test="channelId == 0 and start == 0">
+            (<include refid="getArticleListSql"></include> WHERE is_top = '1'AND channel_id = '0' ORDER BY create_time DESC LIMIT 0,3) UNION ALL
+        </if>
+        (<include refid="getArticleListSql"></include>
+         where type != 'video' and is_top = '0'
         <if test="keyword!=null and keyword!=''">
             and title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
         </if >
@@ -77,10 +85,7 @@
         <if test="userId!=null and userId!=''">
             and user_id = #{userId}
         </if>
-        <if test="isTop!=null and isTop!=''">
-            and is_top = #{isTop}
-        </if >
-        ORDER BY create_time DESC  LIMIT #{start}, #{pageSize}
+        ORDER BY create_time DESC  LIMIT #{start}, #{pageSize})
     </select>
 
     <select id="getArticleDetail" resultType="ArticleEntity">

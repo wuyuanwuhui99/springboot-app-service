@@ -41,14 +41,14 @@ public class Toutiaoservice implements IToutiaoService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity getArticleList(int pageNum, int pageSize,  String type, String channelId,String userId, String keyword,String isTop,String path) {
+    public ResultEntity getArticleList(int pageNum, int pageSize,  String type, String channelId,String userId, String keyword,String path) {
         String result = (String) redisTemplate.opsForValue().get(path);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             int start = pageSize * (pageNum-1);
-            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleList(start,pageSize, type, channelId, userId, keyword, isTop));
+            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleList(start,pageSize, type, channelId, userId, keyword));
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
             return  resultEntity;
         }

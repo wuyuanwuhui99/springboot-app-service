@@ -13,7 +13,7 @@ public interface ToutiaoMapper {
      * @description: 获取文章列表
      * @date: 2020-12-25 22:29
      */
-    List<ArticleEntity> getArticleList(int start,int pageSize,String type, String channelId,String userId, String keyword,String isTop);
+    List<ArticleEntity> getArticleList(int start,int pageSize,String type, String channelId,String userId, String keyword);
 
     /**
      * @author: wuwenqiang

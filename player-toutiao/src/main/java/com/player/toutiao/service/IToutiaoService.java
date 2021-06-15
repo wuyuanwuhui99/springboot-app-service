@@ -5,7 +5,7 @@ import com.player.common.entity.ResultEntity;
 import java.util.List;
 
 public interface IToutiaoService {
-    ResultEntity getArticleList(int pageNum, int pageSize,String type, String channelId, String userId, String keyword, String isTop,String path);
+    ResultEntity getArticleList(int pageNum, int pageSize,String type, String channelId, String userId, String keyword, String path);
 
     ResultEntity getArticleDetail(int id,String path);
 
