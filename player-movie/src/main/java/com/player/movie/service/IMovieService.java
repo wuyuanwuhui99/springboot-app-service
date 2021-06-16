@@ -22,7 +22,7 @@ public interface IMovieService {
 
     ResultEntity search(String keyword, int pageNum, int pageSize,String path);
 
-    ResultEntity login(String userId, String passsword);
+    ResultEntity login(UserEntity userEntity);
 
     ResultEntity register(UserEntity userEntity);
 

@@ -60,9 +60,7 @@ public class MovieController {
     @ApiOperation("登录校验")
     @PostMapping("/movie/login")
     public ResultEntity login(@RequestBody UserEntity userEntity) {
-        String userId = userEntity.getUserId();
-        String password = userEntity.getPassword();
-        return movieService.login(userId, password);
+        return movieService.login(userEntity);
     }
 
     @OperLog(message = "查询用户信息", operation = OperationType.QUERY)

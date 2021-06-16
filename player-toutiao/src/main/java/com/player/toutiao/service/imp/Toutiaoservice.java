@@ -121,7 +121,7 @@ public class Toutiaoservice implements IToutiaoService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
         ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-movie/service/movie/getUserData",
+                "http://player-user/service/user/getUserData",
                 HttpMethod.GET,
                 new HttpEntity<String>(headers),ResultEntity.class
         );

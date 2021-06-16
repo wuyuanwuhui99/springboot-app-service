@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.player.user.mapper.UserMapper">
+    <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
+        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE role ='public'  order by rand() LIMIT 1
+    </select>
+
+    <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">
+        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role,sign,region from  user WHERE user_id = #{userId}
+    </select>
+
+    <select id="login" resultType="com.player.common.entity.UserEntity" parameterType="com.player.common.entity.UserEntity">
+       SELECT user_id AS userId,create_date AS createDate,update_date AS updateDate,username,telephone,email,avater,birthday,sex,role from  user WHERE user_id=#{userId} and password=#{password}
+    </select>
+
+    <insert id="register" parameterType="com.player.common.entity.UserEntity">
+       INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{userId},#{password},#{createDate},#{updateDate},#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
+    </insert>
+
+    <select id="getUserById" resultType="com.player.common.entity.UserEntity">
+       SELECT user_id ,create_date ,update_date,username,telephone,email,avater,birthday,sex,role,sign,region from  user WHERE user_id = #{userId}
+    </select>
+</mapper>

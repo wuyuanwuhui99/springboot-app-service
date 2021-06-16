@@ -11,9 +11,13 @@ import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.Map;
@@ -27,6 +31,9 @@ public class MovieService implements IMovieService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * @author: wuwenqiang
@@ -91,14 +98,21 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-26 10:53
      */
     @Override
-    public ResultEntity login(String userId, String passsword) {
-        UserEntity userEntity = movieMapper.login(userId, passsword);
-        if (userEntity != null) {
-            String token = JwtToken.createToken(userEntity);//token有效期一天
-            return ResultUtil.success(movieMapper.login(userId, passsword), "登录成功", token);
-        } else {
-            return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.LOGOUT);
-        }
+    public ResultEntity login(UserEntity userEntity) {
+        MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<String, Object>();
+        paramMap.add("userId", userEntity.getUserId());
+        paramMap.add("password", userEntity.getPassword());
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<MultiValueMap<String, Object>>(paramMap,headers);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                "http://player-user/service/user/login",
+                HttpMethod.POST,
+                httpEntity,
+                ResultEntity.class
+        );
+        return  responseEntity.getBody();
     }
 
     /**
@@ -134,19 +148,14 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        UserEntity userEntity = null;
-        if (token == null || StringUtils.isEmpty(token)) {
-            userEntity = movieMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
-        } else {
-            userEntity = JwtToken.parserToken(token, UserEntity.class);
-            if (userEntity == null) {//如果用户签名为空，随机从数据库中查询一个公共的账号
-                userEntity = movieMapper.getUserData();
-            }else{
-                userEntity = movieMapper.getMyUserData(userEntity.getUserId());
-            }
-        }
-        String newToken = JwtToken.createToken(userEntity);
-        return ResultUtil.success(userEntity, null, newToken);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                "http://player-user/service/user/getUserData",
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
     }
 
     /**
