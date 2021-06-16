@@ -18,7 +18,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -99,19 +101,29 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity login(UserEntity userEntity) {
-        MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<String, Object>();
-        paramMap.add("userId", userEntity.getUserId());
-        paramMap.add("password", userEntity.getPassword());
-        HttpHeaders headers = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
-        headers.setContentType(type);
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<MultiValueMap<String, Object>>(paramMap,headers);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-user/service/user/login",
-                HttpMethod.POST,
-                httpEntity,
-                ResultEntity.class
-        );
+//        MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<String, Object>();
+//        paramMap.add("userId", userEntity.getUserId());
+//        paramMap.add("password", userEntity.getPassword());
+//        HttpHeaders headers = new HttpHeaders();
+//        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+//        headers.setContentType(type);
+//        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<MultiValueMap<String, Object>>(paramMap,headers);
+//        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+//                "http://player-user/service/user/login",
+//                HttpMethod.POST,
+//                httpEntity,
+//                ResultEntity.class
+//        );
+//        return  responseEntity.getBody();
+
+        URI uri = UriComponentsBuilder.fromUriString("http://player-user/service/user/login").build().toUri();
+        // 自定义body实体类
+        String s = JSON.toJSONString(userEntity);
+        RequestEntity<String> requestEntity = RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .body(s);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(requestEntity,ResultEntity.class);
         return  responseEntity.getBody();
     }
 

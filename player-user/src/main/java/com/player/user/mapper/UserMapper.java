@@ -17,6 +17,8 @@ public interface UserMapper {
      */
     UserEntity getMyUserData(String userId);
 
+    UserEntity login(UserEntity userEntity);
+
     Long register(UserEntity userEntity);
 
     UserEntity getUserById(String userId);

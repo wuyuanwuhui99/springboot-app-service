@@ -51,7 +51,7 @@ public class UserService implements IUserService {
             String token = JwtToken.createToken(resultUserEntity);//token有效期一天
             return ResultUtil.success(resultUserEntity, "登录成功", token);
         } else {
-            return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.LOGOUT);
+            return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.FAIIL);
         }
     }
 
