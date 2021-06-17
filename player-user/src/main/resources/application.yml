@@ -6,6 +6,8 @@ token:
 app:
   appId: com.play.user
   appName: 用户中心
+  avater-img: /static/user/avater/
+  avater-path: F:${app.avater-img}
 spring:
   application:
     name: player-user

@@ -1,5 +1,6 @@
 package com.player.music.service.imp;
 
+import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.utils.Common;
@@ -58,7 +59,7 @@ public class UserService implements IUserService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
         ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-movie/service/movie/getUserData",
+                "http://player-user/service/user/getUserData",
                 HttpMethod.GET,
                 new HttpEntity<String>(headers),ResultEntity.class
         );
@@ -75,14 +76,11 @@ public class UserService implements IUserService {
      * @date: 2020-08-11 23:54
      */
     @Override
-    public ResultEntity login(String userId, String password) {
-        List<UserEntity> userEntities = userDao.findByUserIdAndPassword(userId, password);
-        if (userEntities.size() > 0) {
-            UserEntity userEntity = userEntities.get(0);
-            String token = JwtToken.createToken(userEntity);
-            return ResultUtil.success(userEntity,null,token);
-        }
-        return null;
+    public ResultEntity login(UserEntity userEntity) {
+        return restTemplate.exchange(
+                Common.postRequestEntity("http://player-user/service/user/login",null,userEntity),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -110,44 +108,35 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity register(UserEntity userEntity) {
-        UserEntity userEntity1 = userDao.saveAndFlush(userEntity);
-        return ResultUtil.success(userEntity1, "注册成功");
+        return restTemplate.exchange(Common.postRequestEntity("http://player-user/service/user/register",null,userEntity),ResultEntity.class).getBody();
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: findUser
-     * @description: 判断用户是否存在
-     * @return: ResultEntity
-     * @date: 2020-08-11 23:54
+     * @description: 查询单个用户，用于校验用户是否存在
+     * @date: 2021-01-01 23:39
      */
     @Override
-    public ResultEntity findUser(String userId) {
-        List<UserEntity> userEntities = userDao.findByUserId(userId);
-        if (userEntities.size() > 0) {
-            return ResultUtil.fail(null, "用户已经存在");
-        } else {
-            return ResultUtil.success(null, "");
-        }
+    public ResultEntity getUserById(String userId) {
+        return restTemplate.exchange(
+                "http://player-user/service/user/getUserById?userId="+userId,
+                HttpMethod.GET,
+                new HttpEntity<String>(new HttpHeaders()),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: updateUser
      * @description: 更新用户信息
-     * @return: ResultEntity
-     * @date: 2020-08-11 23:54
+     * @date: 2020-12-24 22:40
      */
     @Override
-    public ResultEntity updateUser(UserEntity userEntity) {
-        if(StringUtils.isEmpty(userEntity.getTelephone())){
-            return ResultUtil.fail(null,"用户名不能为空");
-        }else if(StringUtils.isEmpty(userEntity.getTelephone())){
-            return ResultUtil.fail(null,"电话不能为空");
-        }else if(StringUtils.isEmpty(userEntity.getTelephone())){
-            return ResultUtil.fail(null,"邮箱不能为空");
-        }
-        return  ResultUtil.success(userDao.save(userEntity));
+    public ResultEntity updateUser(UserEntity userEntity, String token) {
+        return restTemplate.exchange(
+                Common.putRequestEntity("http://player-user/service/user-getway/updateUser",token,userEntity),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -158,15 +147,11 @@ public class UserService implements IUserService {
      * @date: 2020-08-11 23:54
      */
     @Override
-    public ResultEntity updatePassword(String userId, String newPassword, String oldPassword){
-        List<UserEntity> userEntities = userDao.findByUserIdAndPassword(userId, oldPassword);
-        if(userEntities.size() > 0){
-            UserEntity userEntity = userEntities.get(0);
-            userEntity.setPassword(newPassword);
-            userDao.save(userEntity);
-            return ResultUtil.success(null,"修改密码成功");
-        }
-        return ResultUtil.fail(0,"修改密码失败");
+    public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
+        return restTemplate.exchange(
+                Common.postRequestEntity("http://player-user/service/user-getway/updatePassword",token,passwordEntity),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**

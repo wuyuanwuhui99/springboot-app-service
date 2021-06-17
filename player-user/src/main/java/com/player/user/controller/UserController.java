@@ -3,6 +3,7 @@ package com.player.user.controller;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
+import com.player.common.utils.JwtToken;
 import com.player.common.utils.OperationType;
 import com.player.user.entity.PasswordEntity;
 import com.player.user.service.IUserService;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -60,5 +62,13 @@ public class UserController {
     @PutMapping("/user-getway/updatePassword")
     public ResultEntity updatePassword(@RequestBody PasswordEntity passwordEntity,HttpServletRequest request) {
         return userService.updatePassword(passwordEntity,request.getHeader("Authorization"));
+    }
+
+    @ApiOperation("修改密码")
+    @PostMapping("/user-getway/upload")
+    public ResultEntity upload(HttpServletRequest request, @RequestParam("img") MultipartFile file) {
+        String token = request.getHeader("Authorization");
+        String userId = JwtToken.getUserId(token);
+        return userService.upload(userId,token,file);
     }
 }

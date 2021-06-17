@@ -3,19 +3,30 @@ package com.player.user.service.imp;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
+import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import com.player.user.entity.PasswordEntity;
 import com.player.user.mapper.UserMapper;
 import com.player.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 @Service
 public class UserService implements IUserService {
+    @Value("${app.avater-path}")
+    private String avaterPath;
+
+    @Value("${app.avater-img}")
+    private String avaterImg;
+
     @Autowired
     private UserMapper userMapper;
     /**
@@ -106,5 +117,34 @@ public class UserService implements IUserService {
             return ResultUtil.fail(null,"禁止修改其他用户密码");
         }
         return ResultUtil.success(userMapper.updatePassword(passwordEntity));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: updatePassword
+     * @description: 修改密码
+     * @return: ResultEntity
+     * @date: 2021-06-18 00:21
+     */
+    @Override
+    public ResultEntity upload(String userId, String token, MultipartFile file){
+        if (file.isEmpty()) {
+            return ResultUtil.fail("请选择文件");
+        }
+        String fileName = file.getOriginalFilename();
+        String myFileName = userId + "_" + System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
+        File dest = new File(avaterPath + myFileName);
+        try {
+            file.transferTo(dest);
+            UserEntity userEntity = new UserEntity();
+            userEntity.setAvater(avaterImg + myFileName);
+            userEntity.setUserId(userId);
+            userMapper.updateUser(userEntity);
+            ResultEntity resultEntity = getUserData(token);
+            resultEntity.getMsg("上传成功");
+            return resultEntity;
+        } catch (IOException e) {
+            return ResultUtil.fail(e,"上传失败");
+        }
     }
 }

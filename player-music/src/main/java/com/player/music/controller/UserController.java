@@ -1,8 +1,11 @@
 package com.player.music.controller;
 
+import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
+import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
+import com.player.common.utils.OperationType;
 import com.player.music.Entity.UserEntity;
 import com.player.music.service.IUserService;
 import feign.Param;
@@ -34,10 +37,8 @@ public class UserController {
 
     @ApiOperation("登录")
     @PostMapping("/music/login")
-    public ResultEntity login(HttpServletResponse response, @RequestBody UserEntity userEntity) {
-        String userId =  userEntity.getUserId();
-        String password = userEntity.getPassword();
-        return userService.login(userId, password);
+    public ResultEntity login(@RequestBody UserEntity userEntity) {
+        return userService.login(userEntity);
     }
 
     @ApiOperation("退出登录")
@@ -47,26 +48,22 @@ public class UserController {
     }
 
     @ApiOperation("注册时判断用户是否存在")
-    @GetMapping("/music/findUser")
-    public ResultEntity findUser(@Param("userId") String userId) {
-        return userService.findUser(userId);
+    @GetMapping("/music/getUserById")
+    public ResultEntity getUserById(@Param("userId") String userId) {
+        return userService.getUserById(userId);
     }
 
-    @ApiOperation("更新用户")
-    @PutMapping("/music-getway/findUser")
-    public ResultEntity updateUser(@RequestBody UserEntity userEntity) {
-        return userService.updateUser(userEntity);
+    @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
+    @ApiOperation("更新用户信息")
+    @PutMapping("/music-getway/updateUser")
+    public ResultEntity updateUser(@RequestBody UserEntity userEntity, HttpServletRequest request) {
+        return userService.updateUser(userEntity,request.getHeader("Authorization"));
     }
 
     @ApiOperation("修改密码")
     @PutMapping("/music-getway/updatePassword")
-    public ResultEntity updatePassword(
-            HttpServletRequest request,
-            @RequestParam("newPassword") String newPassword,
-            @RequestParam("oldPassword") String oldPassword
-    ) {
-        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
-        return userService.updatePassword(userId,newPassword,oldPassword);
+    public ResultEntity updatePassword(@RequestBody PasswordEntity passwordEntity, HttpServletRequest request) {
+        return userService.updatePassword(passwordEntity,request.getHeader("Authorization"));
     }
 
     @ApiOperation("修改密码")

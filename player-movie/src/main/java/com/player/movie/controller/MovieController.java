@@ -1,5 +1,6 @@
 package com.player.movie.controller;
 
+import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
@@ -31,8 +32,8 @@ public class MovieController {
 
     @ApiOperation("修改密码")
     @PutMapping("/movie-getway/updatePassword")
-    public ResultEntity updatePassword(@RequestBody Map userMap,HttpServletRequest request) {
-        return movieService.updatePassword(userMap,request.getHeader("Authorization"));
+    public ResultEntity updatePassword(@RequestBody PasswordEntity passwordEntity, HttpServletRequest request) {
+        return movieService.updatePassword(passwordEntity,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "获取分类信息", operation = OperationType.QUERY)

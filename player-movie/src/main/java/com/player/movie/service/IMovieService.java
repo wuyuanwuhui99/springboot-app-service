@@ -1,5 +1,6 @@
 package com.player.movie.service;
 
+import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.movie.entity.MovieEntity;
@@ -56,5 +57,5 @@ public interface IMovieService {
 
     ResultEntity updateUser(UserEntity userEntity,String token);
 
-    ResultEntity updatePassword(Map userMap,String token);
+    ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 }

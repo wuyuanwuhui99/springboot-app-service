@@ -1,5 +1,6 @@
 package com.player.music.service;
 
+import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.music.Entity.UserEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,17 +11,17 @@ public interface IUserService {
 
     ResultEntity getUserData(String token);
 
-    ResultEntity login(String userId, String password);
+    ResultEntity login(UserEntity userEntity);
 
     ResultEntity logout(HttpServletResponse response);
 
     ResultEntity register(UserEntity userEntity);
 
-    ResultEntity findUser(String userId);
+    ResultEntity getUserById(String userId);
 
-    ResultEntity updateUser(UserEntity resultEntity);
+    ResultEntity updateUser(UserEntity userEntity, String token);
 
-    ResultEntity updatePassword(String userId,String newPassword, String oldPassword);
+    ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
     ResultEntity upload(String userId,String token,MultipartFile file);
 }

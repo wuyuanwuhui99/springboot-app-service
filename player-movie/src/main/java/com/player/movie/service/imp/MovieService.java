@@ -1,6 +1,7 @@
 package com.player.movie.service.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
@@ -52,9 +53,9 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-24 22:40
      */
     @Override
-    public ResultEntity updatePassword(Map userMap,String token) {
+    public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
         return restTemplate.exchange(
-                Common.postRequestEntity("http://player-user/service/user-getway/updatePassword",token,userMap),
+                Common.postRequestEntity("http://player-user/service/user-getway/updatePassword",token,passwordEntity),
                 ResultEntity.class
         ).getBody();
     }
