@@ -5,7 +5,6 @@ import com.player.common.entity.LogEntity;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.entity.MovieStarEntity;
 import com.player.movie.entity.MovieUrlEntity;
-import com.player.common.entity.UserEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,20 +24,6 @@ public interface MovieMapper {
      * @date: 2020-12-24 23:50
      */
     Map<String, String> getKeyWord(String classify);
-
-    /**
-     * @author: wuwenqiang
-     * @description: 查询用户数据
-     * @date: 2020-12-24 23:50
-     */
-    UserEntity getUserData();
-
-    /**
-     * @author: wuwenqiang
-     * @description: 查询用户数据
-     * @date: 2020-12-24 23:50
-     */
-    UserEntity getMyUserData(String userId);
 
     /**
      * @author: wuwenqiang
@@ -72,12 +57,6 @@ public interface MovieMapper {
 
     Map<String, Long> total(String keyword);
 
-    UserEntity login(String userId, String password);
-
-    Long register(UserEntity userEntity);
-
-    UserEntity getUserById(String userId);
-
     Long log(LogEntity logEntity);
 
     List<MovieStarEntity> getStar(String movieId);
@@ -103,8 +82,4 @@ public interface MovieMapper {
     List<MovieEntity> getYourLikes(@Param("labels") String[] labels);
 
     List<MovieEntity> getRecommend(String classify);
-
-    Long updateUser(UserEntity userEntity);
-
-    Long updatePassword(String userId,String newPassword,String oldPassword );
 }

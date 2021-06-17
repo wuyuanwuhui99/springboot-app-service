@@ -1,5 +1,11 @@
 package com.player.common.utils;
 
+import com.alibaba.fastjson.JSON;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,5 +23,27 @@ public class Common {
             dateFormat = new  SimpleDateFormat(pattern);
         }
         return dateFormat.format(date);
+    }
+
+    public static RequestEntity postRequestEntity(String path,String token, Object params){
+        URI uri = UriComponentsBuilder.fromUriString(path).build().toUri();
+        // 自定义body实体类
+        String s = JSON.toJSONString(params);
+        return RequestEntity.post(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .header("Authorization", token)
+                .body(s);
+    }
+
+    public static RequestEntity putRequestEntity(String path,String token, Object params){
+        URI uri = UriComponentsBuilder.fromUriString(path).build().toUri();
+        // 自定义body实体类
+        String s = JSON.toJSONString(params);
+        return RequestEntity.put(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .header("Authorization", token)
+                .body(s);
     }
 }

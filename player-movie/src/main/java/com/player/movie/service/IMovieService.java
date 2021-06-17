@@ -4,6 +4,8 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.movie.entity.MovieEntity;
 
+import java.util.Map;
+
 public interface IMovieService {
 
     ResultEntity findClassify(String path);
@@ -52,7 +54,7 @@ public interface IMovieService {
 
     ResultEntity getRecommend(String classify,String path);
 
-    ResultEntity updateUser(UserEntity userEntity);
+    ResultEntity updateUser(UserEntity userEntity,String token);
 
-    ResultEntity updatePassword(String userId,String newPassword,String oldPassword);
+    ResultEntity updatePassword(Map userMap,String token);
 }

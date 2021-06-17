@@ -1,7 +1,11 @@
 package com.player.movie.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.ToString;
 
+@Data
+@ToString
 public class MovieUrlEntity {
     @ApiModelProperty(value = "主键")
     private String id;//主键
@@ -30,75 +34,4 @@ public class MovieUrlEntity {
     @ApiModelProperty(value = "播放分组，1, 2")
     private int playGroup;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getMovieName() {
-        return movieName;
-    }
-
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
-    }
-
-    public String getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getPlayGroup() {
-        return playGroup;
-    }
-
-    public void setPlayGroup(int playGroup) {
-        this.playGroup = playGroup;
-    }
 }

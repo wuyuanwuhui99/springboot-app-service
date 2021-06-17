@@ -5,6 +5,7 @@ import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
+import com.player.user.entity.PasswordEntity;
 import com.player.user.mapper.UserMapper;
 import com.player.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +75,36 @@ public class UserService implements IUserService {
     /**
      * @author: wuwenqiang
      * @description: 查询单个用户，用于校验用户是否存在
-     * @date: 2021-01-01 23:39
+     * @date: 2021-06-17 22:33
      */
     @Override
     public ResultEntity getUserById(String userId) {
         return ResultUtil.success(userMapper.getUserById(userId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 更新用户信息
+     * @date:  2021-06-17 22:33
+     */
+    @Override
+    public ResultEntity updateUser(UserEntity userEntity,String token) {
+        if(userEntity.getUserId() != JwtToken.parserToken(token, UserEntity.class).getUserId()){
+            return ResultUtil.fail(null,"禁止修改其他用户信息");
+        }
+        return ResultUtil.success(userMapper.updateUser(userEntity));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 修改密码
+     * @date: 2020-12-24 22:40
+     */
+    @Override
+    public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
+        if(passwordEntity.getUserId() != JwtToken.parserToken(token, UserEntity.class).getUserId()){
+            return ResultUtil.fail(null,"禁止修改其他用户密码");
+        }
+        return ResultUtil.success(userMapper.updatePassword(passwordEntity));
     }
 }

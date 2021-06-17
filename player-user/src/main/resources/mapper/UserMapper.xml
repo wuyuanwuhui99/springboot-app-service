@@ -20,4 +20,40 @@
     <select id="getUserById" resultType="com.player.common.entity.UserEntity">
        SELECT user_id ,create_date ,update_date,username,telephone,email,avater,birthday,sex,role,sign,region from  user WHERE user_id = #{userId}
     </select>
+
+    <update id="updateUser" parameterType="com.player.common.entity.UserEntity">
+        UPDATE user SET
+            update_date = now()
+            <if test="username != '' and username != null">
+                ,username = #{username}
+            </if>
+            <if test="telephone != '' and telephone != null">
+                ,telephone = #{telephone}
+            </if>
+            <if test="email != '' and email != null">
+                ,email = #{email}
+            </if>
+            <if test="avater != '' and avater != null">
+                ,avater = #{avater}
+            </if>
+            <if test="birthday != '' and birthday != null">
+                ,birthday = #{birthday}
+            </if>
+            <if test="sex != '' and sex != null">
+                ,sex = #{sex}
+            </if>
+            <if test="sign != '' and sign != null">
+                sign = #{sign},
+            </if>
+            <if test="region != '' and region != null">
+                ,region = #{region}
+            </if>
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="PasswordEntity" parameterType="Map">
+        UPDATE user SET
+            password = #{newPassword},
+        WHERE user_id = #{userId} AND password = #{oldPassword}
+    </update>
 </mapper>

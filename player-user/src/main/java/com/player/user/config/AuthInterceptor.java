@@ -1,4 +1,4 @@
-package com.player.movie.config;
+package com.player.user.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.player.common.entity.ResultEntity;
@@ -34,6 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
         return true;
+
     }
 
     protected void renderJson(HttpServletResponse response, ResultEntity resultEntity) {

@@ -1,6 +1,7 @@
 package com.player.user.mapper;
 
 import com.player.common.entity.UserEntity;
+import com.player.user.entity.PasswordEntity;
 
 public interface UserMapper {
     /**
@@ -22,4 +23,8 @@ public interface UserMapper {
     Long register(UserEntity userEntity);
 
     UserEntity getUserById(String userId);
+
+    Long updateUser(UserEntity userEntity);
+
+    Long updatePassword(PasswordEntity passwordEntity);
 }

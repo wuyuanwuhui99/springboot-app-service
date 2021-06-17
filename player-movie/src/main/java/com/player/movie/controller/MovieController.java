@@ -25,17 +25,14 @@ public class MovieController {
     @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
     @ApiOperation("更新用户信息")
     @PutMapping("/movie-getway/updateUser")
-    public ResultEntity updateUser(@RequestBody UserEntity userEntity) {
-        return movieService.updateUser(userEntity);
+    public ResultEntity updateUser(@RequestBody UserEntity userEntity,HttpServletRequest request) {
+        return movieService.updateUser(userEntity,request.getHeader("Authorization"));
     }
 
     @ApiOperation("修改密码")
     @PutMapping("/movie-getway/updatePassword")
-    public ResultEntity updatePassword(@RequestBody Map userMap) {
-        String userId = (String) userMap.get("userId");
-        String newPassword = (String) userMap.get("newPassword");
-        String oldPassword = (String) userMap.get("oldPassword");
-        return movieService.updatePassword(userId,newPassword,oldPassword);
+    public ResultEntity updatePassword(@RequestBody Map userMap,HttpServletRequest request) {
+        return movieService.updatePassword(userMap,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "获取分类信息", operation = OperationType.QUERY)
@@ -67,16 +64,14 @@ public class MovieController {
     @ApiOperation("查询用户信息")
     @GetMapping("/movie/getUserData")
     public ResultEntity getUserData(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.getUserData(token);
+        return movieService.getUserData(request.getHeader("Authorization"));
     }
 
     @OperLog(message = "查询当前用户的使用天数，关注数，观看记录数，浏览记录数", operation = OperationType.QUERY)
     @ApiOperation("查询当前用户的使用天数，关注数，观看记录数，浏览记录数")
     @GetMapping("/movie-getway/getUserMsg")
     public ResultEntity getUserMsg(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.getUserMsg(token);
+        return movieService.getUserMsg(request.getHeader("Authorization"));
     }
 
     @OperLog(message = "按classify大类查询所有catory小类", operation = OperationType.QUERY)
@@ -168,56 +163,49 @@ public class MovieController {
     @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/saveViewRecord")
     @PostMapping("/movie-getway/saveViewRecord")
     public ResultEntity saveViewRecord(@RequestBody MovieEntity movieEntity,HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.saveViewRecord(movieEntity,token);
+        return movieService.saveViewRecord(movieEntity,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "获取观看记录", operation = OperationType.QUERY)
     @ApiOperation("获取观看记录,请求地地址：/service/movie/getPlayRecord")
     @GetMapping("/movie-getway/getPlayRecord")
     public ResultEntity getPlayRecord(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.getPlayRecord(token);
+        return movieService.getPlayRecord(request.getHeader("Authorization"));
     }
 
     @OperLog(message = "保存观看记录", operation = OperationType.ADD)
     @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/savePlayRecord")
     @PostMapping("/movie-getway/savePlayRecord")
     public ResultEntity savePlayRecord(@RequestBody MovieEntity movieEntity,HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.savePlayRecord(movieEntity,token);
+        return movieService.savePlayRecord(movieEntity,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "获取收藏记录", operation = OperationType.QUERY)
     @ApiOperation("获取观看记录,请求地地址：/service/movie-getway/getFavoriteList")
     @GetMapping("/movie-getway/getFavoriteList")
     public ResultEntity getFavorite(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.getFavoriteList(token);
+        return movieService.getFavoriteList(request.getHeader("Authorization"));
     }
 
     @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
     @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
     @PostMapping("/movie-getway/saveFavorite")
     public ResultEntity saveFavorite(@RequestBody MovieEntity movieEntity,HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.saveFavorite(movieEntity,token);
+        return movieService.saveFavorite(movieEntity,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "删除收藏", operation = OperationType.DELETE)
     @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
     @DeleteMapping("/movie-getway/deleteFavorite")
     public ResultEntity deleteFavorite(@RequestParam("movieId") String movieId,HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.deleteFavorite(movieId,token);
+        return movieService.deleteFavorite(movieId,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "查询是否已经收藏", operation = OperationType.QUERY)
     @ApiOperation("查询是否已经收藏,请求地地址：/service/movie-getway/isFavorite")
     @GetMapping("/movie-getway/isFavorite")
     public ResultEntity isFavorite(@RequestParam("movieId") String movieId,HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return movieService.isFavorite(movieId,token);
+        return movieService.isFavorite(movieId,request.getHeader("Authorization"));
     }
 
     @OperLog(message = "获取猜你想看的电影", operation = OperationType.QUERY)

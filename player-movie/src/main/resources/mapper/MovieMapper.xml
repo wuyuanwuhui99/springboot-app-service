@@ -72,10 +72,6 @@
         SELECT movie_name AS movieName,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify} LIMIT 1
     </select>
 
-    <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
-        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role from  user WHERE role ='public'  order by rand() LIMIT 1
-    </select>
-
     <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">
         SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sex,role,sign,region from  user WHERE user_id = #{userId}
     </select>
@@ -109,18 +105,6 @@
     <select id="total" resultType="Map">
         SELECT count(*) as total FROM movie
         <include refid="search"></include>
-    </select>
-
-    <select id="login" resultType="com.player.common.entity.UserEntity">
-       SELECT user_id AS userId,create_date AS createDate,update_date AS updateDate,username,telephone,email,avater,birthday,sex,role from  user WHERE user_id=#{userId} and password=#{password}
-    </select>
-
-    <insert id="register" parameterType="com.player.common.entity.UserEntity">
-       INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{userId},#{password},#{createDate},#{updateDate},#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
-    </insert>
-
-    <select id="getUserById" resultType="com.player.common.entity.UserEntity">
-       SELECT user_id ,create_date ,update_date,username,telephone,email,avater,birthday,sex,role,sign,region from  user WHERE user_id = #{userId}
     </select>
 
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
@@ -181,25 +165,5 @@
     <select id="getRecommend" resultType="MovieEntity">
         SELECT * FROM movie WHERE classify = #{classify} ORDER BY create_time DESC LIMIT 0,20
     </select>
-
-    <update id="updateUser" parameterType="com.player.common.entity.UserEntity">
-        UPDATE user SET
-            update_date = #{updateDate},
-            username = #{username},
-            telephone = #{telephone},
-            email = #{email},
-            avater = #{avater},
-            birthday  = #{birthday},
-            sex = #{sex},
-            sign = #{sign},
-            region = #{region}
-        WHERE user_id = #{userId}
-    </update>
-
-    <update id="updatePassword">
-        UPDATE user SET
-            password = #{newPassword},
-        WHERE user_id = #{userId} AND password = #{oldPassword}
-    </update>
 </mapper>
 

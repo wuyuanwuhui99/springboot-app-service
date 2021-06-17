@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
+import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
-import com.player.common.utils.ResultCode;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
@@ -14,13 +14,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -43,8 +39,11 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-24 22:40
      */
     @Override
-    public ResultEntity updateUser(UserEntity userEntity) {
-       return ResultUtil.success(movieMapper.updateUser(userEntity));
+    public ResultEntity updateUser(UserEntity userEntity,String token) {
+        return restTemplate.exchange(
+                Common.putRequestEntity("http://player-user/service/user-getway/updateUser",token,userEntity),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -53,8 +52,11 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-24 22:40
      */
     @Override
-    public ResultEntity updatePassword(String userId,String newPassword,String oldPassword) {
-        return ResultUtil.success(movieMapper.updatePassword(userId,newPassword,oldPassword));
+    public ResultEntity updatePassword(Map userMap,String token) {
+        return restTemplate.exchange(
+                Common.postRequestEntity("http://player-user/service/user-getway/updatePassword",token,userMap),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -101,30 +103,10 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity login(UserEntity userEntity) {
-//        MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<String, Object>();
-//        paramMap.add("userId", userEntity.getUserId());
-//        paramMap.add("password", userEntity.getPassword());
-//        HttpHeaders headers = new HttpHeaders();
-//        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
-//        headers.setContentType(type);
-//        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<MultiValueMap<String, Object>>(paramMap,headers);
-//        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-//                "http://player-user/service/user/login",
-//                HttpMethod.POST,
-//                httpEntity,
-//                ResultEntity.class
-//        );
-//        return  responseEntity.getBody();
-
-        URI uri = UriComponentsBuilder.fromUriString("http://player-user/service/user/login").build().toUri();
-        // 自定义body实体类
-        String s = JSON.toJSONString(userEntity);
-        RequestEntity<String> requestEntity = RequestEntity.post(uri)
-                .accept(MediaType.APPLICATION_JSON)
-                .header("Content-Type", "application/json; charset=UTF-8")
-                .body(s);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(requestEntity,ResultEntity.class);
-        return  responseEntity.getBody();
+        return restTemplate.exchange(
+                Common.postRequestEntity("http://player-user/service/user/login",null,userEntity),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -134,13 +116,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity register(UserEntity userEntity) {
-        userEntity.setCreateDate(new Date());
-        userEntity.setUpdateDate(new Date());
-        Long rows = movieMapper.register(userEntity);
-        if (rows >= 1) {
-            return ResultUtil.success(movieMapper.getUserById(userEntity.getUserId()));
-        }
-        return ResultUtil.fail(null, "注册失败");
+        return restTemplate.exchange(Common.postRequestEntity("http://player-user/service/user/register",null,userEntity),ResultEntity.class).getBody();
     }
 
     /**
@@ -150,7 +126,12 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserById(String userId) {
-        return ResultUtil.success(movieMapper.getUserById(userId));
+        return restTemplate.exchange(
+                "http://player-user/service/user/getUserById?userId="+userId,
+                HttpMethod.GET,
+                new HttpEntity<String>(new HttpHeaders()),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -162,12 +143,11 @@ public class MovieService implements IMovieService {
     public ResultEntity getUserData(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+        return restTemplate.exchange(
                 "http://player-user/service/user/getUserData",
                 HttpMethod.GET,
                 new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        ).getBody();
     }
 
     /**
