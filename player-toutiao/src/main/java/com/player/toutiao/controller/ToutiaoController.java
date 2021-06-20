@@ -45,7 +45,7 @@ public class ToutiaoController {
 
     @OperLog(message = "查询用户收藏的频道", operation = OperationType.QUERY)
     @ApiOperation("查询用户收藏的频道")
-    @GetMapping("/toutiao/getFavoriteChannels-getway")
+    @GetMapping("/toutiao-getway/getFavoriteChannels")
     public ResultEntity getFavoriteChannels(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return toutiaoService.getFavoriteChannels(token);

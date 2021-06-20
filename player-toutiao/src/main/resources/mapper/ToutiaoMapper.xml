@@ -89,7 +89,7 @@
     </select>
 
     <select id="getArticleDetail" resultType="ArticleEntity">
-        SELECT * FROM toutiao_article WHERE id = #{id}
+        SELECT * FROM toutiao_article WHERE id = #{id} AND disabled = 0
     </select>
 
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
