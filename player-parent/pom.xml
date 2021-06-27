@@ -35,6 +35,7 @@
         <io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
         <io.swagger.version>1.5.20</io.swagger.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
+        <org.apache.tomcat.embed.version>8.5.29</org.apache.tomcat.embed.version>
 <!--        <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>-->
     </properties>
 
@@ -137,6 +138,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${org.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${org.apache.tomcat.embed.version}</version>
             </dependency>
 <!--            <dependency>-->
 <!--                <groupId>org.hibernate</groupId>-->

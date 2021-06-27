@@ -6,7 +6,7 @@
     </sql>
 
     <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE role ='public' and diabled = 0  order by rand() LIMIT 1
+        <include refid="userData"></include> WHERE role ='public' and disabled = 0  order by rand() LIMIT 1
     </select>
 
     <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">

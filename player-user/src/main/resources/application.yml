@@ -4,7 +4,7 @@ token:
   expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
   secret: wuwenqiang #token秘钥
 app:
-  appId: com.play.user
+  appId: com.player.user
   appName: 用户中心
   avater-img: /static/user/avater/
   avater-path: F:${app.avater-img}
