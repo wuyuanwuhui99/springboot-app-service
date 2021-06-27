@@ -48,6 +48,7 @@
         SELECT
             id,
             channel_id,
+            content,
             duration,
             href,
             img,
@@ -69,10 +70,10 @@
 
     <select id="getArticleList" resultType="ArticleEntity">
         <if test="channelId == 0 and start == 0">
-            (<include refid="getArticleListSql"></include> WHERE is_top = '1'AND channel_id = '0' ORDER BY create_time DESC LIMIT 0,3) UNION ALL
+            (<include refid="getArticleListSql"></include> WHERE content IS NOT NULL AND is_top = '1'AND channel_id = '0' ORDER BY create_time DESC LIMIT 0,3) UNION ALL
         </if>
         (<include refid="getArticleListSql"></include>
-         where type != 'video' and is_top = '0'
+         where is_top = '0' AND content IS NOT NULL
         <if test="keyword!=null and keyword!=''">
             and title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
         </if >
