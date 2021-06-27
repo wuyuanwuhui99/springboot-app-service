@@ -32,6 +32,9 @@
         <redis.clients.version>2.9.0</redis.clients.version>
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
         <spring-boot-starter-data-redis.version>2.4.0</spring-boot-starter-data-redis.version>
+        <io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
+        <io.swagger.version>1.5.20</io.swagger.version>
+        <org.slf4j.version>1.7.25</org.slf4j.version>
 <!--        <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>-->
     </properties>
 
@@ -119,6 +122,21 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${io.swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.version}</version>
             </dependency>
 <!--            <dependency>-->
 <!--                <groupId>org.hibernate</groupId>-->

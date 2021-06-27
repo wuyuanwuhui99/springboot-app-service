@@ -7,6 +7,7 @@ import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
 import com.player.movie.mapper.MovieMapper;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -97,7 +98,7 @@ public class LogAspect {
         sysLog.setQueryString(request.getQueryString());
 
         String token = request.getHeader("Authorization");
-        if(token!= null && !"".equals(token)){
+        if(StringUtils.isNotEmpty(token)){
             UserEntity userEntity =jwtToken.parserToken(token, UserEntity.class);
             if(userEntity != null && !"".equals(userEntity)){
                 sysLog.setUserId(userEntity.getUserId());

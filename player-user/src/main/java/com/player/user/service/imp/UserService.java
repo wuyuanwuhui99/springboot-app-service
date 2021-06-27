@@ -3,7 +3,6 @@ package com.player.user.service.imp;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
-import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import com.player.user.entity.PasswordEntity;
@@ -11,6 +10,7 @@ import com.player.user.mapper.UserMapper;
 import com.player.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,9 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService implements IUserService {
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Value("${app.avater-path}")
     private String avaterPath;
 
@@ -48,6 +52,7 @@ public class UserService implements IUserService {
             }
         }
         String newToken = JwtToken.createToken(userEntity);
+        redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
         return ResultUtil.success(userEntity, null, newToken);
     }
 
@@ -61,6 +66,7 @@ public class UserService implements IUserService {
         UserEntity resultUserEntity = userMapper.login(userEntity);
         if (resultUserEntity != null) {
             String token = JwtToken.createToken(resultUserEntity);//token有效期一天
+            redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(resultUserEntity, "登录成功", token);
         } else {
             return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.FAIIL);
