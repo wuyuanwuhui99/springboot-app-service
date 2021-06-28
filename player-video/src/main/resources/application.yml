@@ -1,0 +1,57 @@
+server:
+  port: 8001
+token:
+  expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
+  secret: wuwenqiang #token秘钥
+app:
+  appId: com.player.video
+  appName: 冬瓜视频
+spring:
+  redis:
+    database: 0 # Redis数据库索引（默认为0）
+    host: 127.0.0.1 # Redis服务器地址
+    port: 6379 # Redis服务器连接端口
+    password: # Redis服务器连接密码（默认为空）
+    timeout: 5000 # 连接超时时间（毫秒）
+    jedis:
+      pool:
+        max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+  application:
+    name: player-video
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.0.102:3306/play?characterEncoding=utf-8
+      username: root
+      password: wwq_2021
+      driverClassName: com.mysql.jdbc.Driver
+      initialSize: 5  #初始建立连接数量
+      minIdle: 5  #最小连接数量
+      maxActive: 20 #最大连接数量
+      maxWait: 10000  #获取连接最大等待时间，毫秒
+      testOnBorrow: true #申请连接时检测连接是否有效
+      testOnReturn: false #归还连接时检测连接是否有效
+      timeBetweenEvictionRunsMillis: 60000 #配置间隔检测连接是否有效的时间（单位是毫秒）
+      minEvictableIdleTimeMillis: 300000  #连接在连接池的最小生存时间（毫秒）
+#mybatis:
+#  mapper-locations: classpath:mapper/*Mapper.xml
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.player.video.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+eureka:
+  client:
+    registerWithEureka: true #服务注册开关
+    fetchRegistry: true #服务发现开关
+    serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
+      defaultZone: http://localhost:4001/eureka/,http://localhost:4002/eureka/
+  instance:
+    prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port} #指定实例id

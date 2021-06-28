@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class Toutiaoservice implements IToutiaoService {
+public class ToutiaoService implements IToutiaoService {
 
     @Autowired
     private ToutiaoMapper toutiaoMapper;

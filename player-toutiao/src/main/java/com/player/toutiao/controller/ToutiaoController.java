@@ -24,12 +24,12 @@ public class ToutiaoController {
     @GetMapping("/toutiao/getArticleList")
     public ResultEntity getArticleList(
             @RequestParam("pageSize") int pageSize,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam(required = false, value="type") String type,
-            @RequestParam(required = false, value="channelId") String channelId,
-            @RequestParam(required = false, value="userId") String userId,
-            @RequestParam(required = false, value="keyword") String keyword,
-            HttpServletRequest request
+    @RequestParam("pageNum") int pageNum,
+    @RequestParam(required = false, value="type") String type,
+    @RequestParam(required = false, value="channelId") String channelId,
+    @RequestParam(required = false, value="userId") String userId,
+    @RequestParam(required = false, value="keyword") String keyword,
+    HttpServletRequest request
     ) {
         String path = HttpUtils.getPath(request);
         return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,userId,keyword,path);

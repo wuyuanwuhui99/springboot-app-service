@@ -47,6 +47,7 @@
         <module>../player-learn</module>
         <module>../player-ebook</module>
         <module>../player-toutiao</module>
+        <module>../player-video</module>
     </modules>
     <dependencyManagement>
         <dependencies>

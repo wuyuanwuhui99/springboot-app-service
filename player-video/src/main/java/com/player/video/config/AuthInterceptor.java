@@ -1,4 +1,4 @@
-package com.player.toutiao.config;
+package com.player.video.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.player.common.entity.ResultEntity;
