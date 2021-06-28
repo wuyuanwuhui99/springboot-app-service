@@ -7,4 +7,5 @@ public interface IVideoService {
 
     ResultEntity getVideoList(int pageNum,int pageSize,String star,String category,String type,String label,String userId,String keyword,String path);
 
+    ResultEntity getVideoCategory(String path);
 }

@@ -24,6 +24,12 @@ public class VideoController {
         return videoService.getUserData(token);
     }
 
+    @ApiOperation("获取视频分类信息")
+    @GetMapping("/video/getVideoCategory")
+    public ResultEntity getVideoCategory(HttpServletRequest request) {
+        return videoService.getVideoCategory( HttpUtils.getPath(request));
+    }
+
     @ApiOperation("获取视频列表")
     @GetMapping("/video/getVideoList")
     public ResultEntity getVideoList(

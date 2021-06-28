@@ -4,6 +4,7 @@ import com.player.common.entity.LogEntity;
 import com.player.video.entity.VideoEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface VideoMapper {
     /**
@@ -19,4 +20,6 @@ public interface VideoMapper {
      * @date: 2020-5-29 19:22
      */
     List<VideoEntity> getVideoList(int start,int pageSize,String star,String category,String type,String label,String userId,String keyword);
+
+    List<Map> getVideoCategory();
 }

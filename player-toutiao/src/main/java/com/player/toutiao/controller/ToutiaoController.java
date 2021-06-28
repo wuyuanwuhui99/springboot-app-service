@@ -60,7 +60,12 @@ public class ToutiaoController {
     @ApiOperation("获取用户登录信息")
     @GetMapping("/toutiao/getUserData")
     public ResultEntity getUserData(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return toutiaoService.getUserData(token);
+        return toutiaoService.getUserData(request.getHeader("Authorization"));
+    }
+
+    @ApiOperation("获取用户登录信息")
+    @GetMapping("/toutiao/getVideoCategory")
+    public ResultEntity getVideoCategory(HttpServletRequest request) {
+        return toutiaoService.getVideoCategory(request.getHeader("Authorization"));
     }
 }

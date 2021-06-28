@@ -127,4 +127,21 @@ public class ToutiaoService implements IToutiaoService {
         );
         return  responseEntity.getBody();
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取视频分类
+     * @date: 2020-06-28 23:50
+     */
+    @Override
+    public ResultEntity getVideoCategory(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                "http://player-video/service/video/getVideoCategory",
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
 }

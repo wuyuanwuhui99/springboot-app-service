@@ -48,6 +48,24 @@ public class VideoService implements IVideoService {
 
     /**
      * @author: wuwenqiang
+     * @description: 获取用户信息
+     * @date: 2020-5-29 19:22
+     */
+    @Override
+    public ResultEntity getVideoCategory(String path) {
+        String result = (String) redisTemplate.opsForValue().get(path);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            ResultEntity resultEntity = ResultUtil.success(videoMapper.getVideoCategory());
+            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
+            return  resultEntity;
+        }
+    }
+
+    /**
+     * @author: wuwenqiang
      * @description: 获取文章列表
      * @date: 2020-12-25 22:29
      */
