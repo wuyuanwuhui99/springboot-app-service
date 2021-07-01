@@ -144,4 +144,21 @@ public class ToutiaoService implements IToutiaoService {
         );
         return  responseEntity.getBody();
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取文章列表
+     * @date: 2020-12-25 22:29
+     */
+    @Override
+    public ResultEntity getVideoList(String token,String queryString) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                "http://player-video/service/video/getVideoList?"+queryString,
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
 }

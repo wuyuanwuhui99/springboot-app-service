@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.player.video.mapper.VideoMapper">
-    <select id="getVideoCategory">
+    <select id="getVideoCategory" resultType="Map">
         SELECT category FROM toutiao_video WHERE category IS NOT NULL AND category != '' GROUP BY category
     </select>
 

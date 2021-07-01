@@ -16,4 +16,6 @@ public interface IToutiaoService {
     ResultEntity getAllChannels(List<Integer> status);
 
     ResultEntity getVideoCategory(String token);
+
+    ResultEntity getVideoList(String token,String queryString);
 }

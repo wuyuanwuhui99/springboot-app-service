@@ -68,4 +68,20 @@ public class ToutiaoController {
     public ResultEntity getVideoCategory(HttpServletRequest request) {
         return toutiaoService.getVideoCategory(request.getHeader("Authorization"));
     }
+
+    @ApiOperation("获取视频列表")
+    @GetMapping("/toutiao/getVideoList")
+    public ResultEntity getVideoList(
+            @RequestParam("pageSize") int pageSize,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam(required = false, value="star") String star,
+            @RequestParam(required = false, value="category") String category,
+            @RequestParam(required = false, value="type") String type,
+            @RequestParam(required = false, value="label") String label,
+            @RequestParam(required = false, value="userId") String userId,
+            @RequestParam(required = false, value="keyword") String keyword,
+            HttpServletRequest request
+    ) {
+        return toutiaoService.getVideoList(request.getHeader("Authorization"),request.getQueryString());
+    }
 }
