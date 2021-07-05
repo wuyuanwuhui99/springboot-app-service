@@ -1,6 +1,8 @@
 package com.player.user.service;
 
+import com.player.common.entity.LogEntity;
 import com.player.common.entity.ResultEntity;
+import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.user.entity.PasswordEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,4 +21,6 @@ public interface IUserService {
     ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
     ResultEntity upload(String userId, String token, MultipartFile file);
+
+    ResultEntity log(LogEntity logEntity);
 }

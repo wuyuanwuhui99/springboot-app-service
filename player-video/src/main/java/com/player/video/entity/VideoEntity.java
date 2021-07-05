@@ -39,10 +39,10 @@ public class VideoEntity {
     private String isRecommend;
 
     @ApiModelProperty(value = "大分类")
-    private Date classify;
+    private String classify;
 
     @ApiModelProperty(value = "来源名称")
-    private Date sourceName;
+    private String sourceName;
 
     @ApiModelProperty(value = "来源地址")
     private String sourceUrl;

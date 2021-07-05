@@ -1,5 +1,6 @@
 package com.player.user.service.imp;
 
+import com.player.common.entity.LogEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
@@ -152,5 +153,17 @@ public class UserService implements IUserService {
         } catch (IOException e) {
             return ResultUtil.fail(e,"上传失败");
         }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: log
+     * @description: 日志
+     * @return: ResultEntity
+     * @date: 2021-07-04 11:27
+     */
+    @Override
+    public ResultEntity log(LogEntity logEntity){
+        return ResultUtil.success(userMapper.log(logEntity));
     }
 }

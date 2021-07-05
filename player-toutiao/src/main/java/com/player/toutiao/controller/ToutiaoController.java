@@ -45,7 +45,7 @@ public class ToutiaoController {
 
     @OperLog(message = "查询用户收藏的频道", operation = OperationType.QUERY)
     @ApiOperation("查询用户收藏的频道")
-    @GetMapping("/toutiao-getway/getFavoriteChannels")
+    @GetMapping("/toutiao-getway/getArticleFavoriteChannels")
     public ResultEntity getFavoriteChannels(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         return toutiaoService.getFavoriteChannels(token);
@@ -64,7 +64,7 @@ public class ToutiaoController {
     }
 
     @ApiOperation("获取用户登录信息")
-    @GetMapping("/toutiao/getVideoCategory")
+    @GetMapping("/toutiao-getway/getVideoFavoriteChannels")
     public ResultEntity getVideoCategory(HttpServletRequest request) {
         return toutiaoService.getVideoCategory(request.getHeader("Authorization"));
     }

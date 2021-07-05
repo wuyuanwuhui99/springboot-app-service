@@ -3,6 +3,8 @@ package com.player.video.service.imp;
 import com.alibaba.fastjson.JSON;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
+import com.player.common.utils.JwtToken;
+import com.player.video.entity.ChannelEntity;
 import com.player.video.mapper.VideoMapper;
 import com.player.video.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -28,6 +32,8 @@ public class VideoService implements IVideoService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    private JwtToken jwtToken = new JwtToken();
 
     /**
      * @author: wuwenqiang
@@ -52,15 +58,25 @@ public class VideoService implements IVideoService {
      * @date: 2020-5-29 19:22
      */
     @Override
-    public ResultEntity getVideoCategory(String path) {
-        String result = (String) redisTemplate.opsForValue().get(path);
+    public ResultEntity getFavoriteChannels(String token) {
+        String userId = jwtToken.getUserId(token);
+        if(userId == null){
+            return ResultUtil.fail(null,"你未登陆，请先登陆");
+        }
+        String key = "favorite_" + userId;
+        String result = (String) redisTemplate.opsForValue().get(key);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
-            ResultEntity resultEntity = ResultUtil.success(videoMapper.getVideoCategory());
-            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
-            return  resultEntity;
+            List<ChannelEntity> favoriteChannels = videoMapper.getFavoriteChannels(userId);
+            if (favoriteChannels.size() == 0){
+                favoriteChannels = videoMapper.getPublicChannels();
+                videoMapper.insertFavoriteChannels(favoriteChannels);
+            }
+            ResultEntity resultEntity = ResultUtil.success(favoriteChannels);
+            redisTemplate.opsForValue().set(key, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            return ResultUtil.success(favoriteChannels);
         }
     }
 
@@ -81,5 +97,15 @@ public class VideoService implements IVideoService {
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
             return  resultEntity;
         }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 插入收藏的频道
+     * @date: 2020-7-4 11:32
+     */
+    @Override
+    public ResultEntity insertFavoriteChannels(List<ChannelEntity> channelEntities){
+        return ResultUtil.success(videoMapper.insertFavoriteChannels(channelEntities));
     }
 }

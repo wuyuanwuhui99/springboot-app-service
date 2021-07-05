@@ -1,5 +1,6 @@
 package com.player.user.mapper;
 
+import com.player.common.entity.LogEntity;
 import com.player.common.entity.UserEntity;
 import com.player.user.entity.PasswordEntity;
 
@@ -27,4 +28,6 @@ public interface UserMapper {
     Long updateUser(UserEntity userEntity);
 
     Long updatePassword(PasswordEntity passwordEntity);
+
+    Long log(LogEntity logEntity);
 }

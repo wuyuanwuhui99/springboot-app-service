@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.player.video.mapper.VideoMapper">
-    <select id="getVideoCategory" resultType="Map">
-        SELECT category FROM toutiao_video WHERE category IS NOT NULL AND category != '' GROUP BY category
+    <select id="getPublicChannels" resultType="ChannelEntity">
+        SELECT * FROM xigua_channel WHERE status BETWEEN 1 AND 3  ORDER BY sequence DESC
     </select>
-
+    <select id="getFavoriteChannels" resultType="ChannelEntity">
+        SELECT * FROM xigua_favorite_channel WHERE status BETWEEN 1 AND 3 AND user_id = #{userId} ORDER BY sequence DESC
+    </select>
+    <insert id="insertFavoriteChannels">
+        INSERT INTO xigua_favorite_channel(channel_name,channel_id,create_time,update_time,sequence,status,user_id)VALUES
+        <foreach collection ="list" item="item" separator =",">
+            (#{item.channelName},#{item.channelId},#{item.createTime},#{item.updateTime},#{item.sequence},#{item.status},#{item.userId})
+        </foreach >
+    </insert>
     <select id="getVideoList" resultType="VideoEntity">
-        SELECT * from toutiao_video WHERE 1=1
-        <if test=""></if>
+        SELECT * from xigua_video WHERE 1=1
+        <if test="star != null and start != ''">
+            AND star LIKE CONCAT('%',#{star},'%')
+        </if>
+        <if test="category != null and category != ''">
+            AND category LIKE CONCAT('%',#{category},'%')
+        </if>
+        <if test="type != null and type != ''">
+            AND type LIKE CONCAT('%',#{type},'%')
+        </if>
+        <if test="type != null and type != ''">
+            AND label LIKE CONCAT('%',#{type},'%')
+        </if>
+        <if test="userId != null and userId != ''">
+            AND userId = #{type}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (title LIKE CONCAT('%',#{keyword},'%')
+            OR description LIKE CONCAT('%',#{keyword},'%')
+            OR plot LIKE CONCAT('%',#{keyword},'%')
+            OR label LIKE CONCAT('%',#{keyword},'%'))
+        </if>
+        LIMIT #{start},#{pageSize}
     </select>
 </mapper>

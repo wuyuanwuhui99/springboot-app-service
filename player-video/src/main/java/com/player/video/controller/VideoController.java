@@ -25,9 +25,10 @@ public class VideoController {
     }
 
     @ApiOperation("获取视频分类信息")
-    @GetMapping("/video/getVideoCategory")
-    public ResultEntity getVideoCategory(HttpServletRequest request) {
-        return videoService.getVideoCategory( HttpUtils.getPath(request));
+    @GetMapping("/video-getway/getFavoriteChannels")
+    public ResultEntity getFavoriteChannels(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        return videoService.getFavoriteChannels(token);
     }
 
     @ApiOperation("获取视频列表")
