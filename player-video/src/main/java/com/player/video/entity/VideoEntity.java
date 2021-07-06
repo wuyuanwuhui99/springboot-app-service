@@ -14,6 +14,9 @@ public class VideoEntity {
     @ApiModelProperty(value = "视频id")
     private String albumId;
 
+    @ApiModelProperty(value = "频道id")
+    private String channelId;
+
     @ApiModelProperty(value = "视频名称")
     private String title;
 
@@ -86,4 +89,6 @@ public class VideoEntity {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "用户信息")
+    private UserEntity user;
 }

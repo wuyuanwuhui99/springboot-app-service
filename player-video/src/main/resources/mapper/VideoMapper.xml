@@ -13,28 +13,109 @@
             (#{item.channelName},#{item.channelId},#{item.createTime},#{item.updateTime},#{item.sequence},#{item.status},#{item.userId})
         </foreach >
     </insert>
-    <select id="getVideoList" resultType="VideoEntity">
-        SELECT * from xigua_video WHERE 1=1
+    <resultMap type="VideoEntity" id="videoUserResultMap">
+        <id property="id" column="id" />
+        <result property="albumId" column="album_id" />
+        <result property="channelId" column="channel_id" />
+        <result property="title" column="title" />
+        <result property="director" column="director" />
+        <result property="star" column="star" />
+        <result property="type" column="type" />
+        <result property="countryLanguage" column="country_language" />
+        <result property="publishTime" column="publish_time" />
+        <result property="plot" column="plot" />
+        <result property="isRecommend" column="is_recommend" />
+        <result property="classify" column="classify" />
+        <result property="sourceName" column="source_name" />
+        <result property="sourceUrl" column="source_url" />
+        <result property="label" column="label" />
+        <result property="originalHref" column="original_href" />
+        <result property="description" column="description" />
+        <result property="targetHref" column="target_href" />
+        <result property="status" column="status" />
+        <result property="score" column="score" />
+        <result property="category" column="category" />
+        <result property="ranks" column="ranks"/>
+        <result property="userId" column="user_id"/>
+        <result property="duration" column="duration"/>
+        <result property="img" column="img"/>
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+
+        <association  property="user" javaType="UserEntity">
+            <id property="id" column="id"/>
+            <result property="userId" column="user_id"/>
+            <result property="name" column="name"/>
+            <result property="authorDesc" column="author_desc"/>
+            <result property="avatarUrl" column="avatar_url"/>
+            <result property="description" column="description" />
+            <result property="followersCount" column="followers_count"/>
+            <result property="verifiedContent" column="verified_content"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+        </association>
+    </resultMap>
+
+    <select id="getVideoList" resultMap="videoUserResultMap">
+        SELECT
+            x.id,
+            x.album_id,
+            x.channel_id,
+            x.title,
+            x.director,
+            x.star,
+            x.type,
+            x.country_language,
+            x.publish_time,
+            x.plot,
+            x.is_recommend,
+            x.classify,
+            x.source_name,
+            x.source_url,
+            x.label,
+            x.original_href,
+            x.description,
+            x.target_href,
+            x.status,
+            x.score,
+            x.category,
+            x.ranks,
+            x.user_id,
+            x.duration,
+            x.img,
+            x.create_time,
+            x.update_time,
+            u.id,
+            u.user_id,
+            u.name,
+            u.author_desc,
+            u.avatar_url,
+            u.description,
+            u.followers_count,
+            u.verified_content,
+            u.create_time,
+            u.update_time
+        from xigua_video x  LEFT JOIN toutiao_user u ON x.user_id = u.user_id
         <if test="star != null and start != ''">
-            AND star LIKE CONCAT('%',#{star},'%')
+            AND x.star LIKE CONCAT('%',#{star},'%')
         </if>
         <if test="category != null and category != ''">
-            AND category LIKE CONCAT('%',#{category},'%')
+            AND x.category LIKE CONCAT('%',#{category},'%')
         </if>
         <if test="type != null and type != ''">
-            AND type LIKE CONCAT('%',#{type},'%')
+            AND x.type LIKE CONCAT('%',#{type},'%')
         </if>
         <if test="type != null and type != ''">
-            AND label LIKE CONCAT('%',#{type},'%')
+            AND x.label LIKE CONCAT('%',#{label},'%')
         </if>
         <if test="userId != null and userId != ''">
-            AND userId = #{type}
+            AND x.user_id = #{userId}
         </if>
         <if test="keyword != null and keyword != ''">
-            AND (title LIKE CONCAT('%',#{keyword},'%')
-            OR description LIKE CONCAT('%',#{keyword},'%')
-            OR plot LIKE CONCAT('%',#{keyword},'%')
-            OR label LIKE CONCAT('%',#{keyword},'%'))
+            AND (x.title LIKE CONCAT('%',#{keyword},'%')
+            OR x.description LIKE CONCAT('%',#{keyword},'%')
+            OR x.plot LIKE CONCAT('%',#{keyword},'%')
+            OR x.label LIKE CONCAT('%',#{keyword},'%'))
         </if>
         LIMIT #{start},#{pageSize}
     </select>
