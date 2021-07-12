@@ -117,6 +117,6 @@
             OR x.plot LIKE CONCAT('%',#{keyword},'%')
             OR x.label LIKE CONCAT('%',#{keyword},'%'))
         </if>
-        LIMIT #{start},#{pageSize}
+        ORDER BY x.publish_time DESC LIMIT #{start},#{pageSize}
     </select>
 </mapper>

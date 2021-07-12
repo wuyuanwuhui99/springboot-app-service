@@ -53,9 +53,7 @@ public interface MovieMapper {
      */
     List<MovieEntity> getCategoryList(String classify, String category);
 
-    List<MovieEntity> search(String keyword, int start, int pageSize);
-
-    Map<String, Long> total(String keyword);
+    List<MovieEntity> search(String classify, String category, String label,String star,String director,String keyword,int start,int pageSize);
 
     Long log(LogEntity logEntity);
 

@@ -23,7 +23,7 @@ public interface IMovieService {
 
     ResultEntity getCategoryList(String classify, String category,String path);
 
-    ResultEntity search(String keyword, int pageNum, int pageSize,String path);
+    ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String path);
 
     ResultEntity login(UserEntity userEntity);
 

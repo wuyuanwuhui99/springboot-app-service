@@ -108,14 +108,19 @@ public class MovieController {
 
     @OperLog(message = "搜索", operation = OperationType.QUERY)
     @ApiOperation("搜索,请求地地址：/service/movie/search")
-    @GetMapping("/movie/search")
+    @GetMapping(value = "/movie/search")
     public ResultEntity search(
-            @RequestParam("keyword") String keyword,
+            @RequestParam(required = false, value="classify") String classify,
+            @RequestParam(required = false, value="category") String category,
+            @RequestParam(required = false, value="label") String label,
+            @RequestParam(required = false, value="star") String star,
+            @RequestParam(required = false, value="director") String director,
+            @RequestParam(required = false, value="keyword") String keyword,
             @RequestParam("pageNum") int pageNum,
             @RequestParam("pageSize") int pageSize,
             HttpServletRequest request
     ) {
-        return movieService.search(keyword, pageNum, pageSize,HttpUtils.getPath(request));
+        return movieService.search(classify, category, label,star,director,keyword,pageNum,pageSize,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "注册", operation = OperationType.QUERY)

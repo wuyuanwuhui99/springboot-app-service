@@ -4,16 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
+import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.toutiao.entity.ChannelEntity;
 import com.player.toutiao.mapper.ToutiaoMapper;
 import com.player.toutiao.service.IToutiaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -151,11 +149,28 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity getVideoList(String token,String queryString) {
+    public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String userId,String keyword,String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
         ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-video/service/video/getVideoList?"+queryString,
+                "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&userId="+Common.nullToString(userId)+"&keyword="+Common.nullToString(keyword),
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取文章列表
+     * @date: 2020-12-25 22:29
+     */
+    @Override
+    public ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                "http://player-movie/service/movie/search?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+ Common.nullToString(star)+"&classify="+Common.nullToString(classify)+"&category="+Common.nullToString(category)+"&type="+Common.nullToString(type)+"&label="+Common.nullToString(label)+"&keyword="+Common.nullToString(keyword),
                 HttpMethod.GET,
                 new HttpEntity<String>(headers),ResultEntity.class
         );

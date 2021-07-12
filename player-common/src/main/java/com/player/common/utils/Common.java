@@ -46,4 +46,8 @@ public class Common {
                 .header("Authorization", token)
                 .body(s);
     }
+
+    public static String nullToString(String str) {
+        return str == null ?  "" : str;
+    }
 }

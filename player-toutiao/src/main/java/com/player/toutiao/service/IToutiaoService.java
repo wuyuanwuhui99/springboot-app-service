@@ -17,5 +17,7 @@ public interface IToutiaoService {
 
     ResultEntity getVideoCategory(String token);
 
-    ResultEntity getVideoList(String token,String queryString);
+    ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String userId,String keyword,String token);
+
+    ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token);
 }

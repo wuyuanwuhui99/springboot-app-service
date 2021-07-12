@@ -60,10 +60,6 @@
             #{doubanUrl})
     </sql>
 
-    <sql id="search">
-        WHERE movie_name like CONCAT('%',#{keyword},'%') OR star like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%')  OR type like CONCAT('%',#{keyword},'%') ORDER BY update_time DESC
-    </sql>
-
     <select id="findClassify"  resultType="Map">
         SELECT classify FROM movie GROUP BY classify
     </select>
@@ -97,14 +93,26 @@
     </select>
 
     <select id="search" resultType="MovieEntity">
-        SELECT * FROM movie
-        <include refid="search"></include>
-         limit #{start}, #{pageSize}
-    </select>
-
-    <select id="total" resultType="Map">
-        SELECT count(*) as total FROM movie
-        <include refid="search"></include>
+        SELECT * FROM movie WHERE 1 = 1
+        <if test="classify != '' and classify != null">
+            and classify = #{classify}
+        </if>
+        <if test="category != '' and category != null">
+            and category = #{category}
+        </if>
+        <if test="label != '' and label != null">
+            and label like CONCAT('%',#{label},'%')
+        </if>
+        <if test="star != '' and star != null">
+            and star like CONCAT('%',#{star},'%')
+        </if>
+        <if test="director != '' and director != null">
+            and director like CONCAT('%',#{director},'%')
+        </if>
+        <if test="keyword != '' and keyword != null">
+            and movie_name like CONCAT('%',#{keyword},'%') OR star like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%') OR director like CONCAT('%',#{keyword},'%')  OR type like CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY update_time DESC limit #{start}, #{pageSize}
     </select>
 
     <insert id="log" parameterType="com.player.common.entity.LogEntity">

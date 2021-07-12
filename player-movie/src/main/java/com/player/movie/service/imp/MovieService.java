@@ -225,17 +225,15 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity search(String keyword, int pageNum, int pageSize,String path) {
-        String url = path + "?keyword=" + keyword + "&pageNum=" + pageNum + "&pageSize=" + pageSize;
-        String result = (String) redisTemplate.opsForValue().get(url);
+    public ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String path) {
+        String result = (String) redisTemplate.opsForValue().get(path);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             int start = (pageNum - 1) * pageSize;
-            Map<String, Long> totalMap = movieMapper.total(keyword);
-            ResultEntity resultEntity =  ResultUtil.success(movieMapper.search(keyword, start, pageSize), totalMap.get("total"));
-            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            ResultEntity resultEntity =  ResultUtil.success(movieMapper.search(classify, category, label,star,director,keyword,start,pageSize));
+            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }

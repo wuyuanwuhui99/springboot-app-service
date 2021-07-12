@@ -1,5 +1,6 @@
 server:
   port: 8000
+  uri-encoding: UTF-8
 token:
   expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
   secret: wuwenqiang #token秘钥
@@ -7,6 +8,11 @@ app:
   appId: com.player.toutiao
   appName: 明日头条
 spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
   redis:
     database: 0 # Redis数据库索引（默认为0）
     host: 127.0.0.1 # Redis服务器地址
