@@ -82,7 +82,7 @@ public class ToutiaoController {
             @RequestParam(required = false, value="keyword") String keyword,
             HttpServletRequest request
     ) {
-        return toutiaoService.getVideoList(request.getHeader("Authorization"),request.getQueryString());
+        return toutiaoService.getVideoList(pageSize,pageNum,star,category,type,label,userId,keyword,request.getHeader("Authorization"));
     }
 
     @ApiOperation("获取视频列表")
