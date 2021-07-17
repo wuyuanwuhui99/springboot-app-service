@@ -7,7 +7,7 @@ import java.util.List;
 public interface IToutiaoService {
     ResultEntity getArticleList(int pageNum, int pageSize,String type, String channelId, String userId, String keyword, String path);
 
-    ResultEntity getArticleDetail(int id,String path);
+    ResultEntity getArticleDetail(int id);
 
     ResultEntity getFavoriteChannels(String token);
 

@@ -37,10 +37,9 @@ public class ToutiaoController {
 
     @OperLog(message = "查询文章详情", operation = OperationType.QUERY)
     @ApiOperation("查询文章详情")
-    @GetMapping("/toutiao/{id}")
-    public ResultEntity getArticleDetail(@PathVariable("id") int id,HttpServletRequest request) {
-        String path = HttpUtils.getPath(request);
-        return toutiaoService.getArticleDetail(id,path);
+    @GetMapping("/toutiao/getArticleDetail/{id}")
+    public ResultEntity getArticleDetail(@PathVariable("id") int id) {
+        return toutiaoService.getArticleDetail(id);
     }
 
     @OperLog(message = "查询用户收藏的频道", operation = OperationType.QUERY)

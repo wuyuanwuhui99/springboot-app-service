@@ -1,4 +1,5 @@
 package com.player.toutiao.entity;
+import com.player.common.entity.AuthorEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -64,4 +65,10 @@ public class ArticleEntity {
 
     @ApiModelProperty(value = "排名")
     private String ranks;
+
+    @ApiModelProperty(value = "是否禁用")
+    private int disabled;
+
+    @ApiModelProperty(value = "用户信息")
+    private AuthorEntity userInfo;
 }

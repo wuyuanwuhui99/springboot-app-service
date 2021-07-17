@@ -36,7 +36,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取文章列表
-     * @date: 2020-12-25 22:29
+     * @date: 2021-12-25 22:29
      */
     @Override
     public ResultEntity getArticleList(int pageNum, int pageSize,  String type, String channelId,String userId, String keyword,String path) {
@@ -55,17 +55,18 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取文章详情
-     * @date: 2020-5-29 19:22
+     * @date: 2021-5-29 19:22
      */
     @Override
-    public ResultEntity getArticleDetail(int id,String path) {
-        String result = (String) redisTemplate.opsForValue().get(path);
+    public ResultEntity getArticleDetail(int id) {
+        String key = "articleId_" + id;
+        String result = (String) redisTemplate.opsForValue().get(key);
         if(!StringUtils.isEmpty(result)){
-            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            ResultEntity resultEntity = JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleDetail(id));
-            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(key, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -73,7 +74,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 查询用户收藏的频道,如果没有查询到，讲用所有频道里面的数据插入到个人频道列表中
-     * @date: 2020-5-29 19:22
+     * @date: 2021-5-29 19:22
      */
     @Override
     public ResultEntity getFavoriteChannels(String token) {
@@ -102,7 +103,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 查询所有品达
-     * @date: 2020-5-29 19:22
+     * @date: 2021-5-29 19:22
      */
     @Override
     public ResultEntity getAllChannels(List<Integer>  status) {
@@ -112,7 +113,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取用户信息
-     * @date: 2020-5-29 19:22
+     * @date: 2021-5-29 19:22
      */
     @Override
     public ResultEntity getUserData(String token) {
@@ -129,7 +130,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取视频分类
-     * @date: 2020-06-28 23:50
+     * @date: 2021-06-28 23:50
      */
     @Override
     public ResultEntity getVideoCategory(String token) {
@@ -146,7 +147,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取文章列表
-     * @date: 2020-12-25 22:29
+     * @date: 2021-12-25 22:29
      */
     @Override
     public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String userId,String keyword,String token) {
@@ -163,7 +164,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取文章列表
-     * @date: 2020-12-25 22:29
+     * @date: 2021-12-25 22:29
      */
     @Override
     public ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token) {

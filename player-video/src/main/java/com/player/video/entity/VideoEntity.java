@@ -1,4 +1,5 @@
 package com.player.video.entity;
+import com.player.common.entity.AuthorEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -90,5 +91,5 @@ public class VideoEntity {
     private Date updateTime;
 
     @ApiModelProperty(value = "用户信息")
-    private UserEntity user;
+    private AuthorEntity userInfo;
 }

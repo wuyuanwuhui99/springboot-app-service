@@ -42,7 +42,7 @@
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time" />
 
-        <association  property="user" javaType="UserEntity">
+        <association  property="userInfo" javaType="com.player.common.entity.AuthorEntity">
             <id property="id" column="id"/>
             <result property="userId" column="user_id"/>
             <result property="name" column="name"/>

@@ -44,53 +44,100 @@
           #{ranks})
     </sql>
 
+    <resultMap type="ArticleEntity" id="ArticleUserResultMap">
+        <id property="id" column="id" />
+        <result property="channelId" column="channel_id" />
+        <result property="content" column="content" />
+        <result property="duration" column="duration" />
+        <result property="href" column="href" />
+        <result property="img" column="img" />
+        <result property="type" column="type" />
+        <result property="isTop" column="is_top" />
+        <result property="title" column="title" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="source" column="source" />
+        <result property="commentId" column="comment_id" />
+        <result property="labels" column="labels" />
+        <result property="userId" column="user_id" />
+        <result property="userAvatar" column="user_avatar" />
+        <result property="user_href" column="userHref" />
+        <result property="ranks" column="ranks" />
+        <result property="disabled" column="disabled" />
+
+        <association  property="userInfo" javaType="com.player.common.entity.AuthorEntity">
+            <id property="id" column="id"/>
+            <result property="userId" column="user_id"/>
+            <result property="name" column="name"/>
+            <result property="authorDesc" column="author_desc"/>
+            <result property="avatarUrl" column="avatar_url"/>
+            <result property="description" column="description" />
+            <result property="followersCount" column="followers_count"/>
+            <result property="verifiedContent" column="verified_content"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="userHref" column="user_href"/>
+        </association>
+    </resultMap>
+
     <sql id="getArticleListSql">
         SELECT
-            id,
-            channel_id,
-            content,
-            duration,
-            href,
-            img,
-            img_num,
-            `type`,
-            is_top,
-            title,
-            create_time,
-            update_time,
-            source,
-            comment_id,
-            labels,
-            user_id,
-            user_avatar,
-            user_href,
-            ranks
-        FROM toutiao_article
+            t.id,
+            t.channel_id,
+            t.content,
+            t.duration,
+            t.href,
+            t.img,
+            t.img_num,
+            t.type,
+            t.is_top,
+            t.title,
+            t.create_time,
+            t.update_time,
+            t.source,
+            t.comment_id,
+            t.labels,
+            t.user_id,
+            t.user_avatar,
+            t.user_href,
+            t.ranks,
+            u.id,
+            u.user_id,
+            u.name,
+            u.author_desc,
+            u.avatar_url,
+            u.description,
+            u.followers_count,
+            u.verified_content,
+            u.create_time,
+            u.update_time,
+            u.user_href
+        FROM toutiao_article t  LEFT JOIN toutiao_user u ON t.user_id = u.user_id or t.user_id = u.name
     </sql>
 
-    <select id="getArticleList" resultType="ArticleEntity">
+    <select id="getArticleList" resultMap="ArticleUserResultMap">
         <if test="channelId == 0 and start == 0">
-            (<include refid="getArticleListSql"></include> WHERE content IS NOT NULL AND is_top = '1'AND channel_id = '0' ORDER BY create_time DESC LIMIT 0,3) UNION ALL
+            (<include refid="getArticleListSql"></include> WHERE t.content IS NOT NULL AND t.is_top = '1'AND t.channel_id = '0' ORDER BY t.create_time DESC LIMIT 0,3) UNION ALL
         </if>
         (<include refid="getArticleListSql"></include>
-         where is_top = '0' AND content IS NOT NULL
+        where t.is_top = '0' AND t.content IS NOT NULL
         <if test="keyword!=null and keyword!=''">
-            and title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
-        </if >
-        <if test="type!=null and type!=''">
-            and type = #{type}
-        </if >
-        <if test="channelId!=null and channelId!=''">
-            and channel_id = #{channelId}
-        </if >
-        <if test="userId!=null and userId!=''">
-            and user_id = #{userId}
+            and t.title like concat('%',#{keyword},'%') or t.content like concat('%',#{keyword},'%')
         </if>
-        ORDER BY create_time DESC  LIMIT #{start}, #{pageSize})
+        <if test="type!=null and type!=''">
+            and t.type = #{type}
+        </if>
+        <if test="channelId!=null and channelId!=''">
+            and t.channel_id = #{channelId}
+        </if>
+        <if test="userId!=null and userId!=''">
+            and t.user_id = #{userId}
+        </if>
+        ORDER BY t.create_time DESC  LIMIT #{start}, #{pageSize})
     </select>
 
-    <select id="getArticleDetail" resultType="ArticleEntity">
-        SELECT * FROM toutiao_article WHERE id = #{id} AND disabled = 0
+    <select id="getArticleDetail" resultMap="ArticleUserResultMap">
+        SELECT t.*,u.* FROM toutiao_article t LEFT JOIN toutiao_user u ON t.user_id = u.user_id or t.user_id = u.name WHERE t.id = #{id} AND t.disabled = 0
     </select>
 
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
