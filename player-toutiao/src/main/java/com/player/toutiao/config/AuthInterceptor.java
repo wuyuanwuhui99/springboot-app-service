@@ -38,7 +38,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     protected void renderJson(HttpServletResponse response, ResultEntity resultEntity) {
         String dataJson = JSONObject.toJSONString(resultEntity);
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             response.setContentType("application/json; charset=utf-8");
             writer = response.getWriter();

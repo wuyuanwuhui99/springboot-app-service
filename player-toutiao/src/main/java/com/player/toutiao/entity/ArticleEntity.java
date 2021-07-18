@@ -27,9 +27,6 @@ public class ArticleEntity {
     @ApiModelProperty(value = "视频图片地址")
     private String img;
 
-    @ApiModelProperty(value = "图片长度")
-    private String imgNum;
-
     @ApiModelProperty(value = "类型，视频：video, 文章: article，博客：blog")
     private String type;
 
@@ -54,14 +51,14 @@ public class ArticleEntity {
     @ApiModelProperty(value = "标签")
     private String labels;
 
-    @ApiModelProperty(value = "用户id")
-    private String userId;
+    @ApiModelProperty(value = "作者id")
+    private String authorId;
 
-    @ApiModelProperty(value = "头像")
-    private String userAvatar;
+    @ApiModelProperty(value = "作者头像")
+    private String authorAvatar;
 
-    @ApiModelProperty(value = "用户主页")
-    private String userHref;
+    @ApiModelProperty(value = "作者主页")
+    private String authorHref;
 
     @ApiModelProperty(value = "排名")
     private String ranks;
@@ -69,6 +66,9 @@ public class ArticleEntity {
     @ApiModelProperty(value = "是否禁用")
     private int disabled;
 
-    @ApiModelProperty(value = "用户信息")
-    private AuthorEntity userInfo;
+    @ApiModelProperty(value = "用户id")
+    private String userId;
+
+    @ApiModelProperty(value = "作者信息")
+    private AuthorEntity authorInfo;
 }

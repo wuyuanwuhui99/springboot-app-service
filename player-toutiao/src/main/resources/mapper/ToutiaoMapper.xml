@@ -9,7 +9,6 @@
           duration,
           href,
           img,
-          img_num,
           `type` ,
           isTop,
           title,
@@ -18,9 +17,9 @@
           source,
           comment_id,
           labels,
-          user_id,
-          user_avatar,
-          user_href,
+          author_id,
+          author_avatar,
+          author_href,
           ranks,
           )VALUES(
           #{id},
@@ -38,9 +37,9 @@
           #{source},
           #{commentId},
           #{labels},
-          #{userId},
-          #{userAvatar},
-          #{userHref},
+          #{authorId},
+          #{authorAvatar},
+          #{authorHref},
           #{ranks})
     </sql>
 
@@ -59,15 +58,15 @@
         <result property="source" column="source" />
         <result property="commentId" column="comment_id" />
         <result property="labels" column="labels" />
-        <result property="userId" column="user_id" />
-        <result property="userAvatar" column="user_avatar" />
-        <result property="user_href" column="userHref" />
+        <result property="authorId" column="author_id" />
+        <result property="authorAvatar" column="author_avatar" />
+        <result property="author_href" column="authorHref" />
         <result property="ranks" column="ranks" />
         <result property="disabled" column="disabled" />
 
-        <association  property="userInfo" javaType="com.player.common.entity.AuthorEntity">
+        <association  property="authorInfo" javaType="com.player.common.entity.AuthorEntity">
             <id property="id" column="id"/>
-            <result property="userId" column="user_id"/>
+            <result property="authorId" column="author_id"/>
             <result property="name" column="name"/>
             <result property="authorDesc" column="author_desc"/>
             <result property="avatarUrl" column="avatar_url"/>
@@ -76,7 +75,7 @@
             <result property="verifiedContent" column="verified_content"/>
             <result property="createTime" column="create_time"/>
             <result property="updateTime" column="update_time"/>
-            <result property="userHref" column="user_href"/>
+            <result property="authorHref" column="author_href"/>
         </association>
     </resultMap>
 
@@ -88,7 +87,6 @@
             t.duration,
             t.href,
             t.img,
-            t.img_num,
             t.type,
             t.is_top,
             t.title,
@@ -97,12 +95,12 @@
             t.source,
             t.comment_id,
             t.labels,
-            t.user_id,
-            t.user_avatar,
-            t.user_href,
+            t.author_id,
+            t.author_avatar,
+            t.author_href,
             t.ranks,
             u.id,
-            u.user_id,
+            u.author_id,
             u.name,
             u.author_desc,
             u.avatar_url,
@@ -111,8 +109,8 @@
             u.verified_content,
             u.create_time,
             u.update_time,
-            u.user_href
-        FROM toutiao_article t  LEFT JOIN toutiao_user u ON t.user_id = u.user_id or t.user_id = u.name
+            u.author_href
+        FROM toutiao_article t  LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </sql>
 
     <select id="getArticleList" resultMap="ArticleUserResultMap">
@@ -130,18 +128,22 @@
         <if test="channelId!=null and channelId!=''">
             and t.channel_id = #{channelId}
         </if>
-        <if test="userId!=null and userId!=''">
-            and t.user_id = #{userId}
+        <if test="authorId!=null and authorId!=''">
+            and t.author_id = #{authorId}
         </if>
         ORDER BY t.create_time DESC  LIMIT #{start}, #{pageSize})
     </select>
 
     <select id="getArticleDetail" resultMap="ArticleUserResultMap">
-        SELECT t.*,u.* FROM toutiao_article t LEFT JOIN toutiao_user u ON t.user_id = u.user_id or t.user_id = u.name WHERE t.id = #{id} AND t.disabled = 0
+        SELECT t.*,u.* FROM toutiao_article t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name WHERE t.id = #{id} AND t.disabled = 0
     </select>
 
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
        INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
+    </insert>
+
+    <insert id="saveArticleRecord" parameterType="ArticleEntity">
+       INSERT INTO toutiao_article_record(channel_id,content,duration,href,img,type,is_top,title,create_time,update_time,source,comment_id,labels,author_id,author_avatar,author_href,ranks,disabled,user_id)VALUES (#{channelId},#{content},#{duration},#{href},#{img},#{type},#{isTop},#{title},#{createTime},#{updateTime},#{source},#{commentId},#{labels},#{authorId},#{authorAvatar},#{authorHref},#{ranks},#{disabled},#{userId})
     </insert>
 
     <select id="getFavoriteChannels" resultType="ChannelEntity">

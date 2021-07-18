@@ -27,26 +27,25 @@ public class ToutiaoController {
     @RequestParam("pageNum") int pageNum,
     @RequestParam(required = false, value="type") String type,
     @RequestParam(required = false, value="channelId") String channelId,
-    @RequestParam(required = false, value="userId") String userId,
+    @RequestParam(required = false, value="authorId") String authorId,
     @RequestParam(required = false, value="keyword") String keyword,
     HttpServletRequest request
     ) {
         String path = HttpUtils.getPath(request);
-        return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,userId,keyword,path);
+        return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,authorId,keyword,path);
     }
 
     @OperLog(message = "查询文章详情", operation = OperationType.QUERY)
     @ApiOperation("查询文章详情")
     @GetMapping("/toutiao/getArticleDetail/{id}")
-    public ResultEntity getArticleDetail(@PathVariable("id") int id) {
-        return toutiaoService.getArticleDetail(id);
+    public ResultEntity getArticleDetail(@PathVariable("id") int id,@RequestHeader(required = false,value = "Authorization") String token) {
+        return toutiaoService.getArticleDetail(id,token);
     }
 
     @OperLog(message = "查询用户收藏的频道", operation = OperationType.QUERY)
     @ApiOperation("查询用户收藏的频道")
     @GetMapping("/toutiao-getway/getArticleFavoriteChannels")
-    public ResultEntity getFavoriteChannels(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+    public ResultEntity getFavoriteChannels(@RequestHeader("Authorization") String token) {
         return toutiaoService.getFavoriteChannels(token);
     }
 
@@ -58,14 +57,14 @@ public class ToutiaoController {
 
     @ApiOperation("获取用户登录信息")
     @GetMapping("/toutiao/getUserData")
-    public ResultEntity getUserData(HttpServletRequest request) {
-        return toutiaoService.getUserData(request.getHeader("Authorization"));
+    public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
+        return toutiaoService.getUserData(token);
     }
 
     @ApiOperation("获取用户登录信息")
     @GetMapping("/toutiao-getway/getVideoFavoriteChannels")
-    public ResultEntity getVideoCategory(HttpServletRequest request) {
-        return toutiaoService.getVideoCategory(request.getHeader("Authorization"));
+    public ResultEntity getVideoCategory(@RequestHeader("Authorization") String token) {
+        return toutiaoService.getVideoCategory(token);
     }
 
     @ApiOperation("获取视频列表")
@@ -77,11 +76,11 @@ public class ToutiaoController {
             @RequestParam(required = false, value="category") String category,
             @RequestParam(required = false, value="type") String type,
             @RequestParam(required = false, value="label") String label,
-            @RequestParam(required = false, value="userId") String userId,
+            @RequestParam(required = false, value="authorId") String authorId,
             @RequestParam(required = false, value="keyword") String keyword,
-            HttpServletRequest request
+            @RequestHeader(required = false,value = "Authorization") String token
     ) {
-        return toutiaoService.getVideoList(pageSize,pageNum,star,category,type,label,userId,keyword,request.getHeader("Authorization"));
+        return toutiaoService.getVideoList(pageSize,pageNum,star,category,type,label,authorId,keyword,token);
     }
 
     @ApiOperation("获取视频列表")
@@ -95,8 +94,8 @@ public class ToutiaoController {
             @RequestParam(required = false, value="type") String type,
             @RequestParam(required = false, value="label") String label,
             @RequestParam(required = false, value="keyword") String keyword,
-            HttpServletRequest request
+            @RequestHeader(required = false,value = "Authorization") String token
     ) {
-        return toutiaoService.getMovieList(pageSize,pageNum,star,classify,category,type,label,keyword,request.getHeader("Authorization"));
+        return toutiaoService.getMovieList(pageSize,pageNum,star,classify,category,type,label,keyword,token);
     }
 }

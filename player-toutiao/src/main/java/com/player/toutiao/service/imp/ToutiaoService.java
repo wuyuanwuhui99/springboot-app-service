@@ -6,6 +6,7 @@ import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
+import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;
 import com.player.toutiao.mapper.ToutiaoMapper;
 import com.player.toutiao.service.IToutiaoService;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,14 +41,14 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-12-25 22:29
      */
     @Override
-    public ResultEntity getArticleList(int pageNum, int pageSize,  String type, String channelId,String userId, String keyword,String path) {
+    public ResultEntity getArticleList(int pageNum, int pageSize,  String type, String channelId,String authorId, String keyword,String path) {
         String result = (String) redisTemplate.opsForValue().get(path);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             int start = pageSize * (pageNum-1);
-            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleList(start,pageSize, type, channelId, userId, keyword));
+            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleList(start,pageSize, type, channelId, authorId, keyword));
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
             return  resultEntity;
         }
@@ -58,17 +60,24 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-5-29 19:22
      */
     @Override
-    public ResultEntity getArticleDetail(int id) {
+    public ResultEntity getArticleDetail(int id,String token) {
         String key = "articleId_" + id;
         String result = (String) redisTemplate.opsForValue().get(key);
+        ResultEntity resultEntity;
+        ArticleEntity articleEntity;
         if(!StringUtils.isEmpty(result)){
-            ResultEntity resultEntity = JSON.parseObject(result,ResultEntity.class);
-            return resultEntity;
+            resultEntity = JSON.parseObject(result,ResultEntity.class);
+            articleEntity =  JSON.parseObject(JSON.toJSONString(resultEntity.getData()),ArticleEntity.class);
         }else{
-            ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleDetail(id));
+            articleEntity = toutiaoMapper.getArticleDetail(id);
+            resultEntity = ResultUtil.success(articleEntity);
             redisTemplate.opsForValue().set(key, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
-            return resultEntity;
         }
+        articleEntity.setUserId(JwtToken.getUserId(token));
+        articleEntity.setCreateTime(new Date());
+        articleEntity.setUpdateTime(new Date());
+        toutiaoMapper.saveArticleRecord(articleEntity);
+        return resultEntity;
     }
 
     /**
@@ -150,11 +159,11 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-12-25 22:29
      */
     @Override
-    public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String userId,String keyword,String token) {
+    public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String authorId,String keyword,String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
         ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&userId="+Common.nullToString(userId)+"&keyword="+Common.nullToString(keyword),
+                "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&authorId="+Common.nullToString(authorId)+"&keyword="+Common.nullToString(keyword),
                 HttpMethod.GET,
                 new HttpEntity<String>(headers),ResultEntity.class
         );

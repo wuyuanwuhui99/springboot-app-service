@@ -75,8 +75,8 @@ public class VideoEntity {
     @ApiModelProperty(value = "排名")
     private String ranks;
 
-    @ApiModelProperty(value = "用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致")
-    private String userId;
+    @ApiModelProperty(value = "作者id")
+    private String authorId;
 
     @ApiModelProperty(value = "时长")
     private String duration;
@@ -90,6 +90,9 @@ public class VideoEntity {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    @ApiModelProperty(value = "用户信息")
-    private AuthorEntity userInfo;
+    @ApiModelProperty(value = "作者信息")
+    private AuthorEntity authorInfo;
+
+    @ApiModelProperty(value = "用户id")
+    private String userId;
 }

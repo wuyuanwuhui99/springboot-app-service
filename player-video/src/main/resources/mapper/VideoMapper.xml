@@ -36,15 +36,15 @@
         <result property="score" column="score" />
         <result property="category" column="category" />
         <result property="ranks" column="ranks"/>
-        <result property="userId" column="user_id"/>
+        <result property="authorId" column="author_id"/>
         <result property="duration" column="duration"/>
         <result property="img" column="img"/>
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time" />
 
-        <association  property="userInfo" javaType="com.player.common.entity.AuthorEntity">
+        <association  property="authorInfo" javaType="com.player.common.entity.AuthorEntity">
             <id property="id" column="id"/>
-            <result property="userId" column="user_id"/>
+            <result property="authorId" column="author_id"/>
             <result property="name" column="name"/>
             <result property="authorDesc" column="author_desc"/>
             <result property="avatarUrl" column="avatar_url"/>
@@ -80,13 +80,13 @@
             x.score,
             x.category,
             x.ranks,
-            x.user_id,
+            x.author_id,
             x.duration,
             x.img,
             x.create_time,
             x.update_time,
             u.id,
-            u.user_id,
+            u.author_id,
             u.name,
             u.author_desc,
             u.avatar_url,
@@ -95,7 +95,7 @@
             u.verified_content,
             u.create_time,
             u.update_time
-        from xigua_video x  LEFT JOIN toutiao_user u ON x.user_id = u.user_id
+        from xigua_video x  LEFT JOIN toutiao_author u ON x.author_id = u.author_id
         <if test="star != null and start != ''">
             AND x.star LIKE CONCAT('%',#{star},'%')
         </if>
@@ -108,8 +108,8 @@
         <if test="type != null and type != ''">
             AND x.label LIKE CONCAT('%',#{label},'%')
         </if>
-        <if test="userId != null and userId != ''">
-            AND x.user_id = #{userId}
+        <if test="authorId != null and authorId != ''">
+            AND x.author_id = #{authorId}
         </if>
         <if test="keyword != null and keyword != ''">
             AND (x.title LIKE CONCAT('%',#{keyword},'%')
