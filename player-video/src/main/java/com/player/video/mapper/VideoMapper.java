@@ -19,9 +19,9 @@ public interface VideoMapper {
      * @description: 查询日志列表
      * @date: 2020-5-29 19:22
      */
-    List<VideoEntity> getVideoList(int start,int pageSize,String star,String category,String type,String label,String userId,String keyword);
+    List<VideoEntity> getVideoList(int start,int pageSize,String star,String category,String type,String label,String authorId,String keyword);
 
-    List<ChannelEntity> getFavoriteChannels(String user_id);
+    List<ChannelEntity> getFavoriteChannels(String userId);
 
     List<ChannelEntity> getPublicChannels();
 
