@@ -110,24 +110,15 @@
             u.create_time,
             u.update_time,
             u.author_href
-    </sql>
-
-    <sql id="getSearchArticleList">
-        <include refid="getArticleList"></include>
         FROM toutiao_article t  LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
-    </sql>
-
-    <sql id="getRecordArticleList">
-        <include refid="getArticleList"></include>
-        FROM toutiao_article_record t  LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </sql>
 
     <select id="getArticleList" resultMap="ArticleUserResultMap">
         <if test="channelId == 0 and start == 0">
-            (<include refid="getSearchArticleList"></include> WHERE t.content IS NOT NULL AND t.is_top = '1'AND t.channel_id = '0' ORDER BY t.create_time DESC LIMIT 0,3) UNION ALL
+            (<include refid="getArticleList"></include> WHERE t.content IS NOT NULL AND t.is_top = '1'AND t.channel_id = '0' AND t.disabled = 0 ORDER BY t.create_time DESC LIMIT 0,3) UNION ALL
         </if>
-        (<include refid="getSearchArticleList"></include>
-        where t.is_top = '0' AND t.content IS NOT NULL
+        (<include refid="getArticleList"></include>
+        where t.is_top = '0' AND t.content IS NOT NULL AND t.disabled = 0
         <if test="keyword!=null and keyword!=''">
             and t.title like concat('%',#{keyword},'%') or t.content like concat('%',#{keyword},'%')
         </if>
@@ -152,7 +143,11 @@
     </insert>
 
     <insert id="saveArticleRecord" parameterType="ArticleEntity">
-       INSERT INTO toutiao_article_record(channel_id,content,duration,href,img,type,is_top,title,create_time,update_time,source,comment_id,labels,author_id,author_avatar,author_href,ranks,disabled,user_id)VALUES (#{channelId},#{content},#{duration},#{href},#{img},#{type},#{isTop},#{title},#{createTime},#{updateTime},#{source},#{commentId},#{labels},#{authorId},#{authorAvatar},#{authorHref},#{ranks},#{disabled},#{userId}) ON DUPLICATE KEY UPDATE href= #{href}
+       INSERT INTO toutiao_article_record(article_id,user_id,create_time,update_time)VALUES (#{articleId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE article_id= #{articleId}
+    </insert>
+
+    <insert id="saveArticleFavorite" parameterType="ArticleEntity">
+       INSERT INTO toutiao_article_favorite(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},now(),now() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_article_favorite WHERE article_id = #{articleId})
     </insert>
 
     <delete id="deleteArticleRecord">
@@ -175,7 +170,7 @@
     </select>
 
     <select id="getArticleRecordList" resultMap="ArticleUserResultMap">
-        <include refid="getRecordArticleList"></include> WHERE t.user_id = #{user_id} ORDER BY t.create_time DESC LIMIT 0,50
+        <include refid="getArticleList"></include> WHERE t.id IN (SELECT article_id FROM toutiao_article_record WHERE user_id = #{userId}) ORDER BY t.create_time DESC LIMIT 0,50
     </select>
 
     <insert id="insertFavoriteChannels">
@@ -185,4 +180,20 @@
             (#{item.channelId},#{item.channelName},#{item.href},#{item.createTime},#{item.updateTime},#{item.userId},#{item.disabled},#{item.status},#{item.sequence})
         </foreach >
     </insert>
+
+    <select id="isFavorite" resultType="ArticleEntity">
+        SELECT * FROM toutiao_article_favorite WHERE id = #{id} and user_id = #{userId}
+    </select>
+
+    <insert id="insertFavorite">
+        INSERT INTO toutiao_article_favorite(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE article_id = #{articleId})
+    </insert>
+
+    <delete id="deleteFavorite">
+        DELETE FROM toutiao_article_favorite WHERE user_id = #{userId} AND article_id = #{articleId}
+    </delete>
+
+    <select id="getFavoriteList" resultMap="ArticleUserResultMap">
+        <include refid="getArticleList"></include> WHERE t.id IN (SELECT article_id FROM toutiao_article_favorite WHERE user_id = #{userId}) ORDER BY t.create_time DESC LIMIT #{start}, #{pageSize}
+    </select>
 </mapper>

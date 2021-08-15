@@ -99,9 +99,50 @@ public class ToutiaoController {
         return toutiaoService.getMovieList(pageSize,pageNum,star,classify,category,type,label,keyword,token);
     }
 
-    @ApiOperation("获取浏览记录")
+    @ApiOperation("获取浏览记录，只取前50条")
     @GetMapping("/toutiao-getway/getArticleRecordList")
     public ResultEntity getArticleRecordList(@RequestHeader("Authorization") String token) {
         return toutiaoService.getArticleRecordList(token);
+    }
+
+    @ApiOperation("获取收藏列表")
+    @GetMapping("/toutiao-getway/getFavoriteList")
+    public ResultEntity getFavoriteList(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize,
+            @RequestParam("type") String type
+    ) {
+        return toutiaoService.getFavoriteList(token,type,pageNum,pageSize);
+    }
+
+    @ApiOperation("查询是否已经收藏文章或视频")
+    @GetMapping("/toutiao-getway/isFavorite")
+    public ResultEntity isFavorite(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("id") int id,
+            @RequestParam("type") String type
+    ) {
+        return toutiaoService.isFavorite(token,type,id);
+    }
+
+    @ApiOperation("插入收藏")
+    @PostMapping("/toutiao-getway/insertFavorite")
+    public ResultEntity insertFavorite(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("id") int id,
+            @RequestParam("type") String type
+    ) {
+        return toutiaoService.insertFavorite(token,type,id);
+    }
+
+    @ApiOperation("删除收藏")
+    @DeleteMapping("/toutiao-getway/deleteFavorite")
+    public ResultEntity deleteFavorite(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("id") int id,
+            @RequestParam("type") String type
+    ) {
+        return toutiaoService.deleteFavorite(token,type,id);
     }
 }

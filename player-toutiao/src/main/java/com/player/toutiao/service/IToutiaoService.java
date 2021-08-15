@@ -22,4 +22,12 @@ public interface IToutiaoService {
     ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token);
 
     ResultEntity getArticleRecordList(String token);
+
+    ResultEntity isFavorite(String token,String type,int id);
+
+    ResultEntity getFavoriteList(String token,String type,int pageNum,int pageSize);
+
+    ResultEntity insertFavorite(String token,String type,int id);
+
+    ResultEntity deleteFavorite(String token,String type,int id);
 }

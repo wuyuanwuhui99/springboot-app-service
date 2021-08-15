@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -47,6 +44,7 @@ public class ToutiaoService implements IToutiaoService {
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
+            if(pageSize > 100)pageSize = 100;
             int start = pageSize * (pageNum-1);
             ResultEntity resultEntity = ResultUtil.success(toutiaoMapper.getArticleList(start,pageSize, type, channelId, authorId, keyword));
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.HOURS);
@@ -74,10 +72,7 @@ public class ToutiaoService implements IToutiaoService {
             redisTemplate.opsForValue().set(key, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
         }
         String userId = JwtToken.getUserId(token);
-        articleEntity.setUserId(JwtToken.getUserId(token));
-        articleEntity.setCreateTime(new Date());
-        articleEntity.setUpdateTime(new Date());
-        toutiaoMapper.saveArticleRecord(articleEntity);
+        toutiaoMapper.saveArticleRecord(userId,articleEntity.getId());
         toutiaoMapper.deleteArticleRecord(userId);
         return resultEntity;
     }
@@ -164,6 +159,7 @@ public class ToutiaoService implements IToutiaoService {
     public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String authorId,String keyword,String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
+        if(pageSize > 100)pageSize = 100;
         ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
                 "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&authorId="+Common.nullToString(authorId)+"&keyword="+Common.nullToString(keyword),
                 HttpMethod.GET,
@@ -181,6 +177,7 @@ public class ToutiaoService implements IToutiaoService {
     public ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
+        if(pageSize > 100)pageSize = 100;
         ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
                 "http://player-movie/service/movie/search?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+ Common.nullToString(star)+"&classify="+Common.nullToString(classify)+"&category="+Common.nullToString(category)+"&type="+Common.nullToString(type)+"&label="+Common.nullToString(label)+"&keyword="+Common.nullToString(keyword),
                 HttpMethod.GET,
@@ -197,5 +194,118 @@ public class ToutiaoService implements IToutiaoService {
     @Override
     public ResultEntity getArticleRecordList(String token){
         return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity isFavorite(String token,String type,int id){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        if(type.equals("article")){
+            List<ArticleEntity> favorite = toutiaoMapper.isFavorite(userId, id);
+            return ResultUtil.success(favorite.size() > 0);
+        }else if(type.equals("video")){
+            url = "http://player-video/service/video-getway/isFavorite?id="+id;
+        }else if(type.equals("movie")){
+            url = "http://player-movie/service/movie-getway/isFavorite?movieId="+id;
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity getFavoriteList(String token,String type,int pageNum,int pageSize){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        if(pageSize > 100) pageSize = 100;
+        if(type.equals("article")){
+            List<ArticleEntity> favorite = toutiaoMapper.getFavoriteList(userId,(pageNum-1)*pageSize, pageSize);
+            return ResultUtil.success(favorite.size() > 0);
+        }else if(type.equals("video")){
+            url = "http://player-video/service/video/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
+        }else if(type.equals("movie")){
+            url = "http://player-movie/service/movie/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity insertFavorite(String token,String type,int id){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        Map<String,Integer> paramsMap = new HashMap<>();
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.insertFavorite(userId,id));
+        }else if(type.equals("video")){
+            paramsMap.put("videoId",id);
+            url = "http://player-video/service/video/insertFavorite";
+        }else if(type.equals("movie")){
+            paramsMap.put("movieId",id);
+            url = "http://player-movie/service/movie/insertFavorite";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                new HttpEntity<>(JSON.toJSONString(paramsMap),headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity deleteFavorite(String token,String type,int id){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        Map<String,Integer> paramsMap = new HashMap<>();
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.deleteFavorite(userId,id));
+        }else if(type.equals("video")){
+            paramsMap.put("videoId",id);
+            url = "http://player-video/service/video/deleteFavorite";
+        }else if(type.equals("movie")){
+            paramsMap.put("movieId",id);
+            url = "http://player-movie/service/movie/deleteFavorite";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.DELETE,
+                new HttpEntity<>(JSON.toJSONString(paramsMap),headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
     }
 }

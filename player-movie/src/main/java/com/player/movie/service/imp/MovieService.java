@@ -231,6 +231,7 @@ public class MovieService implements IMovieService {
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
+            if(pageSize > 100)pageSize = 100;
             int start = (pageNum - 1) * pageSize;
             ResultEntity resultEntity =  ResultUtil.success(movieMapper.search(classify, category, label,star,director,keyword,start,pageSize));
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);

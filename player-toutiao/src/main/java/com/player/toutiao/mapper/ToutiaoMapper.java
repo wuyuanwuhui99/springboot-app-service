@@ -27,7 +27,7 @@ public interface ToutiaoMapper {
      * @description: 保存浏览记录
      * @date: 2021-5-29 19:22
      */
-    Long saveArticleRecord(ArticleEntity articleEntity);
+    Long saveArticleRecord(String userId,Long articleId);
 
     /**
      * @author: wuwenqiang
@@ -61,4 +61,12 @@ public interface ToutiaoMapper {
     int insertFavoriteChannels(List<ChannelEntity> favoriteChannels);
 
     List<ArticleEntity> getArticleRecordList(String userId);
+
+    List<ArticleEntity>isFavorite(String userId,int id);
+
+    List<ArticleEntity>getFavoriteList(String userId,int start,int pageSize);
+
+    Long insertFavorite(String userId,int articleId);
+
+    Long deleteFavorite(String userId,int articleId);
 }

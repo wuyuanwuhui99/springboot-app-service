@@ -66,9 +66,6 @@ public class ArticleEntity {
     @ApiModelProperty(value = "是否禁用")
     private int disabled;
 
-    @ApiModelProperty(value = "用户id")
-    private String userId;
-
     @ApiModelProperty(value = "作者信息")
     private AuthorEntity authorInfo;
 }

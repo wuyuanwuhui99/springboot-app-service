@@ -47,4 +47,22 @@ public class VideoController {
         String path = HttpUtils.getPath(request);
         return videoService.getVideoList(pageNum,pageSize,star,category,type,label,userId,keyword,path);
     }
+
+    @ApiOperation("获取视频分类信息")
+    @GetMapping("/video-getway/isFavorite")
+    public ResultEntity isFavorite(@RequestHeader("Authorization") String token,@RequestParam("id") int id) {
+        return videoService.isFavorite(token,id);
+    }
+
+    @ApiOperation("获取视频分类信息")
+    @PostMapping("/video-getway/insertFavorite")
+    public ResultEntity insertFavorite(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
+        return videoService.insertFavorite(token,videoId);
+    }
+
+    @ApiOperation("获取视频分类信息")
+    @DeleteMapping("/video-getway/deleteFavorite")
+    public ResultEntity deleteFavorite(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
+        return videoService.deleteFavorite(token,videoId);
+    }
 }

@@ -146,7 +146,7 @@
     </insert>
 
     <select id="getFavoriteList" resultType="MovieEntity">
-        SELECT * FROM movie_favorite WHERE user_id = #{userId}
+        SELECT * FROM movie WHERE movie_id IN (SELECT movie_id FROM movie_favorite WHERE user_id = #{userId})
     </select>
 
     <insert id="saveFavorite" parameterType="MovieEntity">

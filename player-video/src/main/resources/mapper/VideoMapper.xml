@@ -119,4 +119,16 @@
         </if>
         ORDER BY x.publish_time DESC LIMIT #{start},#{pageSize}
     </select>
+
+    <select id="isFavorite" resultType="VideoEntity">
+        SELECT * FROM xigua_video_favorite WHERE user_id = #{userId} AND id = #{id}
+    </select>
+
+    <insert id="insertFavorite">
+        INSERT INTO xigua_video_favorite(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE video_id = #{videoId})
+    </insert>
+
+    <delete id="deleteFavorite">
+        DELETE FROM xigua_video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
+    </delete>
 </mapper>

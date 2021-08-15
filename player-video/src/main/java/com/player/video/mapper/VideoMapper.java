@@ -26,4 +26,10 @@ public interface VideoMapper {
     List<ChannelEntity> getPublicChannels();
 
     Long insertFavoriteChannels(List<ChannelEntity> channelEntities);
+
+    List<VideoEntity>isFavorite(String userId, int id);
+
+    Long insertFavorite(String useId,int videoId);
+
+    Long deleteFavorite(String userId, int videoId);
 }

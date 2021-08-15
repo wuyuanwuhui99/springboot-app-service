@@ -13,4 +13,10 @@ public interface IVideoService {
     ResultEntity insertFavoriteChannels(List<ChannelEntity> channelEntities);
 
     ResultEntity getFavoriteChannels(String token);
+
+    ResultEntity isFavorite(String token,int id);
+
+    ResultEntity insertFavorite(String token, int videoId);
+
+    ResultEntity deleteFavorite(String token, int videoId);
 }
