@@ -79,7 +79,7 @@
         </association>
     </resultMap>
 
-    <sql id="getArticleListSql">
+    <sql id="getArticleList">
         SELECT
             t.id,
             t.channel_id,
@@ -110,14 +110,23 @@
             u.create_time,
             u.update_time,
             u.author_href
+    </sql>
+
+    <sql id="getSearchArticleList">
+        <include refid="getArticleList"></include>
         FROM toutiao_article t  LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
+    </sql>
+
+    <sql id="getRecordArticleList">
+        <include refid="getArticleList"></include>
+        FROM toutiao_article_record t  LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </sql>
 
     <select id="getArticleList" resultMap="ArticleUserResultMap">
         <if test="channelId == 0 and start == 0">
-            (<include refid="getArticleListSql"></include> WHERE t.content IS NOT NULL AND t.is_top = '1'AND t.channel_id = '0' ORDER BY t.create_time DESC LIMIT 0,3) UNION ALL
+            (<include refid="getSearchArticleList"></include> WHERE t.content IS NOT NULL AND t.is_top = '1'AND t.channel_id = '0' ORDER BY t.create_time DESC LIMIT 0,3) UNION ALL
         </if>
-        (<include refid="getArticleListSql"></include>
+        (<include refid="getSearchArticleList"></include>
         where t.is_top = '0' AND t.content IS NOT NULL
         <if test="keyword!=null and keyword!=''">
             and t.title like concat('%',#{keyword},'%') or t.content like concat('%',#{keyword},'%')
@@ -165,8 +174,8 @@
          ORDER BY sequence ASC
     </select>
 
-    <select id="getArticleRecordList" resultType="ArticleEntity">
-        SELECT * FROM toutiao_article_record WHERE user_id = #{user_id} ORDER BY create_time DESC LIMIT 0,50
+    <select id="getArticleRecordList" resultMap="ArticleUserResultMap">
+        <include refid="getRecordArticleList"></include> WHERE t.user_id = #{user_id} ORDER BY t.create_time DESC LIMIT 0,50
     </select>
 
     <insert id="insertFavoriteChannels">
