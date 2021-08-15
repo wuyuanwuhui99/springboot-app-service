@@ -46,6 +46,8 @@ public class UserService implements IUserService {
     @Autowired
     private RestTemplate restTemplate;
 
+
+
     /**
      * @author: wuwenqiang
      * @methodsName: getUserData
@@ -91,11 +93,11 @@ public class UserService implements IUserService {
      * @date: 2020-08-11 23:54
      */
     @Override
-    public ResultEntity logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie("userId", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        return ResultUtil.success(null, "退出登录成功");
+    public ResultEntity logout(String token) {
+        return restTemplate.exchange(
+                Common.postRequestEntity("http://player-user/service/user/logout",token,null),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -162,7 +164,8 @@ public class UserService implements IUserService {
      * @date: 2020-08-11 23:54
      */
     @Override
-    public ResultEntity upload(String userId,String token,MultipartFile file){
+    public ResultEntity upload(String token,MultipartFile file){
+        String userId = JwtToken.getUserId(token);
         if (file.isEmpty()) {
             return ResultUtil.fail("请选择文件");
         }

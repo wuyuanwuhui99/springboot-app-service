@@ -8,7 +8,6 @@ import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +22,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("Authorization");
-        if (token == null) {
-            renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
-            return false;
-        }
-        String result = (String) redisTemplate.opsForValue().get(token);
-        if(!StringUtils.isEmpty(result)){
+        if (token == null || redisTemplate.opsForValue().get(token) == null) {
             renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
             return false;
         }
@@ -47,7 +41,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     protected void renderJson(HttpServletResponse response, ResultEntity resultEntity) {
         String dataJson = JSONObject.toJSONString(resultEntity);
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             response.setContentType("application/json; charset=utf-8");
             writer = response.getWriter();

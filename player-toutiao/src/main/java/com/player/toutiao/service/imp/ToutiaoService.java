@@ -73,10 +73,12 @@ public class ToutiaoService implements IToutiaoService {
             resultEntity = ResultUtil.success(articleEntity);
             redisTemplate.opsForValue().set(key, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
         }
+        String userId = JwtToken.getUserId(token);
         articleEntity.setUserId(JwtToken.getUserId(token));
         articleEntity.setCreateTime(new Date());
         articleEntity.setUpdateTime(new Date());
         toutiaoMapper.saveArticleRecord(articleEntity);
+        toutiaoMapper.deleteArticleRecord(userId);
         return resultEntity;
     }
 
@@ -173,7 +175,7 @@ public class ToutiaoService implements IToutiaoService {
     /**
      * @author: wuwenqiang
      * @description: 获取文章列表
-     * @date: 2021-12-25 22:29
+     * @date: 2020-12-25 22:29
      */
     @Override
     public ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token) {
@@ -185,5 +187,15 @@ public class ToutiaoService implements IToutiaoService {
                 new HttpEntity<String>(headers),ResultEntity.class
         );
         return  responseEntity.getBody();
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取历史记录
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity getArticleRecordList(String token){
+        return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
     }
 }

@@ -25,8 +25,8 @@ public class UserController {
     @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
     @ApiOperation("查询用户信息")
     @GetMapping("/user/getUserData")
-    public ResultEntity getUserData(HttpServletRequest request) {
-        return userService.getUserData(request.getHeader("Authorization"));
+    public ResultEntity getUserData(@RequestHeader("Authorization") String token) {
+        return userService.getUserData(token);
     }
 
     @OperLog(message = "登录校验", operation = OperationType.LOGIN)
@@ -35,6 +35,14 @@ public class UserController {
     public ResultEntity login(@RequestBody UserEntity userEntity) {
         return userService.login(userEntity);
     }
+
+    @OperLog(message = "退出登录", operation = OperationType.LOGOUT)
+    @ApiOperation("退出登录")
+    @PostMapping("/music/logout")
+    public ResultEntity logout(@RequestHeader("Authorization") String token) {
+        return userService.logout(token);
+    }
+
 
     @OperLog(message = "注册", operation = OperationType.QUERY)
     @ApiOperation("注册,请求地地址：/service/user/register")
@@ -53,21 +61,19 @@ public class UserController {
     @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
     @ApiOperation("更新用户信息")
     @PutMapping("/user-getway/updateUser")
-    public ResultEntity updateUser(@RequestBody UserEntity userEntity,HttpServletRequest request) {
-        return userService.updateUser(userEntity,request.getHeader("Authorization"));
+    public ResultEntity updateUser(@RequestHeader("Authorization") String token,@RequestBody UserEntity userEntity,HttpServletRequest request) {
+        return userService.updateUser(userEntity,token);
     }
 
     @ApiOperation("修改密码")
     @PutMapping("/user-getway/updatePassword")
-    public ResultEntity updatePassword(@RequestBody PasswordEntity passwordEntity,HttpServletRequest request) {
-        return userService.updatePassword(passwordEntity,request.getHeader("Authorization"));
+    public ResultEntity updatePassword(@RequestHeader("Authorization") String token,@RequestBody PasswordEntity passwordEntity,HttpServletRequest request) {
+        return userService.updatePassword(passwordEntity,token);
     }
 
-    @ApiOperation("修改密码")
+    @ApiOperation("上传")
     @PostMapping("/user-getway/upload")
-    public ResultEntity upload(HttpServletRequest request, @RequestParam("img") MultipartFile file) {
-        String token = request.getHeader("Authorization");
-        String userId = JwtToken.getUserId(token);
-        return userService.upload(userId,token,file);
+    public ResultEntity upload(@RequestHeader("Authorization") String token, @RequestParam("img") MultipartFile file) {
+        return userService.upload(token,file);
     }
 }

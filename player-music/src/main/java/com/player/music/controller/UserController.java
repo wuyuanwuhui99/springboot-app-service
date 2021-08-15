@@ -43,8 +43,8 @@ public class UserController {
 
     @ApiOperation("退出登录")
     @GetMapping("/music/logout")
-    public ResultEntity logout(HttpServletResponse response) {
-        return userService.logout(response);
+    public ResultEntity logout(@RequestHeader("Authorization") String token) {
+        return userService.logout(token);
     }
 
     @ApiOperation("注册时判断用户是否存在")
@@ -56,21 +56,19 @@ public class UserController {
     @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
     @ApiOperation("更新用户信息")
     @PutMapping("/music-getway/updateUser")
-    public ResultEntity updateUser(@RequestBody UserEntity userEntity, HttpServletRequest request) {
-        return userService.updateUser(userEntity,request.getHeader("Authorization"));
+    public ResultEntity updateUser(@RequestHeader("Authorization") String token,@RequestBody UserEntity userEntity, HttpServletRequest request) {
+        return userService.updateUser(userEntity,token);
     }
 
     @ApiOperation("修改密码")
     @PutMapping("/music-getway/updatePassword")
-    public ResultEntity updatePassword(@RequestBody PasswordEntity passwordEntity, HttpServletRequest request) {
-        return userService.updatePassword(passwordEntity,request.getHeader("Authorization"));
+    public ResultEntity updatePassword(@RequestHeader("Authorization") String token,@RequestBody PasswordEntity passwordEntity, HttpServletRequest request) {
+        return userService.updatePassword(passwordEntity,token);
     }
 
-    @ApiOperation("修改密码")
+    @ApiOperation("上传")
     @PostMapping("/music-getway/upload")
-    public ResultEntity upload(HttpServletRequest request, @RequestParam("img") MultipartFile file) {
-        String token = request.getHeader("Authorization");
-        String userId = JwtToken.getUserId(token);
-        return userService.upload(userId,token,file);
+    public ResultEntity upload(@RequestHeader("Authorization") String token,HttpServletRequest request, @RequestParam("img") MultipartFile file) {
+        return userService.upload(token,file);
     }
 }

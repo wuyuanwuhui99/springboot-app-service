@@ -143,8 +143,12 @@
     </insert>
 
     <insert id="saveArticleRecord" parameterType="ArticleEntity">
-       INSERT INTO toutiao_article_record(channel_id,content,duration,href,img,type,is_top,title,create_time,update_time,source,comment_id,labels,author_id,author_avatar,author_href,ranks,disabled,user_id)VALUES (#{channelId},#{content},#{duration},#{href},#{img},#{type},#{isTop},#{title},#{createTime},#{updateTime},#{source},#{commentId},#{labels},#{authorId},#{authorAvatar},#{authorHref},#{ranks},#{disabled},#{userId})
+       INSERT INTO toutiao_article_record(channel_id,content,duration,href,img,type,is_top,title,create_time,update_time,source,comment_id,labels,author_id,author_avatar,author_href,ranks,disabled,user_id)VALUES (#{channelId},#{content},#{duration},#{href},#{img},#{type},#{isTop},#{title},#{createTime},#{updateTime},#{source},#{commentId},#{labels},#{authorId},#{authorAvatar},#{authorHref},#{ranks},#{disabled},#{userId}) ON DUPLICATE KEY UPDATE href= #{href}
     </insert>
+
+    <delete id="deleteArticleRecord">
+        DELETE FROM toutiao_article_record WHERE id NOT IN (SELECT T.id FROM (SELECT id FROM toutiao_article_record WHERE user_id = #{userId} ORDER BY id DESC LIMIT 0,20) AS T);
+    </delete>
 
     <select id="getFavoriteChannels" resultType="ChannelEntity">
         SELECT * FROM toutiao_favorite_channel WHERE id = #{id} AND disabled = 0 ORDER BY sequence ASC
@@ -159,6 +163,10 @@
             </foreach>
         </if>
          ORDER BY sequence ASC
+    </select>
+
+    <select id="getArticleRecordList" resultType="ArticleEntity">
+        SELECT * FROM toutiao_article_record WHERE user_id = #{user_id} ORDER BY create_time DESC LIMIT 0,50
     </select>
 
     <insert id="insertFavoriteChannels">

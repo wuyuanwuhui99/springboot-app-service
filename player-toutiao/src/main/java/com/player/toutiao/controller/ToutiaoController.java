@@ -98,4 +98,10 @@ public class ToutiaoController {
     ) {
         return toutiaoService.getMovieList(pageSize,pageNum,star,classify,category,type,label,keyword,token);
     }
+
+    @ApiOperation("获取浏览记录")
+    @GetMapping("/toutiao-getway/getArticleRecordList")
+    public ResultEntity getArticleRecordList(@RequestHeader("Authorization") String token) {
+        return toutiaoService.getArticleRecordList(token);
+    }
 }

@@ -76,6 +76,17 @@ public class UserService implements IUserService {
 
     /**
      * @author: wuwenqiang
+     * @description: 退出登录
+     * @date: 2020-12-25 00:04
+     */
+    @Override
+    public ResultEntity logout(String token) {
+        redisTemplate.delete(token);
+        return ResultUtil.success(null, "退出登录成功", token);
+    }
+
+    /**
+     * @author: wuwenqiang
      * @description: 注册
      * @date: 2021-01-01 23:39
      */
@@ -134,7 +145,8 @@ public class UserService implements IUserService {
      * @date: 2021-06-18 00:21
      */
     @Override
-    public ResultEntity upload(String userId, String token, MultipartFile file){
+    public ResultEntity upload(String token, MultipartFile file){
+        String userId = JwtToken.getUserId(token);
         if (file.isEmpty()) {
             return ResultUtil.fail("请选择文件");
         }
@@ -153,17 +165,5 @@ public class UserService implements IUserService {
         } catch (IOException e) {
             return ResultUtil.fail(e,"上传失败");
         }
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @methodsName: log
-     * @description: 日志
-     * @return: ResultEntity
-     * @date: 2021-07-04 11:27
-     */
-    @Override
-    public ResultEntity log(LogEntity logEntity){
-        return ResultUtil.success(userMapper.log(logEntity));
     }
 }

@@ -12,6 +12,8 @@ public interface IUserService {
 
     ResultEntity login(UserEntity userEntity);
 
+    ResultEntity logout(String token);
+
     ResultEntity register(UserEntity userEntity);
 
     ResultEntity getUserById(String userId);
@@ -20,7 +22,5 @@ public interface IUserService {
 
     ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
-    ResultEntity upload(String userId, String token, MultipartFile file);
-
-    ResultEntity log(LogEntity logEntity);
+    ResultEntity upload(String token, MultipartFile file);
 }

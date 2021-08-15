@@ -31,6 +31,13 @@ public interface ToutiaoMapper {
 
     /**
      * @author: wuwenqiang
+     * @description: 只保留前20条浏览记录
+     * @date: 2021-8-14 12:16
+     */
+    Long deleteArticleRecord(String userId);
+
+    /**
+     * @author: wuwenqiang
      * @description: 插入日志
      * @date: 2021-5-29 19:22
      */
@@ -52,4 +59,6 @@ public interface ToutiaoMapper {
 
 
     int insertFavoriteChannels(List<ChannelEntity> favoriteChannels);
+
+    List<ArticleEntity> getArticleRecordList(String userId);
 }
