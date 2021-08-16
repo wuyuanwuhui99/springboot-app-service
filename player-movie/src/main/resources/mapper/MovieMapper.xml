@@ -128,30 +128,27 @@
     </select>
 
     <select id="getViewRecord" resultType="MovieEntity">
-       SELECT * FROM  (select * from movie_view_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.movie_name ORDER BY create_time DESC
+        SELECT m.* FROM movie m,movie_view_record r WHERE m.movie_id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
     </select>
 
     <insert id="saveViewRecord" parameterType="MovieEntity">
-       INSERT INTO movie_view_record
-       <include refid="recordSql"></include>
+        INSERT INTO movie_view_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
     </insert>
 
     <select id="getPlayRecord" resultType="MovieEntity">
-        SELECT * FROM  (select * from movie_play_record WHERE user_id = #{userId} ORDER BY create_time DESC LIMIT 0 ,20) t GROUP BY t.movie_name ORDER BY create_time DESC
+        SELECT m.* FROM movie m,movie_play_record r WHERE m.movie_id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
     </select>
 
     <insert id="savePlayRecord" parameterType="MovieEntity">
-        INSERT INTO movie_play_record
-        <include refid="recordSql"></include>
+        INSERT INTO movie_play_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
     </insert>
 
     <select id="getFavoriteList" resultType="MovieEntity">
-        SELECT * FROM movie WHERE movie_id IN (SELECT movie_id FROM movie_favorite WHERE user_id = #{userId})
+        SELECT m.* FROM movie m,movie_favorite f WHERE m.movie_id = f.movie_id AND f.user_id = #{userId} ORDER BY r.create_time DESC LIMIT #{start},#{pageSize}
     </select>
 
     <insert id="saveFavorite" parameterType="MovieEntity">
-        INSERT INTO movie_favorite
-        <include refid="recordSql"></include>
+        INSERT INTO movie_favorite(movie_id,user_id,create_time,update_time) SELECT #{movieId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE movie_id = #{movieId})
     </insert>
 
     <delete id="deleteFavorite">

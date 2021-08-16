@@ -170,7 +170,7 @@
     </select>
 
     <select id="getArticleRecordList" resultMap="ArticleUserResultMap">
-        <include refid="getArticleList"></include> WHERE t.id IN (SELECT article_id FROM toutiao_article_record WHERE user_id = #{userId}) ORDER BY t.create_time DESC LIMIT 0,50
+        SELECT t.*,u.* FROM (SELECT a.* FROM toutiao_article a,toutiao_article_record r WHERE a.id = r.article_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>
 
     <insert id="insertFavoriteChannels">
@@ -194,6 +194,6 @@
     </delete>
 
     <select id="getFavoriteList" resultMap="ArticleUserResultMap">
-        <include refid="getArticleList"></include> WHERE t.id IN (SELECT article_id FROM toutiao_article_favorite WHERE user_id = #{userId}) ORDER BY t.create_time DESC LIMIT #{start}, #{pageSize}
+        SELECT t.*,u.* FROM (SELECT a.* FROM toutiao_article a,toutiao_article_favorite f WHERE a.id = f.article_id AND f.user_id = #{userId} ORDER BY f.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>
 </mapper>

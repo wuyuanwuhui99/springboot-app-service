@@ -342,9 +342,10 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity getFavoriteList(String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.getFavoriteList(userEntity.getUserId()));
+    public ResultEntity getFavoriteList(String token,int pageNum,int pageSize) {
+        if(pageSize > 100) pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(movieMapper.getFavoriteList(JwtToken.getUserId(token),start,pageSize));
     }
 
     /**

@@ -19,4 +19,6 @@ public interface IVideoService {
     ResultEntity insertFavorite(String token, int videoId);
 
     ResultEntity deleteFavorite(String token, int videoId);
+
+    ResultEntity getFavoriteList(String token, int pageNum, int pageSize);
 }

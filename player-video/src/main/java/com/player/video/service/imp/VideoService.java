@@ -143,4 +143,16 @@ public class VideoService implements IVideoService {
         String userId = JwtToken.getUserId(token);
         return ResultUtil.success(videoMapper.deleteFavorite(userId, videoId));
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取收藏的视频
+     * @date: 2021-08-16 22:53
+     */
+    @Override
+    public ResultEntity getFavoriteList(String token, int pageNum, int pageSize){
+        if(pageSize > 100)pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(videoMapper.getFavoriteList(JwtToken.getUserId(token),start,pageSize));
+    }
 }

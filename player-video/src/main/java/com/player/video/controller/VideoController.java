@@ -31,6 +31,16 @@ public class VideoController {
         return videoService.getFavoriteChannels(token);
     }
 
+    @ApiOperation("获取视频分类信息")
+    @GetMapping("/video-getway/getFavoriteList")
+    public ResultEntity getFavoriteList(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize") int pageSize
+    ) {
+        return videoService.getFavoriteList(token,pageNum,pageSize);
+    }
+
     @ApiOperation("获取视频列表")
     @GetMapping("/video/getVideoList")
     public ResultEntity getVideoList(

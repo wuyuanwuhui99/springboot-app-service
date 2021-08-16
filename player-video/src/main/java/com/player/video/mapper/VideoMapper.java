@@ -32,4 +32,6 @@ public interface VideoMapper {
     Long insertFavorite(String useId,int videoId);
 
     Long deleteFavorite(String userId, int videoId);
+
+    List<VideoEntity> getFavoriteList(String userId,int start,int pageSize);
 }

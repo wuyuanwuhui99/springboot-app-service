@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/service")
-@Api(value = "抖音查询和记录的接口", description = "查询抖音列表、播放记录接口")
+@Api(value = "查询文章接口", description = "查询文章、博客列表")
 @RestController
 public class ToutiaoController {
     @Autowired
@@ -23,13 +23,13 @@ public class ToutiaoController {
     @ApiOperation("查询文章列表")
     @GetMapping("/toutiao/getArticleList")
     public ResultEntity getArticleList(
-            @RequestParam("pageSize") int pageSize,
-    @RequestParam("pageNum") int pageNum,
-    @RequestParam(required = false, value="type") String type,
-    @RequestParam(required = false, value="channelId") String channelId,
-    @RequestParam(required = false, value="authorId") String authorId,
-    @RequestParam(required = false, value="keyword") String keyword,
-    HttpServletRequest request
+        @RequestParam("pageSize") int pageSize,
+        @RequestParam("pageNum") int pageNum,
+        @RequestParam(required = false, value="type") String type,
+        @RequestParam(required = false, value="channelId") String channelId,
+        @RequestParam(required = false, value="authorId") String authorId,
+        @RequestParam(required = false, value="keyword") String keyword,
+        HttpServletRequest request
     ) {
         String path = HttpUtils.getPath(request);
         return toutiaoService.getArticleList(pageNum,pageSize,type,channelId,authorId,keyword,path);

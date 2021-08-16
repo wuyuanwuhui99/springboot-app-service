@@ -124,6 +124,12 @@
         SELECT * FROM xigua_video_favorite WHERE user_id = #{userId} AND id = #{id}
     </select>
 
+    <select id="getFavoriteList" resultMap="videoUserResultMap">
+        SELECT t.*,u.* FROM
+        (SELECT a.* FROM xigua_video a,xigua_video_favorite f WHERE a.id = f.video_id AND f.user_id = #{userId}) t
+        LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name ORDER BY t.create_time DESC
+    </select>
+
     <insert id="insertFavorite">
         INSERT INTO xigua_video_favorite(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE video_id = #{videoId})
     </insert>

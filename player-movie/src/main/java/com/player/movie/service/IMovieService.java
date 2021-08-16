@@ -43,7 +43,7 @@ public interface IMovieService {
 
     ResultEntity savePlayRecord(MovieEntity movieEntity,String token);
 
-    ResultEntity getFavoriteList(String token);
+    ResultEntity getFavoriteList(String token,int pageNum,int pageSize);
 
     ResultEntity saveFavorite(MovieEntity movieEntity,String token);
 
