@@ -155,4 +155,14 @@ public class VideoService implements IVideoService {
         int start = (pageNum - 1)*pageSize;
         return ResultUtil.success(videoMapper.getFavoriteList(JwtToken.getUserId(token),start,pageSize));
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取视频播放记录
+     * @date: 2021-08-16 22:53
+     */
+    @Override
+    public ResultEntity getVideoRecordList(String token){
+        return ResultUtil.success(videoMapper.getVideoRecordList(JwtToken.getUserId(token)));
+    }
 }

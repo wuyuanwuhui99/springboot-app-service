@@ -194,6 +194,6 @@
     </delete>
 
     <select id="getFavoriteList" resultMap="ArticleUserResultMap">
-        SELECT t.*,u.* FROM (SELECT a.* FROM toutiao_article a,toutiao_article_favorite f WHERE a.id = f.article_id AND f.user_id = #{userId} ORDER BY f.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
+        SELECT t.*,u.* FROM (SELECT a.* FROM toutiao_article a,toutiao_article_favorite f WHERE a.id = f.article_id AND f.user_id = #{userId} ORDER BY f.create_time DESC LIMIT 0,50) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>
 </mapper>

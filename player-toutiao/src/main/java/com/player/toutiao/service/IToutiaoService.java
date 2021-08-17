@@ -21,7 +21,7 @@ public interface IToutiaoService {
 
     ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token);
 
-    ResultEntity getArticleRecordList(String token);
+    ResultEntity getRecordList(String token,String type);
 
     ResultEntity isFavorite(String token,String type,int id);
 

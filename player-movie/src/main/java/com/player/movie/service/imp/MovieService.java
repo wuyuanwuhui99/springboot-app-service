@@ -280,35 +280,6 @@ public class MovieService implements IMovieService {
 
     /**
      * @author: wuwenqiang
-     * @description: 获取浏览记录
-     * @date: 2021-02-28 12:08
-     */
-    @Override
-    public ResultEntity getViewRecord(String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        ResultEntity resultEntity = ResultUtil.success(movieMapper.getViewRecord(userEntity.getUserId()));
-        return resultEntity;
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 保存浏览记录
-     * @date: 2021-02-28 12:08
-     */
-    @Override
-    @Transactional
-    public ResultEntity saveViewRecord(MovieEntity movieEntity,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        Date date = new Date();
-        movieEntity.setCreateTime(date);
-        movieEntity.setUpdateTime(date);
-        movieEntity.setUserId(userEntity.getUserId());
-        ResultEntity resultEntity = ResultUtil.success(movieMapper.saveViewRecord(movieEntity));
-        return resultEntity;
-    }
-
-    /**
-     * @author: wuwenqiang
      * @description: 获取播放记录
      * @date: 2021-02-28 12:08
      */

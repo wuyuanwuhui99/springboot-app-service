@@ -127,10 +127,6 @@
        SELECT * FROM movie_url WHERE movie_id = #{movie_id}
     </select>
 
-    <select id="getViewRecord" resultType="MovieEntity">
-        SELECT m.* FROM movie m,movie_view_record r WHERE m.movie_id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
-    </select>
-
     <insert id="saveViewRecord" parameterType="MovieEntity">
         INSERT INTO movie_view_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
     </insert>

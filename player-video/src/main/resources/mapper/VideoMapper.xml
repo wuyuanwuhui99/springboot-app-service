@@ -57,45 +57,7 @@
     </resultMap>
 
     <select id="getVideoList" resultMap="videoUserResultMap">
-        SELECT
-            x.id,
-            x.album_id,
-            x.channel_id,
-            x.title,
-            x.director,
-            x.star,
-            x.type,
-            x.country_language,
-            x.publish_time,
-            x.plot,
-            x.is_recommend,
-            x.classify,
-            x.source_name,
-            x.source_url,
-            x.label,
-            x.original_href,
-            x.description,
-            x.target_href,
-            x.status,
-            x.score,
-            x.category,
-            x.ranks,
-            x.author_id,
-            x.duration,
-            x.img,
-            x.create_time,
-            x.update_time,
-            u.id,
-            u.author_id,
-            u.name,
-            u.author_desc,
-            u.avatar_url,
-            u.description,
-            u.followers_count,
-            u.verified_content,
-            u.create_time,
-            u.update_time
-        from xigua_video x  LEFT JOIN toutiao_author u ON x.author_id = u.author_id
+        SELECT x.*,u.* FROM xigua_video x  LEFT JOIN toutiao_author u ON x.author_id = u.author_id
         <if test="star != null and start != ''">
             AND x.star LIKE CONCAT('%',#{star},'%')
         </if>
@@ -137,4 +99,10 @@
     <delete id="deleteFavorite">
         DELETE FROM xigua_video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
     </delete>
+
+    <select id="getVideoRecordList" resultMap="videoUserResultMap">
+        SELECT x.*,u.* FROM
+        (SELECT v.* FROM xigua_video_record r,xigua_video v WHERE v.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50) x
+        LEFT JOIN toutiao_author u ON x.author_id = u.author_id
+    </select>
 </mapper>

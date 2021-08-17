@@ -75,4 +75,10 @@ public class VideoController {
     public ResultEntity deleteFavorite(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
         return videoService.deleteFavorite(token,videoId);
     }
+
+    @ApiOperation("获取视频分类信息")
+    @GetMapping("/video-getway/getVideoRecordList")
+    public ResultEntity getVideoRecordList(@RequestHeader("Authorization") String token) {
+        return videoService.getVideoRecordList(token);
+    }
 }

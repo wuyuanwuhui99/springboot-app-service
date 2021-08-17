@@ -61,10 +61,6 @@ public interface MovieMapper {
 
     List<MovieUrlEntity> getMovieUrl(String movieId);
 
-    List<MovieEntity> getViewRecord(String userId);
-
-    Long saveViewRecord(MovieEntity movieEntity);
-
     List<MovieEntity> getPlayRecord(String userId);
 
     Long savePlayRecord(MovieEntity movieEntity);

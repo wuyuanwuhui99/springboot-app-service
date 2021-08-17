@@ -34,4 +34,6 @@ public interface VideoMapper {
     Long deleteFavorite(String userId, int videoId);
 
     List<VideoEntity> getFavoriteList(String userId,int start,int pageSize);
+
+    List<VideoEntity> getVideoRecordList(String userId);
 }

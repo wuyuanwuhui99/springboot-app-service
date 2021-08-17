@@ -192,8 +192,23 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity getArticleRecordList(String token){
-        return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
+    public ResultEntity getRecordList(String token,String type){
+        String url = "";
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
+        }else if(type.equals("video")){
+            url = "http://player-video/service/video-getway/getVideoRecordList?";
+        }else if(type.equals("movie")){
+            url = "http://player-movie/service/movie-getway/getPlayRecord";
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),ResultEntity.class
+        );
+        return  responseEntity.getBody();
     }
 
     /**

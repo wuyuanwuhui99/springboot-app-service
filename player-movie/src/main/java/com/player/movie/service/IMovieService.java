@@ -35,10 +35,6 @@ public interface IMovieService {
 
     ResultEntity getMovieUrl(String movieId,String path);
 
-    ResultEntity getViewRecord(String token);
-
-    ResultEntity saveViewRecord(MovieEntity movieEntity,String token);
-
     ResultEntity getPlayRecord(String token);
 
     ResultEntity savePlayRecord(MovieEntity movieEntity,String token);
