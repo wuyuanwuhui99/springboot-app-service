@@ -181,8 +181,8 @@
         </foreach >
     </insert>
 
-    <select id="isFavorite" resultType="ArticleEntity">
-        SELECT * FROM toutiao_article_favorite WHERE id = #{id} and user_id = #{userId}
+    <select id="isFavorite" resultType="Long">
+        SELECT COUNT(*) FROM toutiao_article_favorite WHERE id = #{id} and user_id = #{userId}
     </select>
 
     <insert id="insertFavorite">
@@ -191,6 +191,18 @@
 
     <delete id="deleteFavorite">
         DELETE FROM toutiao_article_favorite WHERE user_id = #{userId} AND article_id = #{articleId}
+    </delete>
+
+    <select id="isLike" resultType="Long">
+        SELECT COUNT(*) FROM toutiao_article_like WHERE id = #{id} and user_id = #{userId}
+    </select>
+
+    <insert id="insertLike">
+        INSERT INTO toutiao_article_like(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_like WHERE article_id = #{articleId})
+    </insert>
+
+    <delete id="deleteLike">
+        DELETE FROM toutiao_article_like WHERE user_id = #{userId} AND article_id = #{articleId}
     </delete>
 
     <select id="getFavoriteList" resultMap="ArticleUserResultMap">

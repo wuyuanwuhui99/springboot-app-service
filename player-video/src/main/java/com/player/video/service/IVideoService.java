@@ -14,11 +14,17 @@ public interface IVideoService {
 
     ResultEntity getFavoriteChannels(String token);
 
-    ResultEntity isFavorite(String token,int id);
+    ResultEntity isFavorite(String token,int videoId);
 
     ResultEntity insertFavorite(String token, int videoId);
 
     ResultEntity deleteFavorite(String token, int videoId);
+
+    ResultEntity isLike(String token,int videoId);
+
+    ResultEntity insertLike(String token, int videoId);
+
+    ResultEntity deleteLike(String token, int videoId);
 
     ResultEntity getFavoriteList(String token, int pageNum, int pageSize);
 

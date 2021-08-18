@@ -27,11 +27,17 @@ public interface VideoMapper {
 
     Long insertFavoriteChannels(List<ChannelEntity> channelEntities);
 
-    List<VideoEntity>isFavorite(String userId, int id);
+    Long isFavorite(String userId, int videoId);
 
-    Long insertFavorite(String useId,int videoId);
+    Long insertFavorite(String userId,int videoId);
 
     Long deleteFavorite(String userId, int videoId);
+
+    Long isLike(String userId, int videoId);
+
+    Long insertLike(String userId,int videoId);
+
+    Long deleteLike(String userId, int videoId);
 
     List<VideoEntity> getFavoriteList(String userId,int start,int pageSize);
 

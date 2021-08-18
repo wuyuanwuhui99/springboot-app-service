@@ -30,4 +30,10 @@ public interface IToutiaoService {
     ResultEntity insertFavorite(String token,String type,int id);
 
     ResultEntity deleteFavorite(String token,String type,int id);
+
+    ResultEntity isLike(String token, String type, int id);
+
+    ResultEntity insertLike(String token,String type,int id);
+
+    ResultEntity deleteLike(String token,String type,int id);
 }

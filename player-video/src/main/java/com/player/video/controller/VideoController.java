@@ -5,10 +5,12 @@ import com.player.common.utils.HttpUtils;
 import com.player.video.service.IVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RequestMapping("/service")
 @Api(value = "抖音查询和记录的接口", description = "查询抖音列表、播放记录接口")
@@ -58,27 +60,45 @@ public class VideoController {
         return videoService.getVideoList(pageNum,pageSize,star,category,type,label,userId,keyword,path);
     }
 
-    @ApiOperation("获取视频分类信息")
+    @ApiOperation("查询是否收藏该视频")
     @GetMapping("/video-getway/isFavorite")
-    public ResultEntity isFavorite(@RequestHeader("Authorization") String token,@RequestParam("id") int id) {
-        return videoService.isFavorite(token,id);
+    public ResultEntity isFavorite(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
+        return videoService.isFavorite(token,videoId);
     }
 
-    @ApiOperation("获取视频分类信息")
+    @ApiOperation("插入收藏")
     @PostMapping("/video-getway/insertFavorite")
-    public ResultEntity insertFavorite(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
-        return videoService.insertFavorite(token,videoId);
+    public ResultEntity insertFavorite(@RequestHeader("Authorization") String token, @RequestBody Map<String,Integer> params) {
+        return videoService.insertFavorite(token,params.get("videoId"));
     }
 
-    @ApiOperation("获取视频分类信息")
+    @ApiOperation("删除收藏")
     @DeleteMapping("/video-getway/deleteFavorite")
-    public ResultEntity deleteFavorite(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
-        return videoService.deleteFavorite(token,videoId);
+    public ResultEntity deleteFavorite(@RequestHeader("Authorization") String token, @RequestBody Map<String,Integer> params) {
+        return videoService.deleteFavorite(token,params.get("videoId"));
     }
 
     @ApiOperation("获取视频分类信息")
     @GetMapping("/video-getway/getVideoRecordList")
     public ResultEntity getVideoRecordList(@RequestHeader("Authorization") String token) {
         return videoService.getVideoRecordList(token);
+    }
+
+    @ApiOperation("查询是否点赞过该视频")
+    @GetMapping("/video-getway/isLike")
+    public ResultEntity isLike(@RequestHeader("Authorization") String token,@RequestParam("videoId") int videoId) {
+        return videoService.isLike(token,videoId);
+    }
+
+    @ApiOperation("插入点赞")
+    @PostMapping("/video-getway/insertLike")
+    public ResultEntity insertLike(@RequestHeader("Authorization") String token,@RequestBody Map<String,Integer> params) {
+        return videoService.insertLike(token,params.get("videoId"));
+    }
+
+    @ApiOperation("删除点赞")
+    @DeleteMapping("/video-getway/deleteLike")
+    public ResultEntity deleteLike(@RequestHeader("Authorization") String token,@RequestBody Map<String,Integer> params) {
+        return videoService.deleteLike(token,params.get("videoId"));
     }
 }

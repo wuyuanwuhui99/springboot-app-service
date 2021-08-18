@@ -112,14 +112,13 @@ public class VideoService implements IVideoService {
 
     /**
      * @author: wuwenqiang
-     * @description: 获取历史记录
+     * @description: 获取是否收藏
      * @date: 2021-08-14 22:29
      */
     @Override
     public ResultEntity isFavorite(String token,int id){
         String userId = JwtToken.getUserId(token);
-        List<VideoEntity> favorite = videoMapper.isFavorite(userId, id);
-        return ResultUtil.success(favorite.size() > 0);
+        return ResultUtil.success(videoMapper.isFavorite(userId, id));
     }
 
     /**
@@ -142,6 +141,39 @@ public class VideoService implements IVideoService {
     public ResultEntity deleteFavorite(String token,int videoId){
         String userId = JwtToken.getUserId(token);
         return ResultUtil.success(videoMapper.deleteFavorite(userId, videoId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取是否点赞
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity isLike(String token,int id){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(videoMapper.isLike(userId, id));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 保存点赞
+     * @date: 2021-08-15 20:32
+     */
+    @Override
+    public ResultEntity insertLike(String token,int videoId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(videoMapper.insertLike(userId, videoId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 取消点赞
+     * @date: 2021-08-15 20:32
+     */
+    @Override
+    public ResultEntity deleteLike(String token,int videoId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(videoMapper.deleteLike(userId, videoId));
     }
 
     /**

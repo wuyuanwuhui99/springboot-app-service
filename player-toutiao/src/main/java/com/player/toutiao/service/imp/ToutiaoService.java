@@ -32,6 +32,20 @@ public class ToutiaoService implements IToutiaoService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    public ResultEntity getRequestData(String url,String token,HttpMethod type,Map<String, Object> params){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", token);
+        HttpEntity<String> httpEntity = new HttpEntity<>(JSON.toJSONString(params),headers);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                type,
+                httpEntity,
+                ResultEntity.class
+        );
+        return  responseEntity.getBody();
+    }
+
     /**
      * @author: wuwenqiang
      * @description: 获取文章列表
@@ -123,14 +137,7 @@ public class ToutiaoService implements IToutiaoService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-user/service/user/getUserData",
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData("http://player-user/service/user/getUserData",token,HttpMethod.GET,null);
     }
 
     /**
@@ -140,14 +147,7 @@ public class ToutiaoService implements IToutiaoService {
      */
     @Override
     public ResultEntity getVideoCategory(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-video/service/video-getway/getFavoriteChannels",
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData("http://player-video/service/video-getway/getFavoriteChannels",token,HttpMethod.GET,null);
     }
 
     /**
@@ -157,15 +157,9 @@ public class ToutiaoService implements IToutiaoService {
      */
     @Override
     public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String authorId,String keyword,String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
         if(pageSize > 100)pageSize = 100;
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&authorId="+Common.nullToString(authorId)+"&keyword="+Common.nullToString(keyword),
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        String url = "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&authorId="+Common.nullToString(authorId)+"&keyword="+Common.nullToString(keyword);
+        return getRequestData(url,token,HttpMethod.GET,null);
     }
 
     /**
@@ -175,15 +169,9 @@ public class ToutiaoService implements IToutiaoService {
      */
     @Override
     public ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
         if(pageSize > 100)pageSize = 100;
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-movie/service/movie/search?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+ Common.nullToString(star)+"&classify="+Common.nullToString(classify)+"&category="+Common.nullToString(category)+"&type="+Common.nullToString(type)+"&label="+Common.nullToString(label)+"&keyword="+Common.nullToString(keyword),
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        String url = "http://player-movie/service/movie/search?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+ Common.nullToString(star)+"&classify="+Common.nullToString(classify)+"&category="+Common.nullToString(category)+"&type="+Common.nullToString(type)+"&label="+Common.nullToString(label)+"&keyword="+Common.nullToString(keyword);
+        return getRequestData(url,token,HttpMethod.GET,null);
     }
 
     /**
@@ -201,14 +189,7 @@ public class ToutiaoService implements IToutiaoService {
         }else if(type.equals("movie")){
             url = "http://player-movie/service/movie-getway/getPlayRecord";
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData(url,token,HttpMethod.GET,null);
     }
 
     /**
@@ -221,21 +202,13 @@ public class ToutiaoService implements IToutiaoService {
         String userId = JwtToken.getUserId(token);
         String url = "";
         if(type.equals("article")){
-            List<ArticleEntity> favorite = toutiaoMapper.isFavorite(userId, id);
-            return ResultUtil.success(favorite.size() > 0);
+            return ResultUtil.success(toutiaoMapper.isFavorite(userId, id));
         }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/isFavorite?id="+id;
+            url = "http://player-video/service/video-getway/isFavorite?videoId="+id;
         }else if(type.equals("movie")){
             url = "http://player-movie/service/movie-getway/isFavorite?movieId="+id;
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData(url,token,HttpMethod.GET,null);
     }
 
     /**
@@ -252,18 +225,11 @@ public class ToutiaoService implements IToutiaoService {
             List<ArticleEntity> favorite = toutiaoMapper.getFavoriteList(userId,(pageNum-1)*pageSize, pageSize);
             return ResultUtil.success(favorite.size() > 0);
         }else if(type.equals("video")){
-            url = "http://player-video/service/video/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
+            url = "http://player-video/service/video-getway/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
         }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
+            url = "http://player-movie/service/movie-getway/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData(url,token,HttpMethod.GET,null);
     }
 
     /**
@@ -275,24 +241,17 @@ public class ToutiaoService implements IToutiaoService {
     public ResultEntity insertFavorite(String token,String type,int id){
         String userId = JwtToken.getUserId(token);
         String url = "";
-        Map<String,Integer> paramsMap = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         if(type.equals("article")){
             return ResultUtil.success(toutiaoMapper.insertFavorite(userId,id));
         }else if(type.equals("video")){
-            paramsMap.put("videoId",id);
-            url = "http://player-video/service/video/insertFavorite";
+            params.put("videoId",id);
+            url = "http://player-video/service/video-getway/insertFavorite";
         }else if(type.equals("movie")){
-            paramsMap.put("movieId",id);
-            url = "http://player-movie/service/movie/insertFavorite";
+            params.put("movieId",id);
+            url = "http://player-movie/service/movie-getway/insertFavorite";
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                new HttpEntity<>(JSON.toJSONString(paramsMap),headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData(url,token,HttpMethod.POST,params);
     }
 
     /**
@@ -304,23 +263,79 @@ public class ToutiaoService implements IToutiaoService {
     public ResultEntity deleteFavorite(String token,String type,int id){
         String userId = JwtToken.getUserId(token);
         String url = "";
-        Map<String,Integer> paramsMap = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         if(type.equals("article")){
             return ResultUtil.success(toutiaoMapper.deleteFavorite(userId,id));
         }else if(type.equals("video")){
-            paramsMap.put("videoId",id);
-            url = "http://player-video/service/video/deleteFavorite";
+            params.put("videoId",id);
+            url = "http://player-video/service/video-getway/deleteFavorite";
         }else if(type.equals("movie")){
-            paramsMap.put("movieId",id);
-            url = "http://player-movie/service/movie/deleteFavorite";
+            params.put("movieId",id);
+            url = "http://player-movie/service/movie-getway/deleteFavorite";
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.DELETE,
-                new HttpEntity<>(JSON.toJSONString(paramsMap),headers),ResultEntity.class
-        );
-        return  responseEntity.getBody();
+        return getRequestData(url,token,HttpMethod.DELETE,params);
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity isLike(String token,String type,int id){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.isLike(userId, id));
+        }else if(type.equals("video")){
+            url = "http://player-video/service/video-getway/isLike?videoId="+id;
+        }else if(type.equals("movie")){
+            url = "http://player-movie/service/movie-getway/isLike?movieId="+id;
+        }
+        return getRequestData(url,token,HttpMethod.GET,null);
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity insertLike(String token,String type,int id){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        Map<String,Object> params = new HashMap<>();
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.insertLike(userId,id));
+        }else if(type.equals("video")){
+            params.put("videoId",id);
+            url = "http://player-video/service/video-getway/insertLike";
+        }else if(type.equals("movie")){
+            params.put("movieId",id);
+            url = "http://player-movie/service/movie-getway/insertLike";
+        }
+        return getRequestData(url,token,HttpMethod.POST,params);
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经收视频
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity deleteLike(String token,String type,int id){
+        String userId = JwtToken.getUserId(token);
+        String url = "";
+        Map<String,Object> params = new HashMap<>();
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.deleteLike(userId,id));
+        }else if(type.equals("video")){
+            params.put("videoId",id);
+            url = "http://player-video/service/video-getway/deleteLike";
+        }else if(type.equals("movie")){
+            params.put("movieId",id);
+            url = "http://player-movie/service/movie-getway/deleteLike";
+        }
+        return getRequestData(url,token,HttpMethod.DELETE,params);
     }
 }

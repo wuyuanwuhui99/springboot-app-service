@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RequestMapping("/service")
 @Api(value = "查询文章接口", description = "查询文章、博客列表")
@@ -144,5 +145,33 @@ public class ToutiaoController {
             @RequestParam("type") String type
     ) {
         return toutiaoService.deleteFavorite(token,type,id);
+    }
+
+    @ApiOperation("查询是否已经点赞文章或视频")
+    @GetMapping("/toutiao-getway/isLike")
+    public ResultEntity isLike(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("id") int id,
+            @RequestParam("type") String type
+    ) {
+        return toutiaoService.isLike(token,type,id);
+    }
+
+    @ApiOperation("插入点赞")
+    @PostMapping("/toutiao-getway/insertLike")
+    public ResultEntity insertLike(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String,Object> params
+            ) {
+        return toutiaoService.insertLike(token,(String) params.get("type"),(Integer) params.get("id"));
+    }
+
+    @ApiOperation("删除点赞")
+    @DeleteMapping("/toutiao-getway/deleteLike")
+    public ResultEntity deleteLike(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String,Object> params
+    ) {
+        return toutiaoService.deleteLike(token,(String) params.get("type"),(Integer) params.get("id"));
     }
 }

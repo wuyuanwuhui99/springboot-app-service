@@ -57,16 +57,21 @@ public interface ToutiaoMapper {
      */
     List<ChannelEntity>  getAllChannels(@Param("list") List<Integer> status);
 
-
     int insertFavoriteChannels(List<ChannelEntity> favoriteChannels);
 
     List<ArticleEntity> getArticleRecordList(String userId);
 
-    List<ArticleEntity>isFavorite(String userId,int id);
+    Long isFavorite(String userId,int id);
 
     List<ArticleEntity>getFavoriteList(String userId,int start,int pageSize);
 
     Long insertFavorite(String userId,int articleId);
 
     Long deleteFavorite(String userId,int articleId);
+
+    Long isLike(String userId, int id);
+
+    Long insertLike(String userId,int articleId);
+
+    Long deleteLike(String userId,int articleId);
 }

@@ -325,13 +325,8 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity saveFavorite(MovieEntity movieEntity, String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        Date date = new Date();
-        movieEntity.setCreateTime(date);
-        movieEntity.setUpdateTime(date);
-        movieEntity.setUserId(userEntity.getUserId());
-        return ResultUtil.success(movieMapper.saveFavorite(movieEntity));
+    public ResultEntity saveFavorite(String movieId, String token) {
+        return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getUserId(token)));
     }
 
     /**
@@ -341,8 +336,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity deleteFavorite(String movieId,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.deleteFavorite(movieId,userEntity.getUserId()));
+        return ResultUtil.success(movieMapper.deleteFavorite(movieId,JwtToken.getUserId(token)));
     }
 
     @Override
@@ -379,5 +373,32 @@ public class MovieService implements IMovieService {
             redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 添加收藏
+     * @date: 2020-12-25 22:29
+     */
+    @Override
+    public ResultEntity saveLike(String movieId, String token) {
+        return ResultUtil.success(movieMapper.saveLike(movieId,JwtToken.getUserId(token)));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 删除收藏
+     * @date: 2021-03-07 16:10
+     */
+    @Override
+    public ResultEntity deleteLike(String movieId,String token) {
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        return ResultUtil.success(movieMapper.deleteLike(movieId,userEntity.getUserId()));
+    }
+
+    @Override
+    public ResultEntity isLike(String movieId,String token) {
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        return ResultUtil.success(movieMapper.isLike(movieId,userEntity.getUserId()));
     }
 }

@@ -82,8 +82,8 @@
         ORDER BY x.publish_time DESC LIMIT #{start},#{pageSize}
     </select>
 
-    <select id="isFavorite" resultType="VideoEntity">
-        SELECT * FROM xigua_video_favorite WHERE user_id = #{userId} AND id = #{id}
+    <select id="isFavorite" resultType="Long">
+        SELECT COUNT(*) FROM xigua_video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
     </select>
 
     <select id="getFavoriteList" resultMap="videoUserResultMap">
@@ -98,6 +98,18 @@
 
     <delete id="deleteFavorite">
         DELETE FROM xigua_video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
+    </delete>
+
+    <select id="isLike" resultType="Long">
+        SELECT COUNT(*) FROM xigua_video_like WHERE user_id = #{userId} AND video_id = #{videoId}
+    </select>
+
+    <insert id="insertLike">
+        INSERT INTO xigua_video_like(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_like WHERE video_id = #{videoId})
+    </insert>
+
+    <delete id="deleteLike">
+        DELETE FROM xigua_video_like WHERE user_id = #{userId} AND video_id = #{videoId}
     </delete>
 
     <select id="getVideoRecordList" resultMap="videoUserResultMap">
