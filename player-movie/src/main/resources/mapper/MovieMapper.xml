@@ -176,7 +176,7 @@
     </delete>
 
     <select id="isLike" resultType="Long">
-        SELECT COUNT(*) as total FROM movie_favorite WHERE user_id=#{userId} AND movie_id = #{movieId}
+        SELECT COUNT(*) as total FROM movie_like WHERE user_id=#{userId} AND movie_id = #{movieId}
     </select>
 </mapper>
 

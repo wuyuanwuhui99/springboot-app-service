@@ -131,10 +131,9 @@ public class ToutiaoController {
     @PostMapping("/toutiao-getway/insertFavorite")
     public ResultEntity insertFavorite(
             @RequestHeader("Authorization") String token,
-            @RequestParam("id") int id,
-            @RequestParam("type") String type
+            @RequestBody Map<String,Object> params
     ) {
-        return toutiaoService.insertFavorite(token,type,id);
+        return toutiaoService.insertFavorite(token,(String) params.get("type"),(int)params.get("id"));
     }
 
     @ApiOperation("删除收藏")
@@ -151,8 +150,8 @@ public class ToutiaoController {
     @GetMapping("/toutiao-getway/isLike")
     public ResultEntity isLike(
             @RequestHeader("Authorization") String token,
-            @RequestParam("id") int id,
-            @RequestParam("type") String type
+            @RequestParam("type") String type,
+            @RequestParam("id") int id
     ) {
         return toutiaoService.isLike(token,type,id);
     }
@@ -170,8 +169,9 @@ public class ToutiaoController {
     @DeleteMapping("/toutiao-getway/deleteLike")
     public ResultEntity deleteLike(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String,Object> params
+            @RequestParam("type") String type,
+            @RequestParam("id") int id
     ) {
-        return toutiaoService.deleteLike(token,(String) params.get("type"),(Integer) params.get("id"));
+        return toutiaoService.deleteLike(token,type,id);
     }
 }

@@ -263,17 +263,14 @@ public class ToutiaoService implements IToutiaoService {
     public ResultEntity deleteFavorite(String token,String type,int id){
         String userId = JwtToken.getUserId(token);
         String url = "";
-        Map<String,Object> params = new HashMap<>();
         if(type.equals("article")){
             return ResultUtil.success(toutiaoMapper.deleteFavorite(userId,id));
         }else if(type.equals("video")){
-            params.put("videoId",id);
-            url = "http://player-video/service/video-getway/deleteFavorite";
+            url = "http://player-video/service/video-getway/deleteFavorite?videoId="+id;
         }else if(type.equals("movie")){
-            params.put("movieId",id);
-            url = "http://player-movie/service/movie-getway/deleteFavorite";
+            url = "http://player-movie/service/movie-getway/deleteFavorite?movieId="+id;
         }
-        return getRequestData(url,token,HttpMethod.DELETE,params);
+        return getRequestData(url,token,HttpMethod.DELETE,null);
     }
 
     /**
@@ -326,16 +323,13 @@ public class ToutiaoService implements IToutiaoService {
     public ResultEntity deleteLike(String token,String type,int id){
         String userId = JwtToken.getUserId(token);
         String url = "";
-        Map<String,Object> params = new HashMap<>();
         if(type.equals("article")){
             return ResultUtil.success(toutiaoMapper.deleteLike(userId,id));
         }else if(type.equals("video")){
-            params.put("videoId",id);
-            url = "http://player-video/service/video-getway/deleteLike";
+            url = "http://player-video/service/video-getway/deleteLike?videoId="+id;
         }else if(type.equals("movie")){
-            params.put("movieId",id);
-            url = "http://player-movie/service/movie-getway/deleteLike";
+            url = "http://player-movie/service/movie-getway/deleteLike?movieId="+id;
         }
-        return getRequestData(url,token,HttpMethod.DELETE,params);
+        return getRequestData(url,token,HttpMethod.DELETE,null);
     }
 }

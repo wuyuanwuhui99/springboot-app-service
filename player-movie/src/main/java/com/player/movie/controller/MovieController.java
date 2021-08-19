@@ -202,6 +202,27 @@ public class MovieController {
         return movieService.isFavorite(movieId,token);
     }
 
+    @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
+    @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
+    @PostMapping("/movie-getway/saveLike")
+    public ResultEntity saveLike(@RequestBody Map<String,String>params,@RequestHeader("Authorization") String token) {
+        return movieService.saveLike(params.get("movieId"),token);
+    }
+
+    @OperLog(message = "删除收藏", operation = OperationType.DELETE)
+    @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
+    @DeleteMapping("/movie-getway/deleteLike")
+    public ResultEntity deleteLike(@RequestParam("movieId") String movieId,@RequestHeader("Authorization") String token) {
+        return movieService.deleteLike(movieId,token);
+    }
+
+    @OperLog(message = "查询是否已经收藏", operation = OperationType.QUERY)
+    @ApiOperation("查询是否已经收藏,请求地地址：/service/movie-getway/isFavorite")
+    @GetMapping("/movie-getway/isLike")
+    public ResultEntity isLike(@RequestParam("movieId") String movieId,@RequestHeader("Authorization") String token) {
+        return movieService.isLike(movieId,token);
+    }
+
     @OperLog(message = "获取猜你想看的电影", operation = OperationType.QUERY)
     @ApiOperation("获取猜你想看的电影,请求地地址：/service/movie/getYourLikes")
     @GetMapping("/movie/getYourLikes")

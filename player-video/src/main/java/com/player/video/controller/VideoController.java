@@ -74,8 +74,11 @@ public class VideoController {
 
     @ApiOperation("删除收藏")
     @DeleteMapping("/video-getway/deleteFavorite")
-    public ResultEntity deleteFavorite(@RequestHeader("Authorization") String token, @RequestBody Map<String,Integer> params) {
-        return videoService.deleteFavorite(token,params.get("videoId"));
+    public ResultEntity deleteFavorite(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("videoId") int videoId
+    ) {
+        return videoService.deleteFavorite(token,videoId);
     }
 
     @ApiOperation("获取视频分类信息")
@@ -98,7 +101,10 @@ public class VideoController {
 
     @ApiOperation("删除点赞")
     @DeleteMapping("/video-getway/deleteLike")
-    public ResultEntity deleteLike(@RequestHeader("Authorization") String token,@RequestBody Map<String,Integer> params) {
-        return videoService.deleteLike(token,params.get("videoId"));
+    public ResultEntity deleteLike(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("videoId") int videoId
+    ) {
+        return videoService.deleteLike(token,videoId);
     }
 }
