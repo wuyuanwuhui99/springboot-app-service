@@ -36,4 +36,10 @@ public interface IToutiaoService {
     ResultEntity insertLike(String token,String type,int id);
 
     ResultEntity deleteLike(String token,String type,int id);
+
+    ResultEntity isFocus(String token,String authorId, String type);
+
+    ResultEntity insertFocus(String token,String authorId, String type);
+
+    ResultEntity deleteFocus(String token,String authorId, String type);
 }

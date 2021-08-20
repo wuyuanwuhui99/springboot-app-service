@@ -174,4 +174,33 @@ public class ToutiaoController {
     ) {
         return toutiaoService.deleteLike(token,type,id);
     }
+
+    @ApiOperation("查询是否已经关注该作者")
+    @GetMapping("/toutiao-getway/isFocus")
+    public ResultEntity isFocus(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("authorId") String authorId,
+            @RequestParam("type") String type
+    ) {
+        return toutiaoService.isFocus(token,authorId,type);
+    }
+
+    @ApiOperation("新增关注")
+    @PostMapping("/toutiao-getway/insertFocus")
+    public ResultEntity insertFocus(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String,Object> params
+    ) {
+        return toutiaoService.insertFocus(token,(String) params.get("authorId"),(String) params.get("type"));
+    }
+
+    @ApiOperation("删除关注")
+    @DeleteMapping("/toutiao-getway/deleteFocus")
+    public ResultEntity deleteFocus(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("type") String type,
+            @RequestParam("authorId") String authorId
+    ) {
+        return toutiaoService.deleteFocus(token,authorId,type);
+    }
 }

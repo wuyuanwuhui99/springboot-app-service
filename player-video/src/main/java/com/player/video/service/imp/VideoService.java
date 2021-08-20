@@ -178,6 +178,39 @@ public class VideoService implements IVideoService {
 
     /**
      * @author: wuwenqiang
+     * @description: 获取是否关注
+     * @date: 2021-08-20 23:20
+     */
+    @Override
+    public ResultEntity isFocus(String token,String authorId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(videoMapper.isFocus(userId, authorId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 新增关注
+     * @date: 2021-08-20 23:20
+     */
+    @Override
+    public ResultEntity insertFocus(String token,String authorId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(videoMapper.insertFocus(userId, authorId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 取消关注
+     * @date: 2021-08-20 23:20
+     */
+    @Override
+    public ResultEntity deleteFocus(String token,String authorId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(videoMapper.deleteFocus(userId, authorId));
+    }
+
+    /**
+     * @author: wuwenqiang
      * @description: 获取收藏的视频
      * @date: 2021-08-16 22:53
      */

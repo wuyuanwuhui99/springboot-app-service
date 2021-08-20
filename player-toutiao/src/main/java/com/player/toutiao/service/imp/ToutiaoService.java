@@ -332,4 +332,57 @@ public class ToutiaoService implements IToutiaoService {
         }
         return getRequestData(url,token,HttpMethod.DELETE,null);
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询是否已经关注
+     * @date: 2021-08-20 23:08
+     */
+    @Override
+    public ResultEntity isFocus(String token,String authorId,String type){
+        String userId = JwtToken.getUserId(token);
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.isFocus(userId, authorId));
+        }else if(type.equals("video")){
+            String url = "http://player-video/service/video-getway/isFocus?authorId="+authorId;
+            return getRequestData(url,token,HttpMethod.GET,null);
+        }
+        return ResultUtil.fail(null,"缺少类型参数");
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 添加关注
+     * @date: 2021-08-20 23:08
+     */
+    @Override
+    public ResultEntity insertFocus(String token,String authorId,String type){
+        String userId = JwtToken.getUserId(token);
+        Map<String,Object> params = new HashMap<>();
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.insertFocus(userId,authorId));
+        }else if(type.equals("video")){
+            params.put("authorId",authorId);
+            String url = "http://player-video/service/video-getway/insertFocus";
+            return getRequestData(url,token,HttpMethod.POST,params);
+        }
+        return ResultUtil.fail(null,"缺少类型参数");
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 取消关注
+     * @date: 2021-08-20 23:08
+     */
+    @Override
+    public ResultEntity deleteFocus(String token,String authorId,String type){
+        String userId = JwtToken.getUserId(token);
+        if(type.equals("article")){
+            return ResultUtil.success(toutiaoMapper.deleteFocus(userId,authorId));
+        }else if(type.equals("video")){
+            String url = "http://player-video/service/video-getway/deleteFocus?authorId="+authorId;
+            return getRequestData(url,token,HttpMethod.DELETE,null);
+        }
+        return ResultUtil.fail(null,"缺少类型参数");
+    }
 }

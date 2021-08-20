@@ -112,6 +112,18 @@
         DELETE FROM xigua_video_like WHERE user_id = #{userId} AND video_id = #{videoId}
     </delete>
 
+    <select id="isFocus" resultType="Long">
+        SELECT COUNT(*) FROM xigua_video_focus WHERE user_id = #{userId} AND author_id = #{authorId}
+    </select>
+
+    <insert id="insertFocus">
+        INSERT INTO xigua_video_focus(author_id,user_id,create_time,update_time) SELECT #{authorId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_focus WHERE author_id = #{authorId})
+    </insert>
+
+    <delete id="deleteFocus">
+        DELETE FROM xigua_video_focus WHERE user_id = #{userId} AND author_id = #{authorId}
+    </delete>
+
     <select id="getVideoRecordList" resultMap="videoUserResultMap">
         SELECT x.*,u.* FROM
         (SELECT v.* FROM xigua_video_record r,xigua_video v WHERE v.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50) x

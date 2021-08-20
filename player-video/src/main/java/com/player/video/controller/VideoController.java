@@ -107,4 +107,25 @@ public class VideoController {
     ) {
         return videoService.deleteLike(token,videoId);
     }
+
+    @ApiOperation("查询是否点关注过该作者")
+    @GetMapping("/video-getway/isFocus")
+    public ResultEntity isFocus(@RequestHeader("Authorization") String token,@RequestParam("authorId") String authorId) {
+        return videoService.isFocus(token,authorId);
+    }
+
+    @ApiOperation("新增关注")
+    @PostMapping("/video-getway/insertFocus")
+    public ResultEntity insertFocus(@RequestHeader("Authorization") String token,@RequestBody Map<String,String> params) {
+        return videoService.insertFocus(token,params.get("authorId"));
+    }
+
+    @ApiOperation("取消关注")
+    @DeleteMapping("/video-getway/deleteFocus")
+    public ResultEntity deleteFocus(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("videoId") String authorId
+    ) {
+        return videoService.deleteFocus(token,authorId);
+    }
 }

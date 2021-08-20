@@ -74,4 +74,10 @@ public interface ToutiaoMapper {
     Long insertLike(String userId,int articleId);
 
     Long deleteLike(String userId,int articleId);
+
+    Long isFocus(String userId, String authorId);
+
+    Long insertFocus(String userId,String authorId);
+
+    Long deleteFocus(String userId,String authorId);
 }

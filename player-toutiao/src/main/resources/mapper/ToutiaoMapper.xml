@@ -208,4 +208,16 @@
     <select id="getFavoriteList" resultMap="ArticleUserResultMap">
         SELECT t.*,u.* FROM (SELECT a.* FROM toutiao_article a,toutiao_article_favorite f WHERE a.id = f.article_id AND f.user_id = #{userId} ORDER BY f.create_time DESC LIMIT 0,50) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>
+
+    <select id="isFocus" resultType="Long">
+        SELECT COUNT(*) FROM toutiao_focus WHERE author_id = #{authorId} AND user_id = #{userId}
+    </select>
+
+    <insert id="insertFocus">
+        INSERT INTO toutiao_focus(author_id,user_id,create_time,update_time) SELECT #{authorId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_focus WHERE author_id = #{authorId} AND user_id = #{userId})
+    </insert>
+
+    <insert id="deleteFocus">
+        DELETE FROM toutiao_focus WHERE author_id = #{authorId} AND user_id = #{userId}
+    </insert>
 </mapper>

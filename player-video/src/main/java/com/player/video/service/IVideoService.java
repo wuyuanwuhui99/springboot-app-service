@@ -26,6 +26,12 @@ public interface IVideoService {
 
     ResultEntity deleteLike(String token, int videoId);
 
+    ResultEntity isFocus(String token,String authorId);
+
+    ResultEntity insertFocus(String token,String authorId);
+
+    ResultEntity deleteFocus(String token,String authorId);
+
     ResultEntity getFavoriteList(String token, int pageNum, int pageSize);
 
     ResultEntity getVideoRecordList(String token);

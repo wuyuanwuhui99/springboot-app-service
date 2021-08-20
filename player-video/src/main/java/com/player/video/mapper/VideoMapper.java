@@ -39,6 +39,12 @@ public interface VideoMapper {
 
     Long deleteLike(String userId, int videoId);
 
+    Long isFocus(String userId, String authorId);
+
+    Long insertFocus(String userId, String authorId);
+
+    Long deleteFocus(String userId, String authorId);
+
     List<VideoEntity> getFavoriteList(String userId,int start,int pageSize);
 
     List<VideoEntity> getVideoRecordList(String userId);
