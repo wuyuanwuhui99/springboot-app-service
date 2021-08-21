@@ -3,6 +3,7 @@ package com.player.toutiao.mapper;
 import com.player.common.entity.LogEntity;
 import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;
+import com.player.toutiao.entity.CommentEntity;
 import feign.Param;
 
 import java.util.List;
@@ -80,4 +81,14 @@ public interface ToutiaoMapper {
     Long insertFocus(String userId,String authorId);
 
     Long deleteFocus(String userId,String authorId);
+
+    Long getCommentCount(int articleId);
+
+    List<CommentEntity> getTopCommentList(int articleId,int start,int pageSize);
+
+    Long insertComment(CommentEntity commentEntity);
+
+    List<CommentEntity> getReplyCommentList(int topId,int pageNum,int pageSize);
+
+    Long deleteComment(int id,String userId);
 }

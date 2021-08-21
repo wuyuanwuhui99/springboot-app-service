@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 @SpringBootApplication(scanBasePackages = "com.player.toutiao")
 @MapperScan("com.player.toutiao.mapper")
-public class PlayerToutiaoApplication {
+public class  PlayerToutiaoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PlayerToutiaoApplication.class, args);

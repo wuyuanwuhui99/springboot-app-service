@@ -186,7 +186,7 @@
     </select>
 
     <insert id="insertFavorite">
-        INSERT INTO toutiao_article_favorite(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE article_id = #{articleId})
+        INSERT INTO toutiao_article_favorite(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_article_favorite WHERE article_id = #{articleId} AND user_id = #{userId})
     </insert>
 
     <delete id="deleteFavorite">
@@ -198,7 +198,7 @@
     </select>
 
     <insert id="insertLike">
-        INSERT INTO toutiao_article_like(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_like WHERE article_id = #{articleId})
+        INSERT INTO toutiao_article_like(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_article_like WHERE article_id = #{articleId})
     </insert>
 
     <delete id="deleteLike">
@@ -217,7 +217,27 @@
         INSERT INTO toutiao_focus(author_id,user_id,create_time,update_time) SELECT #{authorId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_focus WHERE author_id = #{authorId} AND user_id = #{userId})
     </insert>
 
-    <insert id="deleteFocus">
+    <delete id="deleteFocus">
         DELETE FROM toutiao_focus WHERE author_id = #{authorId} AND user_id = #{userId}
+    </delete>
+
+    <select id="getCommentCount" resultType="Long">
+        SELECT COUNT(*) FROM toutiao_comment WHERE article_id = #{articleId}
+    </select>
+
+    <select id="getTopCommentList" resultType="CommentEntity">
+        SELECT c.*,COUNT(t.id) AS replyCount FROM toutiao_comment c  LEFT JOIN toutiao_comment t ON  c.id = t.top_id  WHERE c.acticle_id = #{acticleId} AND c.top_id = 0 GROUP BY c.id LIMIT #{start},#{pageSize}
+    </select>
+
+    <insert id="insertComment" parameterType="CommentEntity">
+        INSERT INTO toutiao_comment(content,parent_id,top_id,acticle_id,user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{acticleId},#{userId},NOW(),NOW())
     </insert>
+
+    <delete id="deleteComment">
+        DELETE FROM toutiao_comment WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+
+    <select id="getReplyCommentList">
+        SELECT * FROM toutiao_comment WHERE top_id = #{topId} LIMIT #{start},#{pageSize}
+    </select>
 </mapper>

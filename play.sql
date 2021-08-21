@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 19/08/2021 23:12:35
+ Date: 21/08/2021 14:25:25
 */
 
 SET NAMES utf8mb4;
@@ -314,7 +314,7 @@ CREATE TABLE `log`  (
   `app_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '应用的id',
   `app_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '应用的名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4550 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4601 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie
@@ -350,7 +350,7 @@ CREATE TABLE `movie`  (
   `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
   `douban_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '对应豆瓣网的地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15542 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 15562 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_category
@@ -367,6 +367,22 @@ CREATE TABLE `movie_category`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 798 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for movie_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `movie_comment`;
+CREATE TABLE `movie_comment`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `conetent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论内容',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '评论父级id',
+  `top_id` int(0) NULL DEFAULT NULL COMMENT '一级评论',
+  `movie_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章id',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `udate_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '电影评论' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for movie_favorite
@@ -477,7 +493,7 @@ CREATE TABLE `movie_url`  (
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '播放地址',
   `play_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '播放分组，1, 2',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 246583 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 247047 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for music_douyin
@@ -596,7 +612,7 @@ CREATE TABLE `toutiao_article`  (
   `ranks` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '排名',
   `disabled` int(1) UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '是否禁用，0不禁用，1禁用，2审核中',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 171722 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '头条文章' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 174284 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '头条文章' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_article_favorite
@@ -635,7 +651,7 @@ CREATE TABLE `toutiao_article_record`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `user_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 127358 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '头条文章' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 127385 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '头条文章' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_author
@@ -662,13 +678,15 @@ CREATE TABLE `toutiao_author`  (
 DROP TABLE IF EXISTS `toutiao_comment`;
 CREATE TABLE `toutiao_comment`  (
   `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `article_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '文章的id',
-  `parent_id` int(0) NULL DEFAULT NULL COMMENT '上条回复的评论id',
-  `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户id',
+  `conetent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论内容',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '评论父级id',
+  `top_id` int(0) NULL DEFAULT NULL COMMENT '一级评论',
+  `acticle_id` int(0) NULL DEFAULT NULL COMMENT '文章id',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `udate_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '文章评论' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章评论' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_favorite_channel
@@ -686,7 +704,20 @@ CREATE TABLE `toutiao_favorite_channel`  (
   `status` int(0) NULL DEFAULT NULL COMMENT '状态，公开:0,推荐:1,默认:2,非公开:3',
   `sequence` int(0) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 769 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '所有频道' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 782 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '所有频道' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for toutiao_focus
+-- ----------------------------
+DROP TABLE IF EXISTS `toutiao_focus`;
+CREATE TABLE `toutiao_focus`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `author_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '关注的作者',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '头条关注表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_hot
@@ -808,7 +839,7 @@ CREATE TABLE `xigua_api`  (
   `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '请求方式',
   `params` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '请求参数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17114 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17151 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for xigua_channel
@@ -841,7 +872,7 @@ CREATE TABLE `xigua_favorite_channel`  (
   `status` int(0) NULL DEFAULT 0 COMMENT '状态，0:禁用频道，1普通频道，2推荐频道，3：公开频道，4:非公开频道',
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 381 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 395 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for xigua_video
@@ -877,7 +908,23 @@ CREATE TABLE `xigua_video`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `user_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户id，在这表中暂时无用，为了跟记录表保持一致',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 77846 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 78033 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for xigua_video_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `xigua_video_comment`;
+CREATE TABLE `xigua_video_comment`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `conetent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论内容',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '评论父级id',
+  `top_id` int(0) NULL DEFAULT NULL COMMENT '一级评论',
+  `video_id` int(0) NULL DEFAULT NULL COMMENT '文章id',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `udate_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '视频评论' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for xigua_video_favorite

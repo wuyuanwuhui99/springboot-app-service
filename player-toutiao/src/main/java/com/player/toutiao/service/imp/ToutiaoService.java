@@ -8,6 +8,7 @@ import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;
+import com.player.toutiao.entity.CommentEntity;
 import com.player.toutiao.mapper.ToutiaoMapper;
 import com.player.toutiao.service.IToutiaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,94 +143,58 @@ public class ToutiaoService implements IToutiaoService {
 
     /**
      * @author: wuwenqiang
-     * @description: 获取视频分类
-     * @date: 2021-06-28 23:50
-     */
-    @Override
-    public ResultEntity getVideoCategory(String token) {
-        return getRequestData("http://player-video/service/video-getway/getFavoriteChannels",token,HttpMethod.GET,null);
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取文章列表
-     * @date: 2021-12-25 22:29
-     */
-    @Override
-    public ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String authorId,String keyword,String token) {
-        if(pageSize > 100)pageSize = 100;
-        String url = "http://player-video/service/video/getVideoList?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+Common.nullToString(star)+"&category="+Common.nullToString(category)+"&label="+Common.nullToString(label)+"&authorId="+Common.nullToString(authorId)+"&keyword="+Common.nullToString(keyword);
-        return getRequestData(url,token,HttpMethod.GET,null);
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取文章列表
-     * @date: 2020-12-25 22:29
-     */
-    @Override
-    public ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token) {
-        if(pageSize > 100)pageSize = 100;
-        String url = "http://player-movie/service/movie/search?pageSize="+pageSize+"&pageNum="+pageNum+"&star="+ Common.nullToString(star)+"&classify="+Common.nullToString(classify)+"&category="+Common.nullToString(category)+"&type="+Common.nullToString(type)+"&label="+Common.nullToString(label)+"&keyword="+Common.nullToString(keyword);
-        return getRequestData(url,token,HttpMethod.GET,null);
-    }
-
-    /**
-     * @author: wuwenqiang
      * @description: 获取历史记录
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity getRecordList(String token,String type){
-        String url = "";
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
-        }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/getVideoRecordList?";
-        }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie-getway/getPlayRecord";
-        }
-        return getRequestData(url,token,HttpMethod.GET,null);
+    public ResultEntity getRecordList(String token){
+        return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
     }
 
     /**
      * @author: wuwenqiang
-     * @description: 查询是否已经收视频
+     * @description: 查询文章是否已经收藏
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity isFavorite(String token,String type,int id){
+    public ResultEntity isFavorite(String token,int articleId){
         String userId = JwtToken.getUserId(token);
-        String url = "";
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.isFavorite(userId, id));
-        }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/isFavorite?videoId="+id;
-        }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie-getway/isFavorite?movieId="+id;
-        }
-        return getRequestData(url,token,HttpMethod.GET,null);
+        return ResultUtil.success(toutiaoMapper.isFavorite(userId, articleId));
     }
 
     /**
      * @author: wuwenqiang
-     * @description: 查询是否已经收视频
+     * @description: 查询搜狐从列表
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity getFavoriteList(String token,String type,int pageNum,int pageSize){
+    public ResultEntity getFavoriteList(String token,int pageNum,int pageSize){
         String userId = JwtToken.getUserId(token);
-        String url = "";
         if(pageSize > 100) pageSize = 100;
-        if(type.equals("article")){
-            List<ArticleEntity> favorite = toutiaoMapper.getFavoriteList(userId,(pageNum-1)*pageSize, pageSize);
-            return ResultUtil.success(favorite.size() > 0);
-        }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
-        }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie-getway/getFavoriteList?pageNum="+pageNum+"&pageSize="+pageSize;
-        }
-        return getRequestData(url,token,HttpMethod.GET,null);
+        List<ArticleEntity> favorite = toutiaoMapper.getFavoriteList(userId,(pageNum-1)*pageSize, pageSize);
+        return ResultUtil.success(favorite.size() > 0);
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 新增收藏
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity insertFavorite(String token,int articleId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(toutiaoMapper.insertFavorite(userId,articleId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 删除收藏
+     * @date: 2021-08-14 22:29
+     */
+    @Override
+    public ResultEntity deleteFavorite(String token,int articleId){
+        String userId = JwtToken.getUserId(token);
+        return ResultUtil.success(toutiaoMapper.deleteFavorite(userId,articleId));
     }
 
     /**
@@ -238,20 +203,9 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity insertFavorite(String token,String type,int id){
+    public ResultEntity isLike(String token,int articleId){
         String userId = JwtToken.getUserId(token);
-        String url = "";
-        Map<String,Object> params = new HashMap<>();
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.insertFavorite(userId,id));
-        }else if(type.equals("video")){
-            params.put("videoId",id);
-            url = "http://player-video/service/video-getway/insertFavorite";
-        }else if(type.equals("movie")){
-            params.put("movieId",id);
-            url = "http://player-movie/service/movie-getway/insertFavorite";
-        }
-        return getRequestData(url,token,HttpMethod.POST,params);
+        return ResultUtil.success(toutiaoMapper.isLike(userId, articleId));
     }
 
     /**
@@ -260,17 +214,9 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity deleteFavorite(String token,String type,int id){
+    public ResultEntity insertLike(String token,int articleId){
         String userId = JwtToken.getUserId(token);
-        String url = "";
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.deleteFavorite(userId,id));
-        }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/deleteFavorite?videoId="+id;
-        }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie-getway/deleteFavorite?movieId="+id;
-        }
-        return getRequestData(url,token,HttpMethod.DELETE,null);
+        return ResultUtil.success(toutiaoMapper.insertLike(userId,articleId));
     }
 
     /**
@@ -279,58 +225,9 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-14 22:29
      */
     @Override
-    public ResultEntity isLike(String token,String type,int id){
+    public ResultEntity deleteLike(String token,int articleId){
         String userId = JwtToken.getUserId(token);
-        String url = "";
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.isLike(userId, id));
-        }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/isLike?videoId="+id;
-        }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie-getway/isLike?movieId="+id;
-        }
-        return getRequestData(url,token,HttpMethod.GET,null);
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 查询是否已经收视频
-     * @date: 2021-08-14 22:29
-     */
-    @Override
-    public ResultEntity insertLike(String token,String type,int id){
-        String userId = JwtToken.getUserId(token);
-        String url = "";
-        Map<String,Object> params = new HashMap<>();
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.insertLike(userId,id));
-        }else if(type.equals("video")){
-            params.put("videoId",id);
-            url = "http://player-video/service/video-getway/insertLike";
-        }else if(type.equals("movie")){
-            params.put("movieId",id);
-            url = "http://player-movie/service/movie-getway/insertLike";
-        }
-        return getRequestData(url,token,HttpMethod.POST,params);
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 查询是否已经收视频
-     * @date: 2021-08-14 22:29
-     */
-    @Override
-    public ResultEntity deleteLike(String token,String type,int id){
-        String userId = JwtToken.getUserId(token);
-        String url = "";
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.deleteLike(userId,id));
-        }else if(type.equals("video")){
-            url = "http://player-video/service/video-getway/deleteLike?videoId="+id;
-        }else if(type.equals("movie")){
-            url = "http://player-movie/service/movie-getway/deleteLike?movieId="+id;
-        }
-        return getRequestData(url,token,HttpMethod.DELETE,null);
+        return ResultUtil.success(toutiaoMapper.deleteLike(userId,articleId));
     }
 
     /**
@@ -339,15 +236,9 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-20 23:08
      */
     @Override
-    public ResultEntity isFocus(String token,String authorId,String type){
+    public ResultEntity isFocus(String token,String authorId){
         String userId = JwtToken.getUserId(token);
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.isFocus(userId, authorId));
-        }else if(type.equals("video")){
-            String url = "http://player-video/service/video-getway/isFocus?authorId="+authorId;
-            return getRequestData(url,token,HttpMethod.GET,null);
-        }
-        return ResultUtil.fail(null,"缺少类型参数");
+        return ResultUtil.success(toutiaoMapper.isFocus(userId, authorId));
     }
 
     /**
@@ -356,17 +247,9 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-20 23:08
      */
     @Override
-    public ResultEntity insertFocus(String token,String authorId,String type){
+    public ResultEntity insertFocus(String token,String authorId){
         String userId = JwtToken.getUserId(token);
-        Map<String,Object> params = new HashMap<>();
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.insertFocus(userId,authorId));
-        }else if(type.equals("video")){
-            params.put("authorId",authorId);
-            String url = "http://player-video/service/video-getway/insertFocus";
-            return getRequestData(url,token,HttpMethod.POST,params);
-        }
-        return ResultUtil.fail(null,"缺少类型参数");
+        return ResultUtil.success(toutiaoMapper.insertFocus(userId,authorId));
     }
 
     /**
@@ -375,14 +258,63 @@ public class ToutiaoService implements IToutiaoService {
      * @date: 2021-08-20 23:08
      */
     @Override
-    public ResultEntity deleteFocus(String token,String authorId,String type){
+    public ResultEntity deleteFocus(String token,String authorId){
         String userId = JwtToken.getUserId(token);
-        if(type.equals("article")){
-            return ResultUtil.success(toutiaoMapper.deleteFocus(userId,authorId));
-        }else if(type.equals("video")){
-            String url = "http://player-video/service/video-getway/deleteFocus?authorId="+authorId;
-            return getRequestData(url,token,HttpMethod.DELETE,null);
-        }
-        return ResultUtil.fail(null,"缺少类型参数");
+        return ResultUtil.success(toutiaoMapper.deleteFocus(userId,authorId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取总评论数量
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity getCommentCount(int articleId){
+        return ResultUtil.success(toutiaoMapper.getCommentCount(articleId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取一级评论列表
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity getTopCommentList(int articleId,int pageNum, int pageSize){
+        if(pageSize > 100)pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(toutiaoMapper.getTopCommentList(articleId,start,pageSize));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 新增评论
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity insertComment(String token,CommentEntity commentEntity){
+        commentEntity.setUserId(JwtToken.getUserId(token));
+        return ResultUtil.success(toutiaoMapper.insertComment(commentEntity));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 删除评论
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity deleteComment(int id,String userId){
+        return ResultUtil.success(toutiaoMapper.deleteComment(id,userId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取回复列表
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize){
+        if(pageSize > 100)pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(toutiaoMapper.getReplyCommentList(topId,start,pageSize));
     }
 }

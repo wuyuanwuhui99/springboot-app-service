@@ -4,6 +4,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
+import com.player.toutiao.entity.CommentEntity;
 import com.player.toutiao.service.IToutiaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,48 +63,10 @@ public class ToutiaoController {
         return toutiaoService.getUserData(token);
     }
 
-    @ApiOperation("获取用户登录信息")
-    @GetMapping("/toutiao-getway/getVideoFavoriteChannels")
-    public ResultEntity getVideoCategory(@RequestHeader("Authorization") String token) {
-        return toutiaoService.getVideoCategory(token);
-    }
-
-    @ApiOperation("获取视频列表")
-    @GetMapping("/toutiao/getVideoList")
-    public ResultEntity getVideoList(
-            @RequestParam("pageSize") int pageSize,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam(required = false, value="star") String star,
-            @RequestParam(required = false, value="category") String category,
-            @RequestParam(required = false, value="type") String type,
-            @RequestParam(required = false, value="label") String label,
-            @RequestParam(required = false, value="authorId") String authorId,
-            @RequestParam(required = false, value="keyword") String keyword,
-            @RequestHeader(required = false,value = "Authorization") String token
-    ) {
-        return toutiaoService.getVideoList(pageSize,pageNum,star,category,type,label,authorId,keyword,token);
-    }
-
-    @ApiOperation("获取视频列表")
-    @GetMapping("/toutiao/getMovieList")
-    public ResultEntity getMovieList(
-            @RequestParam("pageSize") int pageSize,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam(required = false, value="star") String star,
-            @RequestParam(required = false, value="classify") String classify,
-            @RequestParam(required = false, value="category") String category,
-            @RequestParam(required = false, value="type") String type,
-            @RequestParam(required = false, value="label") String label,
-            @RequestParam(required = false, value="keyword") String keyword,
-            @RequestHeader(required = false,value = "Authorization") String token
-    ) {
-        return toutiaoService.getMovieList(pageSize,pageNum,star,classify,category,type,label,keyword,token);
-    }
-
     @ApiOperation("获取浏览记录，只取前50条")
     @GetMapping("/toutiao-getway/getRecordList")
-    public ResultEntity getArticleRecordList(@RequestHeader("Authorization") String token,@RequestParam("type")String type) {
-        return toutiaoService.getRecordList(token,type);
+    public ResultEntity getArticleRecordList(@RequestHeader("Authorization") String token) {
+        return toutiaoService.getRecordList(token);
     }
 
     @ApiOperation("获取收藏列表")
@@ -111,20 +74,18 @@ public class ToutiaoController {
     public ResultEntity getFavoriteList(
             @RequestHeader("Authorization") String token,
             @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize")int pageSize,
-            @RequestParam("type") String type
+            @RequestParam("pageSize")int pageSize
     ) {
-        return toutiaoService.getFavoriteList(token,type,pageNum,pageSize);
+        return toutiaoService.getFavoriteList(token,pageNum,pageSize);
     }
 
     @ApiOperation("查询是否已经收藏文章或视频")
     @GetMapping("/toutiao-getway/isFavorite")
     public ResultEntity isFavorite(
             @RequestHeader("Authorization") String token,
-            @RequestParam("id") int id,
-            @RequestParam("type") String type
+            @RequestParam("articleId") int articleId
     ) {
-        return toutiaoService.isFavorite(token,type,id);
+        return toutiaoService.isFavorite(token,articleId);
     }
 
     @ApiOperation("插入收藏")
@@ -133,27 +94,25 @@ public class ToutiaoController {
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String,Object> params
     ) {
-        return toutiaoService.insertFavorite(token,(String) params.get("type"),(int)params.get("id"));
+        return toutiaoService.insertFavorite(token,(int)params.get("articleId"));
     }
 
     @ApiOperation("删除收藏")
     @DeleteMapping("/toutiao-getway/deleteFavorite")
     public ResultEntity deleteFavorite(
             @RequestHeader("Authorization") String token,
-            @RequestParam("id") int id,
-            @RequestParam("type") String type
+            @RequestParam("articleId") int articleId
     ) {
-        return toutiaoService.deleteFavorite(token,type,id);
+        return toutiaoService.deleteFavorite(token,articleId);
     }
 
     @ApiOperation("查询是否已经点赞文章或视频")
     @GetMapping("/toutiao-getway/isLike")
     public ResultEntity isLike(
             @RequestHeader("Authorization") String token,
-            @RequestParam("type") String type,
-            @RequestParam("id") int id
+            @RequestParam("articleId") int articleId
     ) {
-        return toutiaoService.isLike(token,type,id);
+        return toutiaoService.isLike(token,articleId);
     }
 
     @ApiOperation("插入点赞")
@@ -162,7 +121,7 @@ public class ToutiaoController {
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String,Object> params
             ) {
-        return toutiaoService.insertLike(token,(String) params.get("type"),(Integer) params.get("id"));
+        return toutiaoService.insertLike(token,(int) params.get("articleId"));
     }
 
     @ApiOperation("删除点赞")
@@ -170,19 +129,18 @@ public class ToutiaoController {
     public ResultEntity deleteLike(
             @RequestHeader("Authorization") String token,
             @RequestParam("type") String type,
-            @RequestParam("id") int id
+            @RequestParam("articleId") int articleId
     ) {
-        return toutiaoService.deleteLike(token,type,id);
+        return toutiaoService.deleteLike(token,articleId);
     }
 
     @ApiOperation("查询是否已经关注该作者")
     @GetMapping("/toutiao-getway/isFocus")
     public ResultEntity isFocus(
             @RequestHeader("Authorization") String token,
-            @RequestParam("authorId") String authorId,
-            @RequestParam("type") String type
+            @RequestParam("authorId") String authorId
     ) {
-        return toutiaoService.isFocus(token,authorId,type);
+        return toutiaoService.isFocus(token,authorId);
     }
 
     @ApiOperation("新增关注")
@@ -191,16 +149,61 @@ public class ToutiaoController {
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String,Object> params
     ) {
-        return toutiaoService.insertFocus(token,(String) params.get("authorId"),(String) params.get("type"));
+        return toutiaoService.insertFocus(token,(String) params.get("authorId"));
     }
 
     @ApiOperation("删除关注")
     @DeleteMapping("/toutiao-getway/deleteFocus")
     public ResultEntity deleteFocus(
             @RequestHeader("Authorization") String token,
-            @RequestParam("type") String type,
             @RequestParam("authorId") String authorId
     ) {
-        return toutiaoService.deleteFocus(token,authorId,type);
+        return toutiaoService.deleteFocus(token,authorId);
+    }
+
+    @ApiOperation("获取总评论数量")
+    @GetMapping("/toutiao/getCommentCount")
+    public ResultEntity getCommentCount(
+            @RequestParam("articleId") int articleId
+    ) {
+        return toutiaoService.getCommentCount(articleId);
+    }
+
+    @ApiOperation("获取一级评论列表")
+    @GetMapping("/toutiao/getTopCommentList")
+    public ResultEntity getTopCommentList(
+            @RequestParam("articleId") int articleId,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return toutiaoService.getTopCommentList(articleId,pageNum,pageSize);
+    }
+
+    @ApiOperation("新增评论")
+    @PostMapping("/toutiao-getway/insertComment")
+    public ResultEntity insertComment(
+            @RequestHeader("Authorization") String token,
+            @RequestBody CommentEntity commentEntity
+            ) {
+        return toutiaoService.insertComment(token,commentEntity);
+    }
+
+    @ApiOperation("删除评论")
+    @DeleteMapping("/toutiao-getway/deleteComment/{id}")
+    public ResultEntity deleteComment(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("id") int id
+    ) {
+        return toutiaoService.deleteComment(id,token);
+    }
+
+    @ApiOperation("获取回复列表")
+    @GetMapping("/toutiao/getReplyCommentList")
+    public ResultEntity getReplyCommentList(
+            @RequestParam("topId") int topId,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return toutiaoService.getReplyCommentList(topId,pageNum,pageSize);
     }
 }

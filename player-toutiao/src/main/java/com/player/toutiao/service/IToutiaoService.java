@@ -1,6 +1,7 @@
 package com.player.toutiao.service;
 
 import com.player.common.entity.ResultEntity;
+import com.player.toutiao.entity.CommentEntity;
 
 import java.util.List;
 
@@ -15,31 +16,35 @@ public interface IToutiaoService {
 
     ResultEntity getAllChannels(List<Integer> status);
 
-    ResultEntity getVideoCategory(String token);
+    ResultEntity getRecordList(String token);
 
-    ResultEntity getVideoList(int pageSize,int pageNum,String star,String category,String type,String label,String userId,String keyword,String token);
+    ResultEntity isFavorite(String token,int articleId);
 
-    ResultEntity getMovieList(int pageSize,int pageNum,String star,String classify,String category,String type,String label,String keyword,String token);
+    ResultEntity getFavoriteList(String token,int pageNum,int pageSize);
 
-    ResultEntity getRecordList(String token,String type);
+    ResultEntity insertFavorite(String token,int articleId);
 
-    ResultEntity isFavorite(String token,String type,int id);
+    ResultEntity deleteFavorite(String token,int articleId);
 
-    ResultEntity getFavoriteList(String token,String type,int pageNum,int pageSize);
+    ResultEntity isLike(String token, int articleId);
 
-    ResultEntity insertFavorite(String token,String type,int id);
+    ResultEntity insertLike(String token,int articleId);
 
-    ResultEntity deleteFavorite(String token,String type,int id);
+    ResultEntity deleteLike(String token,int articleId);
 
-    ResultEntity isLike(String token, String type, int id);
+    ResultEntity isFocus(String token,String authorId);
 
-    ResultEntity insertLike(String token,String type,int id);
+    ResultEntity insertFocus(String token,String authorId);
 
-    ResultEntity deleteLike(String token,String type,int id);
+    ResultEntity deleteFocus(String token,String authorId);
 
-    ResultEntity isFocus(String token,String authorId, String type);
+    ResultEntity getCommentCount(int articleId);
 
-    ResultEntity insertFocus(String token,String authorId, String type);
+    ResultEntity getTopCommentList(int articleId,int pageNum, int pageSize);
 
-    ResultEntity deleteFocus(String token,String authorId, String type);
+    ResultEntity insertComment(String token,CommentEntity commentEntity);
+
+    ResultEntity deleteComment(int id,String userId);
+
+    ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize);
 }
