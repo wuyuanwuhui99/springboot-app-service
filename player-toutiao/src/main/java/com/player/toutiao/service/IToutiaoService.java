@@ -47,4 +47,6 @@ public interface IToutiaoService {
     ResultEntity deleteComment(int id,String userId);
 
     ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize);
+
+    ResultEntity getCommentItem(int id);
 }

@@ -13,7 +13,7 @@ public class MovieEntity {
     private Long id;//主键
 
     @ApiModelProperty(value = "电影id")
-    private String movieId;
+    private Long movieId;
 
     @ApiModelProperty(value = "导演")
     private String director;//导演

@@ -182,7 +182,7 @@
     </insert>
 
     <select id="isFavorite" resultType="Long">
-        SELECT COUNT(*) FROM toutiao_article_favorite WHERE id = #{id} and user_id = #{userId}
+        SELECT COUNT(*) FROM toutiao_article_favorite WHERE article_id = #{articleId} and user_id = #{userId}
     </select>
 
     <insert id="insertFavorite">
@@ -190,19 +190,19 @@
     </insert>
 
     <delete id="deleteFavorite">
-        DELETE FROM toutiao_article_favorite WHERE user_id = #{userId} AND article_id = #{articleId}
+        DELETE FROM toutiao_article_favorite WHERE article_id = #{articleId} and user_id = #{userId}
     </delete>
 
     <select id="isLike" resultType="Long">
-        SELECT COUNT(*) FROM toutiao_article_like WHERE id = #{id} and user_id = #{userId}
+        SELECT COUNT(*) FROM toutiao_article_like WHERE article_id = #{articleId} and user_id = #{userId}
     </select>
 
     <insert id="insertLike">
-        INSERT INTO toutiao_article_like(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_article_like WHERE article_id = #{articleId})
+        INSERT INTO toutiao_article_like(article_id,user_id,create_time,update_time) SELECT #{articleId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM toutiao_article_like WHERE article_id = #{articleId} and user_id = #{userId})
     </insert>
 
     <delete id="deleteLike">
-        DELETE FROM toutiao_article_like WHERE user_id = #{userId} AND article_id = #{articleId}
+        DELETE FROM toutiao_article_like WHERE article_id = #{articleId} and user_id = #{userId}
     </delete>
 
     <select id="getFavoriteList" resultMap="ArticleUserResultMap">
@@ -226,18 +226,27 @@
     </select>
 
     <select id="getTopCommentList" resultType="CommentEntity">
-        SELECT c.*,COUNT(t.id) AS replyCount FROM toutiao_comment c  LEFT JOIN toutiao_comment t ON  c.id = t.top_id  WHERE c.acticle_id = #{acticleId} AND c.top_id = 0 GROUP BY c.id LIMIT #{start},#{pageSize}
+        SELECT tc.*,u.username,u.avater FROM (
+	        SELECT tu.* FROM (
+		        (SELECT c.*,COUNT(t.id) AS replyCount FROM toutiao_comment c  LEFT JOIN toutiao_comment t ON  c.id = t.top_id  WHERE c.article_id = #{articleId} AND c.top_id is null GROUP BY c.id)
+	        ) tu
+        ) tc
+        LEFT JOIN `user` u ON u.user_id = tc.user_id LIMIT #{start},#{pageSize}
     </select>
 
-    <insert id="insertComment" parameterType="CommentEntity">
-        INSERT INTO toutiao_comment(content,parent_id,top_id,acticle_id,user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{acticleId},#{userId},NOW(),NOW())
+    <insert id="insertComment" parameterType="CommentEntity"  keyProperty="id"  useGeneratedKeys="true">
+        INSERT INTO toutiao_comment(content,parent_id,top_id,article_id,user_id,reply_user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{articleId},#{userId},#{replyUserId},NOW(),NOW())
     </insert>
 
     <delete id="deleteComment">
         DELETE FROM toutiao_comment WHERE id = #{id} AND user_id = #{userId}
     </delete>
 
-    <select id="getReplyCommentList">
-        SELECT * FROM toutiao_comment WHERE top_id = #{topId} LIMIT #{start},#{pageSize}
+    <select id="getReplyCommentList" resultType="CommentEntity">
+        SELECT tu.*,ru.username as reply_user_name FROM (SELECT c.*,u.username,u.avater FROM toutiao_comment c LEFT JOIN `user` u ON c.user_id = u.user_id WHERE c.top_id = #{topId})tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id LIMIT #{start},#{pageSize}
+    </select>
+
+    <select id="getCommentItem" resultType="CommentEntity">
+        SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM toutiao_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
     </select>
 </mapper>

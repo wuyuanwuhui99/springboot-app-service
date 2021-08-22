@@ -62,7 +62,7 @@ public interface ToutiaoMapper {
 
     List<ArticleEntity> getArticleRecordList(String userId);
 
-    Long isFavorite(String userId,int id);
+    Long isFavorite(String userId,int articleId);
 
     List<ArticleEntity>getFavoriteList(String userId,int start,int pageSize);
 
@@ -70,7 +70,7 @@ public interface ToutiaoMapper {
 
     Long deleteFavorite(String userId,int articleId);
 
-    Long isLike(String userId, int id);
+    Long isLike(String userId, int articleId);
 
     Long insertLike(String userId,int articleId);
 
@@ -88,7 +88,9 @@ public interface ToutiaoMapper {
 
     Long insertComment(CommentEntity commentEntity);
 
-    List<CommentEntity> getReplyCommentList(int topId,int pageNum,int pageSize);
+    List<CommentEntity> getReplyCommentList(int topId,int start,int pageSize);
 
     Long deleteComment(int id,String userId);
+
+    CommentEntity getCommentItem(int id);
 }

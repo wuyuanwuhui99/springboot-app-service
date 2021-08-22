@@ -57,9 +57,9 @@ public interface MovieMapper {
 
     Long log(LogEntity logEntity);
 
-    List<MovieStarEntity> getStar(String movieId);
+    List<MovieStarEntity> getStar(Long movieId);
 
-    List<MovieUrlEntity> getMovieUrl(String movieId);
+    List<MovieUrlEntity> getMovieUrl(Long movieId);
 
     List<MovieEntity> getPlayRecord(String userId);
 
@@ -67,17 +67,17 @@ public interface MovieMapper {
 
     List<MovieEntity> getFavoriteList(String userId,int start,int pageSize);
 
-    Long saveFavorite(String movieId, String userId);
+    Long saveFavorite(Long movieId, String userId);
 
-    Long deleteFavorite(String movieId,String userId);
+    Long deleteFavorite(Long movieId,String userId);
 
-    Long isFavorite(String movieId, String userId);
+    Long isFavorite(Long movieId, String userId);
 
-    Long saveLike(String movieId, String userId);
+    Long saveLike(Long movieId, String userId);
 
-    Long deleteLike(String movieId,String userId);
+    Long deleteLike(Long movieId,String userId);
 
-    Long isLike(String movieId, String userId);
+    Long isLike(Long movieId, String userId);
 
     List<MovieEntity> getYourLikes(@Param("labels") String[] labels);
 

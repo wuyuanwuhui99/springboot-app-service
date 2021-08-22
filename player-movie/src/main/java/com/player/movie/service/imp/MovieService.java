@@ -246,7 +246,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-26 10:41
      */
     @Override
-    public ResultEntity getStar(String movieId,String path) {
+    public ResultEntity getStar(Long movieId,String path) {
         String url = path + "?movieId=" + movieId;
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
@@ -265,7 +265,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-26 10:41
      */
     @Override
-    public ResultEntity getMovieUrl(String movieId,String path) {
+    public ResultEntity getMovieUrl(Long movieId,String path) {
         String url = path + "?movieId=" + movieId;
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
@@ -325,7 +325,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity saveFavorite(String movieId, String token) {
+    public ResultEntity saveFavorite(Long movieId, String token) {
         return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getUserId(token)));
     }
 
@@ -335,12 +335,12 @@ public class MovieService implements IMovieService {
      * @date: 2021-03-07 16:10
      */
     @Override
-    public ResultEntity deleteFavorite(String movieId,String token) {
+    public ResultEntity deleteFavorite(Long movieId,String token) {
         return ResultUtil.success(movieMapper.deleteFavorite(movieId,JwtToken.getUserId(token)));
     }
 
     @Override
-    public ResultEntity isFavorite(String movieId,String token) {
+    public ResultEntity isFavorite(Long movieId,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(movieMapper.isFavorite(movieId,userEntity.getUserId()));
     }
@@ -381,7 +381,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity saveLike(String movieId, String token) {
+    public ResultEntity saveLike(Long movieId, String token) {
         return ResultUtil.success(movieMapper.saveLike(movieId,JwtToken.getUserId(token)));
     }
 
@@ -391,13 +391,13 @@ public class MovieService implements IMovieService {
      * @date: 2021-03-07 16:10
      */
     @Override
-    public ResultEntity deleteLike(String movieId,String token) {
+    public ResultEntity deleteLike(Long movieId,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(movieMapper.deleteLike(movieId,userEntity.getUserId()));
     }
 
     @Override
-    public ResultEntity isLike(String movieId,String token) {
+    public ResultEntity isLike(Long movieId,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(movieMapper.isLike(movieId,userEntity.getUserId()));
     }

@@ -31,9 +31,9 @@ public interface IMovieService {
 
     ResultEntity getUserById(String userId);
 
-    ResultEntity getStar(String movieId,String path);
+    ResultEntity getStar(Long movieId,String path);
 
-    ResultEntity getMovieUrl(String movieId,String path);
+    ResultEntity getMovieUrl(Long movieId,String path);
 
     ResultEntity getPlayRecord(String token);
 
@@ -41,17 +41,17 @@ public interface IMovieService {
 
     ResultEntity getFavoriteList(String token,int pageNum,int pageSize);
 
-    ResultEntity saveFavorite(String movieId,String token);
+    ResultEntity saveFavorite(Long movieId,String token);
 
-    ResultEntity deleteFavorite(String movieId,String token);
+    ResultEntity deleteFavorite(Long movieId,String token);
 
-    ResultEntity isFavorite(String movieId, String token);
+    ResultEntity isFavorite(Long movieId, String token);
 
-    ResultEntity saveLike(String movieId,String token);
+    ResultEntity saveLike(Long movieId,String token);
 
-    ResultEntity deleteLike(String movieId,String token);
+    ResultEntity deleteLike(Long movieId,String token);
 
-    ResultEntity isLike(String movieId, String token);
+    ResultEntity isLike(Long movieId, String token);
 
     ResultEntity getYourLikes(String labels,String path);
 

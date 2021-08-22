@@ -141,7 +141,7 @@ public class MovieController {
     @ApiOperation("获取演员列表：/service/movie/getStar")
     @GetMapping("/movie/getStar")
     public ResultEntity getStar(
-            @RequestParam("movieId") String movieId,
+            @RequestParam("movieId") Long movieId,
             HttpServletRequest request
     ) {
         return movieService.getStar(movieId,HttpUtils.getPath(request));
@@ -151,7 +151,7 @@ public class MovieController {
     @ApiOperation("获取演员列表：/service/movie/getMovieUrl")
     @GetMapping("/movie/getMovieUrl")
     public ResultEntity getMovieUrl(
-            @RequestParam("movieId") String movieId,
+            @RequestParam("movieId") Long movieId,
             HttpServletRequest request
     ) {
         return movieService.getMovieUrl(movieId,HttpUtils.getPath(request));
@@ -184,42 +184,42 @@ public class MovieController {
     @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
     @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
     @PostMapping("/movie-getway/saveFavorite")
-    public ResultEntity saveFavorite(@RequestBody Map<String,String>params,@RequestHeader("Authorization") String token) {
+    public ResultEntity saveFavorite(@RequestBody Map<String,Long>params,@RequestHeader("Authorization") String token) {
         return movieService.saveFavorite(params.get("movieId"),token);
     }
 
     @OperLog(message = "删除收藏", operation = OperationType.DELETE)
     @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
     @DeleteMapping("/movie-getway/deleteFavorite")
-    public ResultEntity deleteFavorite(@RequestParam("movieId") String movieId,@RequestHeader("Authorization") String token) {
+    public ResultEntity deleteFavorite(@RequestParam("movieId") Long movieId,@RequestHeader("Authorization") String token) {
         return movieService.deleteFavorite(movieId,token);
     }
 
     @OperLog(message = "查询是否已经收藏", operation = OperationType.QUERY)
     @ApiOperation("查询是否已经收藏,请求地地址：/service/movie-getway/isFavorite")
     @GetMapping("/movie-getway/isFavorite")
-    public ResultEntity isFavorite(@RequestParam("movieId") String movieId,@RequestHeader("Authorization") String token) {
+    public ResultEntity isFavorite(@RequestParam("movieId") Long movieId,@RequestHeader("Authorization") String token) {
         return movieService.isFavorite(movieId,token);
     }
 
     @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
     @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
     @PostMapping("/movie-getway/saveLike")
-    public ResultEntity saveLike(@RequestBody Map<String,String>params,@RequestHeader("Authorization") String token) {
+    public ResultEntity saveLike(@RequestBody Map<String,Long>params,@RequestHeader("Authorization") String token) {
         return movieService.saveLike(params.get("movieId"),token);
     }
 
     @OperLog(message = "删除收藏", operation = OperationType.DELETE)
     @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
     @DeleteMapping("/movie-getway/deleteLike")
-    public ResultEntity deleteLike(@RequestParam("movieId") String movieId,@RequestHeader("Authorization") String token) {
+    public ResultEntity deleteLike(@RequestParam("movieId") Long movieId,@RequestHeader("Authorization") String token) {
         return movieService.deleteLike(movieId,token);
     }
 
     @OperLog(message = "查询是否已经收藏", operation = OperationType.QUERY)
     @ApiOperation("查询是否已经收藏,请求地地址：/service/movie-getway/isFavorite")
     @GetMapping("/movie-getway/isLike")
-    public ResultEntity isLike(@RequestParam("movieId") String movieId,@RequestHeader("Authorization") String token) {
+    public ResultEntity isLike(@RequestParam("movieId") Long movieId,@RequestHeader("Authorization") String token) {
         return movieService.isLike(movieId,token);
     }
 

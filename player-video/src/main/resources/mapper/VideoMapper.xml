@@ -93,23 +93,23 @@
     </select>
 
     <insert id="insertFavorite">
-        INSERT INTO xigua_video_favorite(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE video_id = #{videoId})
+        INSERT INTO xigua_video_favorite(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE video_id = #{videoId} AND user_id = #{userId})
     </insert>
 
     <delete id="deleteFavorite">
-        DELETE FROM xigua_video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
+        DELETE FROM xigua_video_favorite WHERE video_id = #{videoId} AND user_id = #{userId}
     </delete>
 
     <select id="isLike" resultType="Long">
-        SELECT COUNT(*) FROM xigua_video_like WHERE user_id = #{userId} AND video_id = #{videoId}
+        SELECT COUNT(*) FROM xigua_video_like WHERE video_id = #{videoId} AND user_id = #{userId}
     </select>
 
     <insert id="insertLike">
-        INSERT INTO xigua_video_like(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_like WHERE video_id = #{videoId})
+        INSERT INTO xigua_video_like(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_like WHERE video_id = #{videoId} AND user_id = #{userId})
     </insert>
 
     <delete id="deleteLike">
-        DELETE FROM xigua_video_like WHERE user_id = #{userId} AND video_id = #{videoId}
+        DELETE FROM xigua_video_like WHERE video_id = #{videoId} AND user_id = #{userId}
     </delete>
 
     <select id="isFocus" resultType="Long">

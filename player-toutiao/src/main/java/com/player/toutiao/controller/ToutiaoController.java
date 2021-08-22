@@ -128,7 +128,6 @@ public class ToutiaoController {
     @DeleteMapping("/toutiao-getway/deleteLike")
     public ResultEntity deleteLike(
             @RequestHeader("Authorization") String token,
-            @RequestParam("type") String type,
             @RequestParam("articleId") int articleId
     ) {
         return toutiaoService.deleteLike(token,articleId);
@@ -205,5 +204,13 @@ public class ToutiaoController {
             @RequestParam("pageSize")int pageSize
     ) {
         return toutiaoService.getReplyCommentList(topId,pageNum,pageSize);
+    }
+
+    @ApiOperation("获取新增的单条评论或者回复")
+    @GetMapping("/toutiao/getCommentItem")
+    public ResultEntity getCommentItem(
+            @RequestParam("id") int id
+    ) {
+        return toutiaoService.getCommentItem(id);
     }
 }
