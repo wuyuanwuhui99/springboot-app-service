@@ -2,6 +2,7 @@ package com.player.video.mapper;
 
 import com.player.common.entity.LogEntity;
 import com.player.video.entity.ChannelEntity;
+import com.player.video.entity.CommentEntity;
 import com.player.video.entity.VideoEntity;
 
 import java.util.List;
@@ -48,4 +49,16 @@ public interface VideoMapper {
     List<VideoEntity> getFavoriteList(String userId,int start,int pageSize);
 
     List<VideoEntity> getVideoRecordList(String userId);
+
+    Long getCommentCount(int videoId);
+
+    List<CommentEntity> getTopCommentList(int videoId, int start, int pageSize);
+
+    Long insertComment(CommentEntity commentEntity);
+
+    List<CommentEntity> getReplyCommentList(int topId,int start,int pageSize);
+
+    Long deleteComment(int id,String userId);
+
+    CommentEntity getCommentItem(int id);
 }

@@ -2,6 +2,7 @@ package com.player.video.controller;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
+import com.player.video.entity.CommentEntity;
 import com.player.video.service.IVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -126,5 +127,59 @@ public class VideoController {
             @RequestParam("videoId") String authorId
     ) {
         return videoService.deleteFocus(token,authorId);
+    }
+
+    @ApiOperation("获取总评论数量")
+    @GetMapping("/video/getCommentCount")
+    public ResultEntity getCommentCount(
+            @RequestParam("videoId") int videoId
+    ) {
+        return videoService.getCommentCount(videoId);
+    }
+
+    @ApiOperation("获取一级评论列表")
+    @GetMapping("/video/getTopCommentList")
+    public ResultEntity getTopCommentList(
+            @RequestParam("videoId") int videoId,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return videoService.getTopCommentList(videoId,pageNum,pageSize);
+    }
+
+    @ApiOperation("新增评论")
+    @PostMapping("/video-getway/insertComment")
+    public ResultEntity insertComment(
+            @RequestHeader("Authorization") String token,
+            @RequestBody CommentEntity commentEntity
+    ) {
+        return videoService.insertComment(token,commentEntity);
+    }
+
+    @ApiOperation("删除评论")
+    @DeleteMapping("/video-getway/deleteComment/{id}")
+    public ResultEntity deleteComment(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("id") int id
+    ) {
+        return videoService.deleteComment(id,token);
+    }
+
+    @ApiOperation("获取回复列表")
+    @GetMapping("/video/getReplyCommentList")
+    public ResultEntity getReplyCommentList(
+            @RequestParam("topId") int topId,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return videoService.getReplyCommentList(topId,pageNum,pageSize);
+    }
+
+    @ApiOperation("获取新增的单条评论或者回复")
+    @GetMapping("/video/getCommentItem")
+    public ResultEntity getCommentItem(
+            @RequestParam("id") int id
+    ) {
+        return videoService.getCommentItem(id);
     }
 }

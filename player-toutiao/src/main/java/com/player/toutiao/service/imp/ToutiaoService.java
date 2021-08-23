@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
-import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;

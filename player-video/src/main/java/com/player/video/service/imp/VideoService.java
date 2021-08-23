@@ -5,6 +5,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.utils.JwtToken;
 import com.player.video.entity.ChannelEntity;
+import com.player.video.entity.CommentEntity;
 import com.player.video.entity.VideoEntity;
 import com.player.video.mapper.VideoMapper;
 import com.player.video.service.IVideoService;
@@ -229,5 +230,71 @@ public class VideoService implements IVideoService {
     @Override
     public ResultEntity getVideoRecordList(String token){
         return ResultUtil.success(videoMapper.getVideoRecordList(JwtToken.getUserId(token)));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取总评论数量
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity getCommentCount(int videoId){
+        return ResultUtil.success(videoMapper.getCommentCount(videoId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取一级评论列表
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity getTopCommentList(int videoId,int pageNum, int pageSize){
+        if(pageSize > 100)pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(videoMapper.getTopCommentList(videoId,start,pageSize));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 新增评论
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity insertComment(String token, CommentEntity commentEntity){
+        commentEntity.setUserId(JwtToken.getUserId(token));
+        videoMapper.insertComment(commentEntity);
+        return ResultUtil.success(commentEntity.getId());
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 删除评论
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity deleteComment(int id,String userId){
+        return ResultUtil.success(videoMapper.deleteComment(id,userId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取回复列表
+     * @date: 2021-08-21 23:15
+     */
+    @Override
+    public ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize){
+        if(pageSize > 100)pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(videoMapper.getReplyCommentList(topId,start,pageSize));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取新增的单条评论或者回复
+     * @date: 2021-08-22 15:20
+     */
+    @Override
+    public ResultEntity getCommentItem(int id){
+        return ResultUtil.success(videoMapper.getCommentItem(id));
     }
 }

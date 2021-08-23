@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.player.video.mapper.VideoMapper">
     <select id="getPublicChannels" resultType="ChannelEntity">
-        SELECT * FROM xigua_channel WHERE status BETWEEN 1 AND 3  ORDER BY sequence DESC
+        SELECT * FROM video_channel WHERE status BETWEEN 1 AND 3  ORDER BY sequence DESC
     </select>
     <select id="getFavoriteChannels" resultType="ChannelEntity">
-        SELECT * FROM xigua_favorite_channel WHERE status BETWEEN 1 AND 3 AND user_id = #{userId} ORDER BY sequence DESC
+        SELECT * FROM video_favorite_channel WHERE status BETWEEN 1 AND 3 AND user_id = #{userId} ORDER BY sequence DESC
     </select>
     <insert id="insertFavoriteChannels">
-        INSERT INTO xigua_favorite_channel(channel_name,channel_id,create_time,update_time,sequence,status,user_id)VALUES
+        INSERT INTO video_favorite_channel(channel_name,channel_id,create_time,update_time,sequence,status,user_id)VALUES
         <foreach collection ="list" item="item" separator =",">
             (#{item.channelName},#{item.channelId},#{item.createTime},#{item.updateTime},#{item.sequence},#{item.status},#{item.userId})
         </foreach >
@@ -57,7 +57,7 @@
     </resultMap>
 
     <select id="getVideoList" resultMap="videoUserResultMap">
-        SELECT x.*,u.* FROM xigua_video x  LEFT JOIN toutiao_author u ON x.author_id = u.author_id
+        SELECT x.*,u.* FROM video x  LEFT JOIN toutiao_author u ON x.author_id = u.author_id
         <if test="star != null and start != ''">
             AND x.star LIKE CONCAT('%',#{star},'%')
         </if>
@@ -83,50 +83,79 @@
     </select>
 
     <select id="isFavorite" resultType="Long">
-        SELECT COUNT(*) FROM xigua_video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
+        SELECT COUNT(*) FROM video_favorite WHERE user_id = #{userId} AND video_id = #{videoId}
     </select>
 
     <select id="getFavoriteList" resultMap="videoUserResultMap">
         SELECT t.*,u.* FROM
-        (SELECT a.* FROM xigua_video a,xigua_video_favorite f WHERE a.id = f.video_id AND f.user_id = #{userId}) t
+        (SELECT a.* FROM video a,video_favorite f WHERE a.id = f.video_id AND f.user_id = #{userId}) t
         LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name ORDER BY t.create_time DESC
     </select>
 
     <insert id="insertFavorite">
-        INSERT INTO xigua_video_favorite(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_favorite WHERE video_id = #{videoId} AND user_id = #{userId})
+        INSERT INTO video_favorite(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM video_favorite WHERE video_id = #{videoId} AND user_id = #{userId})
     </insert>
 
     <delete id="deleteFavorite">
-        DELETE FROM xigua_video_favorite WHERE video_id = #{videoId} AND user_id = #{userId}
+        DELETE FROM video_favorite WHERE video_id = #{videoId} AND user_id = #{userId}
     </delete>
 
     <select id="isLike" resultType="Long">
-        SELECT COUNT(*) FROM xigua_video_like WHERE video_id = #{videoId} AND user_id = #{userId}
+        SELECT COUNT(*) FROM video_like WHERE video_id = #{videoId} AND user_id = #{userId}
     </select>
 
     <insert id="insertLike">
-        INSERT INTO xigua_video_like(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_like WHERE video_id = #{videoId} AND user_id = #{userId})
+        INSERT INTO video_like(video_id,user_id,create_time,update_time) SELECT #{videoId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM video_like WHERE video_id = #{videoId} AND user_id = #{userId})
     </insert>
 
     <delete id="deleteLike">
-        DELETE FROM xigua_video_like WHERE video_id = #{videoId} AND user_id = #{userId}
+        DELETE FROM video_like WHERE video_id = #{videoId} AND user_id = #{userId}
     </delete>
 
     <select id="isFocus" resultType="Long">
-        SELECT COUNT(*) FROM xigua_video_focus WHERE user_id = #{userId} AND author_id = #{authorId}
+        SELECT COUNT(*) FROM video_focus WHERE user_id = #{userId} AND author_id = #{authorId}
     </select>
 
     <insert id="insertFocus">
-        INSERT INTO xigua_video_focus(author_id,user_id,create_time,update_time) SELECT #{authorId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM xigua_video_focus WHERE author_id = #{authorId})
+        INSERT INTO video_focus(author_id,user_id,create_time,update_time) SELECT #{authorId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM video_focus WHERE author_id = #{authorId})
     </insert>
 
     <delete id="deleteFocus">
-        DELETE FROM xigua_video_focus WHERE user_id = #{userId} AND author_id = #{authorId}
+        DELETE FROM video_focus WHERE user_id = #{userId} AND author_id = #{authorId}
     </delete>
 
     <select id="getVideoRecordList" resultMap="videoUserResultMap">
         SELECT x.*,u.* FROM
-        (SELECT v.* FROM xigua_video_record r,xigua_video v WHERE v.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50) x
+        (SELECT v.* FROM video_record r,video v WHERE v.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50) x
         LEFT JOIN toutiao_author u ON x.author_id = u.author_id
+    </select>
+
+    <select id="getCommentCount" resultType="Long">
+        SELECT COUNT(*) FROM video_comment WHERE video_id = #{videoId}
+    </select>
+
+    <select id="getTopCommentList" resultType="CommentEntity">
+        SELECT tc.*,u.username,u.avater FROM (
+	        SELECT tu.* FROM (
+		        (SELECT c.*,COUNT(t.id) AS replyCount FROM video_comment c  LEFT JOIN video_comment t ON  c.id = t.top_id  WHERE c.video_id = #{videoId} AND c.top_id is null GROUP BY c.id)
+	        ) tu
+        ) tc
+        LEFT JOIN `user` u ON u.user_id = tc.user_id LIMIT #{start},#{pageSize}
+    </select>
+
+    <insert id="insertComment" parameterType="CommentEntity"  keyProperty="id"  useGeneratedKeys="true">
+        INSERT INTO video_comment(content,parent_id,top_id,video_id,user_id,reply_user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{videoId},#{userId},#{replyUserId},NOW(),NOW())
+    </insert>
+
+    <delete id="deleteComment">
+        DELETE FROM video_comment WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+
+    <select id="getReplyCommentList" resultType="CommentEntity">
+        SELECT tu.*,ru.username as reply_user_name FROM (SELECT c.*,u.username,u.avater FROM video_comment c LEFT JOIN `user` u ON c.user_id = u.user_id WHERE c.top_id = #{topId})tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id LIMIT #{start},#{pageSize}
+    </select>
+
+    <select id="getCommentItem" resultType="CommentEntity">
+        SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM video_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
     </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
+import com.player.movie.entity.CommentEntity;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.service.IMovieService;
 import io.swagger.annotations.Api;
@@ -235,5 +236,59 @@ public class MovieController {
     @GetMapping("/movie/getRecommend")
     public ResultEntity getRecommend(@RequestParam("classify") String classify, HttpServletRequest request) {
         return movieService.getRecommend(classify, HttpUtils.getPath(request));
+    }
+
+    @ApiOperation("获取总评论数量")
+    @GetMapping("/movie/getCommentCount")
+    public ResultEntity getCommentCount(
+            @RequestParam("movieId") int movieId
+    ) {
+        return movieService.getCommentCount(movieId);
+    }
+
+    @ApiOperation("获取一级评论列表")
+    @GetMapping("/movie/getTopCommentList")
+    public ResultEntity getTopCommentList(
+            @RequestParam("movieId") int movieId,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return movieService.getTopCommentList(movieId,pageNum,pageSize);
+    }
+
+    @ApiOperation("新增评论")
+    @PostMapping("/movie-getway/insertComment")
+    public ResultEntity insertComment(
+            @RequestHeader("Authorization") String token,
+            @RequestBody CommentEntity commentEntity
+    ) {
+        return movieService.insertComment(token,commentEntity);
+    }
+
+    @ApiOperation("删除评论")
+    @DeleteMapping("/movie-getway/deleteComment/{id}")
+    public ResultEntity deleteComment(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("id") int id
+    ) {
+        return movieService.deleteComment(id,token);
+    }
+
+    @ApiOperation("获取回复列表")
+    @GetMapping("/movie/getReplyCommentList")
+    public ResultEntity getReplyCommentList(
+            @RequestParam("topId") int topId,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return movieService.getReplyCommentList(topId,pageNum,pageSize);
+    }
+
+    @ApiOperation("获取新增的单条评论或者回复")
+    @GetMapping("/movie/getCommentItem")
+    public ResultEntity getCommentItem(
+            @RequestParam("id") int id
+    ) {
+        return movieService.getCommentItem(id);
     }
 }

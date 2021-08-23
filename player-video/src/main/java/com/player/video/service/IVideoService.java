@@ -2,6 +2,7 @@ package com.player.video.service;
 
 import com.player.common.entity.ResultEntity;
 import com.player.video.entity.ChannelEntity;
+import com.player.video.entity.CommentEntity;
 
 import java.util.List;
 
@@ -35,4 +36,16 @@ public interface IVideoService {
     ResultEntity getFavoriteList(String token, int pageNum, int pageSize);
 
     ResultEntity getVideoRecordList(String token);
+
+    ResultEntity getCommentCount(int videoId);
+
+    ResultEntity getTopCommentList(int videoId,int pageNum, int pageSize);
+
+    ResultEntity insertComment(String token, CommentEntity commentEntity);
+
+    ResultEntity deleteComment(int id,String userId);
+
+    ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize);
+
+    ResultEntity getCommentItem(int id);
 }
