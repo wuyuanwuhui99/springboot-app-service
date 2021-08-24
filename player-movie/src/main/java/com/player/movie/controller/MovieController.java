@@ -291,4 +291,10 @@ public class MovieController {
     ) {
         return movieService.getCommentItem(id);
     }
+
+    @ApiOperation("获取浏览记录，只取前50条")
+    @GetMapping("/movie-getway/getRecordList")
+    public ResultEntity getRecordList(@RequestHeader("Authorization") String token) {
+        return movieService.getRecordList(token);
+    }
 }

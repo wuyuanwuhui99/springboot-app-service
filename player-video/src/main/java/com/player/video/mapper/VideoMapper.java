@@ -61,4 +61,6 @@ public interface VideoMapper {
     Long deleteComment(int id,String userId);
 
     CommentEntity getCommentItem(int id);
+
+    List<VideoEntity> getRecordList(String userId);
 }

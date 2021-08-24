@@ -65,7 +65,7 @@ public class ToutiaoController {
 
     @ApiOperation("获取浏览记录，只取前50条")
     @GetMapping("/toutiao-getway/getRecordList")
-    public ResultEntity getArticleRecordList(@RequestHeader("Authorization") String token) {
+    public ResultEntity getRecordList(@RequestHeader("Authorization") String token) {
         return toutiaoService.getRecordList(token);
     }
 

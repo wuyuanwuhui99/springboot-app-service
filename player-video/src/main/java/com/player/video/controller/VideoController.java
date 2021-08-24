@@ -182,4 +182,10 @@ public class VideoController {
     ) {
         return videoService.getCommentItem(id);
     }
+
+    @ApiOperation("获取浏览记录，只取前50条")
+    @GetMapping("/video-getway/getRecordList")
+    public ResultEntity getRecordList(@RequestHeader("Authorization") String token) {
+        return videoService.getRecordList(token);
+    }
 }

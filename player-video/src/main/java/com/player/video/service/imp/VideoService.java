@@ -297,4 +297,14 @@ public class VideoService implements IVideoService {
     public ResultEntity getCommentItem(int id){
         return ResultUtil.success(videoMapper.getCommentItem(id));
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取历史记录
+     * @date: 2021-08-24 2159
+     */
+    @Override
+    public ResultEntity getRecordList(String token){
+        return ResultUtil.success(videoMapper.getRecordList(JwtToken.getUserId(token)));
+    }
 }

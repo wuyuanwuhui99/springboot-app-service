@@ -169,7 +169,7 @@
          ORDER BY sequence ASC
     </select>
 
-    <select id="getArticleRecordList" resultMap="ArticleUserResultMap">
+    <select id="getRecordList" resultMap="ArticleUserResultMap">
         SELECT t.*,u.* FROM (SELECT a.* FROM toutiao_article a,toutiao_article_record r WHERE a.id = r.article_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>
 

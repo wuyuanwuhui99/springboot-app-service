@@ -73,4 +73,6 @@ public interface IMovieService {
     ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize);
 
     ResultEntity getCommentItem(int id);
+
+    ResultEntity getRecordList(String token);
 }

@@ -60,7 +60,7 @@ public interface ToutiaoMapper {
 
     int insertFavoriteChannels(List<ChannelEntity> favoriteChannels);
 
-    List<ArticleEntity> getArticleRecordList(String userId);
+    List<ArticleEntity> getRecordList(String userId);
 
     Long isFavorite(String userId,int articleId);
 

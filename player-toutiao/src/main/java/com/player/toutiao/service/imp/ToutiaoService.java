@@ -147,7 +147,7 @@ public class ToutiaoService implements IToutiaoService {
      */
     @Override
     public ResultEntity getRecordList(String token){
-        return ResultUtil.success(toutiaoMapper.getArticleRecordList(JwtToken.getUserId(token)));
+        return ResultUtil.success(toutiaoMapper.getRecordList(JwtToken.getUserId(token)));
     }
 
     /**

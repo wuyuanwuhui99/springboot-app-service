@@ -75,8 +75,8 @@
     <select id="getUserMsg"  resultType="Map">
         SELECT CAST(u.userAge as char) AS userAge,CAST(r.viewRecordCount AS char) AS viewRecordCount,CAST(p.playRecordCount AS char) AS playRecordCount,CAST(f.favoriteCount AS char) AS favoriteCount FROM (
             (SELECT TIMESTAMPDIFF(DAY,a.create_date,now()) as userAge from user a where user_id= #{userId}) u,
-            (SELECT count(*) as viewRecordCount FROM movie_view_record WHERE user_id = #{userId} )r,
-            (SELECT count(*) as playRecordCount FROM movie_play_record WHERE user_id = #{userId}) p,
+            (SELECT count(*) as viewRecordCount FROM movie_record WHERE user_id = #{userId} )r,
+            (SELECT count(*) as playRecordCount FROM movie_record WHERE user_id = #{userId}) p,
             (SELECT count(*) as favoriteCount FROM movie_favorite WHERE user_id = #{userId} ) f)
     </select>
 
@@ -132,11 +132,11 @@
     </insert>
 
     <select id="getPlayRecord" resultType="MovieEntity">
-        SELECT m.* FROM movie m,movie_play_record r WHERE m.movie_id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
+        SELECT m.* FROM movie m,movie_record r WHERE m.movie_id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
     </select>
 
     <insert id="savePlayRecord" parameterType="MovieEntity">
-        INSERT INTO movie_play_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
+        INSERT INTO movie_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
     </insert>
 
     <select id="getFavoriteList" resultType="MovieEntity">
@@ -206,6 +206,10 @@
 
     <select id="getCommentItem" resultType="CommentEntity">
         SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM movie_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
+    </select>
+
+    <select id="getRecordList" resultMap="videoUserResultMap">
+        SELECT t.*,u.* FROM (SELECT m.* FROM movie m,video_record r WHERE m.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>
 </mapper>
 

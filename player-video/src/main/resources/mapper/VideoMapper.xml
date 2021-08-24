@@ -158,4 +158,8 @@
     <select id="getCommentItem" resultType="CommentEntity">
         SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM video_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
     </select>
+
+    <select id="getRecordList" resultMap="videoUserResultMap">
+        SELECT t.*,u.* FROM (SELECT v.* FROM video v,video_record r WHERE v.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
+    </select>
 </mapper>
