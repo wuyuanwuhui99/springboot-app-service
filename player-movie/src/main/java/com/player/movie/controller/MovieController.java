@@ -297,4 +297,10 @@ public class MovieController {
     public ResultEntity getRecordList(@RequestHeader("Authorization") String token) {
         return movieService.getRecordList(token);
     }
+
+    @ApiOperation("获取电影详情")
+    @GetMapping("/movie/getMovieDetail/{movieId}")
+    public ResultEntity getMovieDetail(@PathVariable("movieId") int movieId) {
+        return movieService.getMovieDetail(movieId);
+    }
 }

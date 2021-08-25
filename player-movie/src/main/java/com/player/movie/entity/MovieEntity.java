@@ -79,7 +79,7 @@ public class MovieEntity {
     private String useStatus;//0代表未使用，1表示正在使用，是banner和carousel图的才有
 
     @ApiModelProperty(value = "评分")
-    private String score;//评分
+    private Double score;//评分
 
     @ApiModelProperty(value = "类目，值为banner首屏，carousel：滚动轮播")
     private String category;//类目，值为banner首屏，carousel：滚动轮播

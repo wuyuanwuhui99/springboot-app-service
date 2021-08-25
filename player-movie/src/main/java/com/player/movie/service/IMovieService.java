@@ -75,4 +75,6 @@ public interface IMovieService {
     ResultEntity getCommentItem(int id);
 
     ResultEntity getRecordList(String token);
+
+    ResultEntity getMovieDetail(int movieId);
 }

@@ -472,10 +472,20 @@ public class MovieService implements IMovieService {
     /**
      * @author: wuwenqiang
      * @description: 获取历史记录
-     * @date: 2021-08-24 2159
+     * @date: 2021-08-24 21:59
      */
     @Override
     public ResultEntity getRecordList(String token){
         return ResultUtil.success(movieMapper.getRecordList(JwtToken.getUserId(token)));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取电影详情
+     * @date: 2021-08-25 22:22
+     */
+    @Override
+    public ResultEntity getMovieDetail(int movieId){
+        return ResultUtil.success(movieMapper.getMovieDetail(movieId));
     }
 }

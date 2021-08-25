@@ -208,8 +208,12 @@
         SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM movie_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
     </select>
 
-    <select id="getRecordList" resultMap="videoUserResultMap">
+    <select id="getRecordList" resultType="MovieEntity">
         SELECT t.*,u.* FROM (SELECT m.* FROM movie m,video_record r WHERE m.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
+    </select>
+
+    <select id="getMovieDetail" resultType="MovieEntity">
+        SELECT * FROM movie WHERE movie_id = #{movieId}
     </select>
 </mapper>
 

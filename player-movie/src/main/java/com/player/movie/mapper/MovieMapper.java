@@ -97,4 +97,6 @@ public interface MovieMapper {
     CommentEntity getCommentItem(int id);
 
     List<MovieEntity> getRecordList(String userId);
+
+    MovieEntity getMovieDetail(int movieId);
 }
