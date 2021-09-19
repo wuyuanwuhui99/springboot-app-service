@@ -80,7 +80,7 @@ public interface MovieMapper {
 
     Long isLike(Long movieId, String userId);
 
-    List<MovieEntity> getYourLikes(@Param("labels") String[] labels);
+    List<MovieEntity> getYourLikes(@Param("labels") String[] labels,String classify);
 
     List<MovieEntity> getRecommend(String classify);
 
@@ -99,4 +99,6 @@ public interface MovieMapper {
     List<MovieEntity> getRecordList(String userId);
 
     MovieEntity getMovieDetail(int movieId);
+
+    List<MovieEntity> getMovieListByType(@Param("types") String[] types,String classify);
 }

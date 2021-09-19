@@ -158,8 +158,9 @@
     <select id="getYourLikes" resultType="MovieEntity">
         SELECT * FROM movie WHERE
         <foreach collection="labels" item="item" index="index" open="(" separator="or" close=")">
-            label LIKE CONCAT('%',#{item},'%')
+            label LIKE CONCAT('%',TRIM(#{item}),'%')
         </foreach>
+        AND classify = #{classify}
         ORDER BY create_time DESC LIMIT 0,10
     </select>
 
@@ -214,6 +215,15 @@
 
     <select id="getMovieDetail" resultType="MovieEntity">
         SELECT * FROM movie WHERE movie_id = #{movieId}
+    </select>
+
+    <select id="getMovieListByType" resultType="MovieEntity">
+        SELECT * FROM movie WHERE
+        <foreach collection="types" item="item" index="index" open="(" separator="or" close=")">
+            type LIKE CONCAT('%',TRIM(#{item}),'%')
+        </foreach>
+        AND classify = #{classify}
+        ORDER BY create_time DESC LIMIT 0,10
     </select>
 </mapper>
 

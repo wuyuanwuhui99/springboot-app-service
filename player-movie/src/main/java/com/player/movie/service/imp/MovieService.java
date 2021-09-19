@@ -347,7 +347,7 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public ResultEntity getYourLikes(String labels,String path) {
+    public ResultEntity getYourLikes(String labels,String classify,String path) {
         String url = path + "?labels=" + labels;
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
@@ -356,7 +356,7 @@ public class MovieService implements IMovieService {
         }else{
             labels = labels.replaceAll("^/|/$","");
             String[] myLabels = labels.split("/");
-            ResultEntity resultEntity = ResultUtil.success(movieMapper.getYourLikes(myLabels));
+            ResultEntity resultEntity = ResultUtil.success(movieMapper.getYourLikes(myLabels,classify));
             redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
@@ -487,5 +487,26 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getMovieDetail(int movieId){
         return ResultUtil.success(movieMapper.getMovieDetail(movieId));
+    }
+
+
+    /**
+     * @author: wuwenqiang
+     * @description: 按类型获取电影
+     * @date: 2021-08-28 11:43
+     */
+    @Override
+    public ResultEntity getMovieListByType(String types,String classify,String path) {
+        String url = path + "?classify="+classify+"&types=" + types;
+        String result = (String) redisTemplate.opsForValue().get(url);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            String[] myTypes = types.split(" ");
+            ResultEntity resultEntity = ResultUtil.success(movieMapper.getMovieListByType(myTypes,classify));
+            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
     }
 }

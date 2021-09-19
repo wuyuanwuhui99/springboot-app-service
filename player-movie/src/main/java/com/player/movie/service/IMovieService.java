@@ -54,7 +54,7 @@ public interface IMovieService {
 
     ResultEntity isLike(Long movieId, String token);
 
-    ResultEntity getYourLikes(String labels,String path);
+    ResultEntity getYourLikes(String labels,String classify,String path);
 
     ResultEntity getRecommend(String classify,String path);
 
@@ -77,4 +77,6 @@ public interface IMovieService {
     ResultEntity getRecordList(String token);
 
     ResultEntity getMovieDetail(int movieId);
+
+    ResultEntity getMovieListByType(String types,String classify,String path);
 }

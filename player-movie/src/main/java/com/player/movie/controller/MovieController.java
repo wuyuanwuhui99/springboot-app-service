@@ -139,10 +139,10 @@ public class MovieController {
     }
 
     @OperLog(message = "获取演员列表", operation = OperationType.QUERY)
-    @ApiOperation("获取演员列表：/service/movie/getStar")
-    @GetMapping("/movie/getStar")
+    @ApiOperation("获取演员列表：/service/movie/getStar/{movieId}")
+    @GetMapping("/movie/getStar/{movieId}")
     public ResultEntity getStar(
-            @RequestParam("movieId") Long movieId,
+            @PathVariable("movieId") Long movieId,
             HttpServletRequest request
     ) {
         return movieService.getStar(movieId,HttpUtils.getPath(request));
@@ -227,12 +227,16 @@ public class MovieController {
     @OperLog(message = "获取猜你想看的电影", operation = OperationType.QUERY)
     @ApiOperation("获取猜你想看的电影,请求地地址：/service/movie/getYourLikes")
     @GetMapping("/movie/getYourLikes")
-    public ResultEntity getYourLikes(@RequestParam("labels") String labels,HttpServletRequest request) {
-        return movieService.getYourLikes(labels,HttpUtils.getPath(request));
+    public ResultEntity getYourLikes(
+            @RequestParam("labels") String labels,
+            @RequestParam("classify") String classify,
+            HttpServletRequest request
+    ) {
+        return movieService.getYourLikes(labels,classify,HttpUtils.getPath(request));
     }
 
     @OperLog(message = "获取推荐的电影", operation = OperationType.QUERY)
-    @ApiOperation("获取推荐的电影,请求地地址：/service/movie-getway/getRecommend")
+    @ApiOperation("获取推荐的电影,请求地地址：/service/movie/getRecommend")
     @GetMapping("/movie/getRecommend")
     public ResultEntity getRecommend(@RequestParam("classify") String classify, HttpServletRequest request) {
         return movieService.getRecommend(classify, HttpUtils.getPath(request));
@@ -302,5 +306,16 @@ public class MovieController {
     @GetMapping("/movie/getMovieDetail/{movieId}")
     public ResultEntity getMovieDetail(@PathVariable("movieId") int movieId) {
         return movieService.getMovieDetail(movieId);
+    }
+
+    @OperLog(message = "获取类型相似的电影", operation = OperationType.QUERY)
+    @ApiOperation("获取类型相似的电影,请求地地址：/service/movie/getMovieListByType")
+    @GetMapping("/movie/getMovieListByType")
+    public ResultEntity getMovieListByType(
+            @RequestParam("types") String types,
+            @RequestParam("classify") String classify,
+            HttpServletRequest request
+    ) {
+        return movieService.getMovieListByType(types,classify,HttpUtils.getPath(request));
     }
 }

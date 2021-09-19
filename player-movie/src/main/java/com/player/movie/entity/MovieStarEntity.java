@@ -30,9 +30,6 @@ public class MovieStarEntity {
     @ApiModelProperty(value = "电影的id")
     private String movieId;
 
-    @ApiModelProperty(value = "电影的名称")
-    private String movieName;
-
     @ApiModelProperty(value = "角色")
     private String role;
 
