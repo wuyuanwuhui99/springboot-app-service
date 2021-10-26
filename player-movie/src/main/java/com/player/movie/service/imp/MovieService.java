@@ -434,7 +434,8 @@ public class MovieService implements IMovieService {
     public ResultEntity insertComment(String token, CommentEntity commentEntity){
         commentEntity.setUserId(JwtToken.getUserId(token));
         movieMapper.insertComment(commentEntity);
-        return ResultUtil.success(commentEntity.getId());
+        movieMapper.getCommentItem(commentEntity.getId());
+        return ResultUtil.success(movieMapper.getCommentItem(commentEntity.getId()));
     }
 
     /**
@@ -457,16 +458,6 @@ public class MovieService implements IMovieService {
         if(pageSize > 100)pageSize = 100;
         int start = (pageNum - 1)*pageSize;
         return ResultUtil.success(movieMapper.getReplyCommentList(topId,start,pageSize));
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取新增的单条评论或者回复
-     * @date: 2021-08-22 15:20
-     */
-    @Override
-    public ResultEntity getCommentItem(int id){
-        return ResultUtil.success(movieMapper.getCommentItem(id));
     }
 
     /**

@@ -94,7 +94,7 @@ public interface MovieMapper {
 
     Long deleteComment(int id,String userId);
 
-    CommentEntity getCommentItem(int id);
+    CommentEntity getCommentItem(Long id);
 
     List<MovieEntity> getRecordList(String userId);
 

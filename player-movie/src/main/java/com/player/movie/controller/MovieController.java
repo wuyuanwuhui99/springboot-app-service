@@ -65,7 +65,7 @@ public class MovieController {
     @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
     @ApiOperation("查询用户信息")
     @GetMapping("/movie/getUserData")
-    public ResultEntity getUserData(@RequestHeader("Authorization") String token) {
+    public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
         return movieService.getUserData(token);
     }
 
@@ -286,14 +286,6 @@ public class MovieController {
             @RequestParam("pageSize")int pageSize
     ) {
         return movieService.getReplyCommentList(topId,pageNum,pageSize);
-    }
-
-    @ApiOperation("获取新增的单条评论或者回复")
-    @GetMapping("/movie/getCommentItem")
-    public ResultEntity getCommentItem(
-            @RequestParam("id") int id
-    ) {
-        return movieService.getCommentItem(id);
     }
 
     @ApiOperation("获取浏览记录，只取前50条")

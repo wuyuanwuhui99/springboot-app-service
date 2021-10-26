@@ -8,13 +8,13 @@ import lombok.ToString;
 @ToString
 public class MovieUrlEntity {
     @ApiModelProperty(value = "主键")
-    private String id;//主键
+    private int id;//主键
 
     @ApiModelProperty(value = "电影名称")
     private String movieName;
 
     @ApiModelProperty(value = "对应的电影的id")
-    private String movieId;
+    private int movieId;
 
     @ApiModelProperty(value = "源地址")
     private String href;
