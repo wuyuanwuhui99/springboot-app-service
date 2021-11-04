@@ -2,15 +2,13 @@ package com.player.ebook.controller;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.myInterface.OperLog;
+import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
 import com.player.ebook.service.IBookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,8 +27,7 @@ public class BookController {
     @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
     @ApiOperation("查询用户信息")
     @GetMapping("/getUserData")
-    public ResultEntity getUserData(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+    public ResultEntity getUserData(@RequestHeader(value="Authorization",required = false) String token) {
         return bookService.getUserData(token);
     }
 
@@ -42,8 +39,7 @@ public class BookController {
     @OperLog(message = "查询所有分类信息", operation = OperationType.QUERY)
     @ApiOperation("查询所有分类信息")
     @GetMapping("/findAllByClassifyGroup")
-    public ResultEntity findAllByClassifyGroup(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
+    public ResultEntity findAllByClassifyGroup(@RequestHeader(value="Authorization",required = false) String token) {
         return bookService.findAllByClassifyGroup(token);
     }
 
@@ -73,7 +69,6 @@ public class BookController {
     @ApiOperation("查询轮播图")
     @GetMapping("/getBanner")
     public ResultEntity getBanner(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return bookService.getBanner(token);
+        return bookService.getBanner(HttpUtils.getPath(request));
     }
 }

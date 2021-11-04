@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -60,13 +61,11 @@ public class BookService implements IBookService {
     public ResultEntity getUserData(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-movie/service/movie/getUserData",
+        return restTemplate.exchange(
+                "http://player-user/service/user/getUserData",
                 HttpMethod.GET,
-                new HttpEntity<String>(headers),
-                ResultEntity.class
-        );
-        return  responseEntity.getBody();
+                new HttpEntity<String>(headers),ResultEntity.class
+        ).getBody();
     }
 
     @Override
@@ -84,10 +83,9 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public ResultEntity getBanner(String token) {
-        String path = "/service/ebook/getBanner";
+    public ResultEntity getBanner(String path) {
         String result = (String) redisTemplate.opsForValue().get(path);
-        if(result != null && !"".equals(result)){
+        if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
@@ -95,5 +93,15 @@ public class BookService implements IBookService {
             redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
+//        String path = "/service/ebook/getBanner";
+//        String result = (String) redisTemplate.opsForValue().get(path);
+//        if(result != null && !"".equals(result)){
+//            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+//            return resultEntity;
+//        }else{
+//            ResultEntity resultEntity = ResultUtil.success(bookMapper.getBanner());
+//            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+//            return resultEntity;
+//        }
     }
 }

@@ -40,7 +40,7 @@
     </select>
     
     <select id="getBanner" resultType="com.player.ebook.entity.BannerEntity">
-        SELECT * FROM ebook_banner WHERE is_used = 1 ORDER BY ranks ASC
+        SELECT * FROM ebook_banner WHERE is_used = 1 ORDER BY sequence ASC
     </select>
 </mapper>
 
