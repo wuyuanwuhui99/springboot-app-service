@@ -92,6 +92,15 @@
         SELECT * FROM movie_network WHERE category = #{category} AND classify = #{classify}
     </select>
 
+    <select id="getTopMovieList" resultType="MovieEntity">
+        SELECT * FROM movie_network WHERE classify = #{classify}
+        <if test="category != '' and category != null">
+            and classify = #{classify}
+        </if>
+        order by create_time desc
+        limit 0,20
+    </select>
+
     <select id="search" resultType="MovieEntity">
         SELECT * FROM movie WHERE 1 = 1
         <if test="classify != '' and classify != null">

@@ -54,6 +54,13 @@ public interface MovieMapper {
      */
     List<MovieEntity> getCategoryList(String classify, String category);
 
+    /**
+     * @author: wuwenqiang
+     * @description: 根据分类获取前20条数据
+     * @date: 2021-12-21 23:36
+     */
+    List<MovieEntity> getTopMovieList(String classify, String category);
+
     List<MovieEntity> search(String classify, String category, String label,String star,String director,String keyword,int start,int pageSize);
 
     Long log(LogEntity logEntity);

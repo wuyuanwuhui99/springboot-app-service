@@ -6,8 +6,6 @@ import com.player.common.entity.UserEntity;
 import com.player.movie.entity.CommentEntity;
 import com.player.movie.entity.MovieEntity;
 
-import java.util.Map;
-
 public interface IMovieService {
 
     ResultEntity findClassify(String path);
@@ -23,6 +21,8 @@ public interface IMovieService {
     ResultEntity getAllCategoryListByPageName(String pageName,String path);
 
     ResultEntity getCategoryList(String classify, String category,String path);
+
+    ResultEntity getTopMovieList(String classify, String category,String path);
 
     ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String path);
 

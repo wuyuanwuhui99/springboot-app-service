@@ -97,11 +97,22 @@ public class MovieController {
     }
 
     @OperLog(message = "获取大类中的小类", operation = OperationType.QUERY)
-    @ApiOperation("获取大类中的小类,请求地地址：/service/movie/getAllCategoryListByPageName")
+    @ApiOperation("获取大类中的小类,请求地地址：/service/movie/getCategoryList")
     @GetMapping("/movie/getCategoryList")
     public ResultEntity getCategoryList(
             @RequestParam("classify") String classify,
             @RequestParam("category") String category,
+            HttpServletRequest request
+    ) {
+        return movieService.getCategoryList(classify, category,HttpUtils.getPath(request));
+    }
+
+    @OperLog(message = "根据分类获取前20条数据", operation = OperationType.QUERY)
+    @ApiOperation("根据分类获取前20条数据,请求地地址：/service/movie/getTopMovieList")
+    @GetMapping("/movie/getTopMovieList")
+    public ResultEntity getTopMovieList(
+            @RequestParam("classify") String classify,
+            @RequestParam(value = "category",required = false) String category,
             HttpServletRequest request
     ) {
         return movieService.getCategoryList(classify, category,HttpUtils.getPath(request));

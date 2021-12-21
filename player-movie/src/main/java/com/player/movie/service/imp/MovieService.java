@@ -85,8 +85,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 00:04
      */
     @Override
-    public ResultEntity getKeyWord(String classify,String path) {
-        String url = path + "?classify=" + classify;
+    public ResultEntity getKeyWord(String classify,String url) {
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
@@ -169,8 +168,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity getAllCategoryByClassify(String classsify,String path) {
-        String url = path + "?classsify=" + classsify;
+    public ResultEntity getAllCategoryByClassify(String classsify,String url) {
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
@@ -188,8 +186,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity getAllCategoryListByPageName(String pageName,String path) {
-        String url = path + "?pageName=" + pageName;
+    public ResultEntity getAllCategoryListByPageName(String pageName,String url) {
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
@@ -207,14 +204,31 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity getCategoryList(String classify, String category,String path) {
-        String url = path + "?classify=" + classify + "&category=" + category;
+    public ResultEntity getCategoryList(String classify, String category,String url) {
         String result = (String) redisTemplate.opsForValue().get(url);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             ResultEntity resultEntity =  ResultUtil.success(movieMapper.getCategoryList(classify, category));
+            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 根据分类获取前20条数据
+     * @date: 2021-12-21 23:36
+     */
+    @Override
+    public ResultEntity getTopMovieList(String classify, String category,String url) {
+        String result = (String) redisTemplate.opsForValue().get(url);
+        if(!StringUtils.isEmpty(result)){
+            ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
+            return resultEntity;
+        }else{
+            ResultEntity resultEntity =  ResultUtil.success(movieMapper.getTopMovieList(classify, category));
             redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
