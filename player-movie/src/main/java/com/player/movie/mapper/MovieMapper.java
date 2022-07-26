@@ -73,6 +73,8 @@ public interface MovieMapper {
 
     Long savePlayRecord(MovieEntity movieEntity);
 
+    Long saveViewRecord(MovieEntity movieEntity);
+
     List<MovieEntity> getFavoriteList(String userId,int start,int pageSize);
 
     Long saveFavorite(Long movieId, String userId);

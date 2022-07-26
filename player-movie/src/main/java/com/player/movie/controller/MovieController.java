@@ -177,6 +177,13 @@ public class MovieController {
     }
 
     @OperLog(message = "保存观看记录", operation = OperationType.ADD)
+    @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/saveViewRecord")
+    @PostMapping("/movie-getway/saveViewRecord")
+    public ResultEntity saveViewRecord(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
+        return movieService.saveViewRecord(movieEntity,token);
+    }
+
+    @OperLog(message = "保存观看记录", operation = OperationType.ADD)
     @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/savePlayRecord")
     @PostMapping("/movie-getway/savePlayRecord")
     public ResultEntity savePlayRecord(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
