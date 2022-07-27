@@ -203,8 +203,8 @@ public class MovieController {
     @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
     @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
     @PostMapping("/movie-getway/saveFavorite")
-    public ResultEntity saveFavorite(@RequestBody Map<String,Long>params,@RequestHeader("Authorization") String token) {
-        return movieService.saveFavorite(params.get("movieId"),token);
+    public ResultEntity saveFavorite(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
+        return movieService.saveFavorite(movieEntity.getMovieId(),token);
     }
 
     @OperLog(message = "删除收藏", operation = OperationType.DELETE)
