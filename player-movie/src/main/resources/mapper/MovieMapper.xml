@@ -64,8 +64,8 @@
         SELECT classify FROM movie GROUP BY classify
     </select>
 
-    <select id="getKeyWord"  resultType="Map">
-        SELECT movie_name AS movieName,classify FROM movie_network WHERE is_recommend = '1' AND classify = #{classify} LIMIT 1
+    <select id="getKeyWord"  resultType="MovieEntity">
+        SELECT * FROM movie_network WHERE is_recommend = '1' AND classify = #{classify} LIMIT 1
     </select>
 
     <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">

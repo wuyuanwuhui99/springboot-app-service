@@ -24,7 +24,7 @@ public interface MovieMapper {
      * @description: 查询推荐电影
      * @date: 2020-12-24 23:50
      */
-    Map<String, String> getKeyWord(String classify);
+    MovieEntity getKeyWord(String classify);
 
     /**
      * @author: wuwenqiang
