@@ -1,13 +1,9 @@
 package com.player.movie.service.imp;
 
 import com.alibaba.fastjson.JSON;
-import com.player.common.entity.PasswordEntity;
-import com.player.common.entity.ResultEntity;
-import com.player.common.entity.ResultUtil;
-import com.player.common.entity.UserEntity;
+import com.player.common.entity.*;
 import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
-import com.player.movie.entity.CommentEntity;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
@@ -20,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -442,8 +437,13 @@ public class MovieService implements IMovieService {
      * @date: 2021-08-21 23:15
      */
     @Override
-    public ResultEntity getCommentCount(int movieId){
-        return ResultUtil.success(movieMapper.getCommentCount(movieId));
+    public ResultEntity getCommentCount(int relationId,String type){
+        return restTemplate.exchange(
+                "http://player-comment/service/comment/getCommentCount?relationId="+relationId+"&type="+type,
+                HttpMethod.GET,
+                new HttpEntity<String>(new HttpHeaders()),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -452,10 +452,13 @@ public class MovieService implements IMovieService {
      * @date: 2021-08-21 23:15
      */
     @Override
-    public ResultEntity getTopCommentList(int movieId,int pageNum, int pageSize){
-        if(pageSize > 100)pageSize = 100;
-        int start = (pageNum - 1)*pageSize;
-        return ResultUtil.success(movieMapper.getTopCommentList(movieId,start,pageSize));
+    public ResultEntity getTopCommentList(int relationId,String type,int pageNum, int pageSize){
+        return restTemplate.exchange(
+                "http://player-comment/service/comment/getTopCommentList?relationId="+relationId+"&type="+type+"&pageNum="+pageNum + "&pageSize="+pageSize,
+                HttpMethod.GET,
+                new HttpEntity<String>(new HttpHeaders()),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -465,10 +468,10 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity insertComment(String token, CommentEntity commentEntity){
-        commentEntity.setUserId(JwtToken.getUserId(token));
-        movieMapper.insertComment(commentEntity);
-        movieMapper.getCommentItem(commentEntity.getId());
-        return ResultUtil.success(movieMapper.getCommentItem(commentEntity.getId()));
+        return restTemplate.exchange(
+                Common.postRequestEntity("http://player-comment/service/comment-getway/insertComment",token,commentEntity),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -477,8 +480,11 @@ public class MovieService implements IMovieService {
      * @date: 2021-08-21 23:15
      */
     @Override
-    public ResultEntity deleteComment(int id,String userId){
-        return ResultUtil.success(movieMapper.deleteComment(id,userId));
+    public ResultEntity deleteComment(int id,String token){
+        return restTemplate.exchange(
+                Common.deleteRequestEntity("http://player-comment/service/comment-getway/delete/"+id,token),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**
@@ -488,9 +494,12 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize){
-        if(pageSize > 100)pageSize = 100;
-        int start = (pageNum - 1)*pageSize;
-        return ResultUtil.success(movieMapper.getReplyCommentList(topId,start,pageSize));
+        return restTemplate.exchange(
+                "http://player-comment/service/comment/getReplyCommentList?topId="+topId+"&pageNum="+pageNum+"&pageSize="+pageNum + "&pageSize="+pageSize,
+                HttpMethod.GET,
+                new HttpEntity<String>(new HttpHeaders()),
+                ResultEntity.class
+        ).getBody();
     }
 
     /**

@@ -47,6 +47,16 @@ public class Common {
                 .body(s);
     }
 
+    public static RequestEntity deleteRequestEntity(String path,String token){
+        URI uri = UriComponentsBuilder.fromUriString(path).build().toUri();
+        // 自定义body实体类
+        return RequestEntity.delete(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .header("Authorization", token)
+                .build();
+    }
+
     public static String nullToString(String str) {
         return str == null ?  "" : str;
     }

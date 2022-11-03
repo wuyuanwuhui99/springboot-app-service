@@ -1,9 +1,9 @@
 package com.player.movie.service;
 
+import com.player.common.entity.CommentEntity;
 import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
-import com.player.movie.entity.CommentEntity;
 import com.player.movie.entity.MovieEntity;
 
 public interface IMovieService {
@@ -64,13 +64,13 @@ public interface IMovieService {
 
     ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
-    ResultEntity getCommentCount(int movieId);
+    ResultEntity getCommentCount(int relationId, String type);
 
-    ResultEntity getTopCommentList(int movieId,int pageNum, int pageSize);
+    ResultEntity getTopCommentList(int relationId, String type,int pageNum, int pageSize);
 
     ResultEntity insertComment(String token, CommentEntity commentEntity);
 
-    ResultEntity deleteComment(int id,String userId);
+    ResultEntity deleteComment(int id,String token);
 
     ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize);
 

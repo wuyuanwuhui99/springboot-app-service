@@ -1,4 +1,4 @@
-package com.player.movie.entity;
+package com.player.common.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,8 +19,11 @@ public class CommentEntity {
     @ApiModelProperty(value = "顶级节点id")
     private Long topId;
 
-    @ApiModelProperty(value = "影片id")
-    private Long movieId;
+    @ApiModelProperty(value = "关联的影片id")
+    private Long relationId;
+
+    @ApiModelProperty(value = "类型，movie，aiqiyi，article")
+    private String type;
 
     @ApiModelProperty(value = "创建时间")
     private String createTime;

@@ -1,12 +1,12 @@
 package com.player.movie.controller;
 
+import com.player.common.entity.CommentEntity;
 import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
-import com.player.movie.entity.CommentEntity;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.service.IMovieService;
 import io.swagger.annotations.Api;
@@ -263,19 +263,21 @@ public class MovieController {
     @ApiOperation("获取总评论数量")
     @GetMapping("/movie/getCommentCount")
     public ResultEntity getCommentCount(
-            @RequestParam("movieId") int movieId
+            @RequestParam("relationId") int relationId,
+            @RequestParam("type") String type
     ) {
-        return movieService.getCommentCount(movieId);
+        return movieService.getCommentCount(relationId,type);
     }
 
     @ApiOperation("获取一级评论列表")
     @GetMapping("/movie/getTopCommentList")
     public ResultEntity getTopCommentList(
-            @RequestParam("movieId") int movieId,
+            @RequestParam("relationId") int relationId,
+            @RequestParam("type") String type,
             @RequestParam("pageNum") int pageNum,
             @RequestParam("pageSize")int pageSize
     ) {
-        return movieService.getTopCommentList(movieId,pageNum,pageSize);
+        return movieService.getTopCommentList(relationId,type,pageNum,pageSize);
     }
 
     @ApiOperation("新增评论")

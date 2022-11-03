@@ -1,8 +1,6 @@
 package com.player.movie.mapper;
 
-
 import com.player.common.entity.LogEntity;
-import com.player.movie.entity.CommentEntity;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.entity.MovieStarEntity;
 import com.player.movie.entity.MovieUrlEntity;
@@ -94,18 +92,6 @@ public interface MovieMapper {
     List<MovieEntity> getYourLikes(@Param("labels") String[] labels,String classify);
 
     List<MovieEntity> getRecommend(String classify);
-
-    Long getCommentCount(int movieId);
-
-    List<CommentEntity> getTopCommentList(int movieId, int start, int pageSize);
-
-    Long insertComment(CommentEntity commentEntity);
-
-    List<CommentEntity> getReplyCommentList(int topId,int start,int pageSize);
-
-    Long deleteComment(int id,String userId);
-
-    CommentEntity getCommentItem(Long id);
 
     List<MovieEntity> getRecordList(String userId);
 
