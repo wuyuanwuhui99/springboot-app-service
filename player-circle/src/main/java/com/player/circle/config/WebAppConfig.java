@@ -1,4 +1,4 @@
-package com.player.comment.config;
+package com.player.circle.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //注册TestInterceptor拦截器
         InterceptorRegistration registration = registry.addInterceptor(getAuthInterceptor());
-        registration.addPathPatterns("/service/movie-getway/**");                      //所有路径都被拦截
+        registration.addPathPatterns("/service/circle-getway/**");                      //所有路径都被拦截
         registration.excludePathPatterns(                         //添加不拦截路径
                 "/**/*.html",            //html静态资源
                 "/**/*.js",              //js静态资源

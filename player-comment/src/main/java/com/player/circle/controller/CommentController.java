@@ -1,6 +1,6 @@
-package com.player.comment.controller;
+package com.player.circle.controller;
 
-import com.player.comment.service.ICommentService;
+import com.player.circle.service.ICommentService;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.CommentEntity;
 import io.swagger.annotations.Api;

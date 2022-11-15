@@ -1,4 +1,4 @@
-package com.player.comment.config;
+package com.player.circle.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.player.common.entity.ResultEntity;

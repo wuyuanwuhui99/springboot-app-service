@@ -1,4 +1,4 @@
-package com.player.comment.mapper;
+package com.player.circle.mapper;
 
 import com.player.common.entity.CommentEntity;
 

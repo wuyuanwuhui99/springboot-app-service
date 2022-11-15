@@ -1,6 +1,5 @@
-package com.player.comment;
+package com.player.circle;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -11,11 +10,10 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableDiscoveryClient
 @EnableFeignClients
-@SpringBootApplication(scanBasePackages = "com.player.comment")
-@MapperScan("com.player.comment.mapper")
-public class CommentApplication {
+@SpringBootApplication(scanBasePackages = "com.player.circle")
+public class CircleApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CommentApplication.class, args);
+        SpringApplication.run(CircleApplication.class, args);
     }
 
     @Bean

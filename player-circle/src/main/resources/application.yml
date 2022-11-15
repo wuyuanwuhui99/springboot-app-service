@@ -1,15 +1,15 @@
 static:
   file-path: E:/
 server:
-  port: 8002
+  port: 8003
   tomcat:
     uri-encoding: UTF-8
 token:
   expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
   secret: wuwenqiang #token秘钥
 app:
-  appId: com.player.comment
-  appName: 评论
+  appId: com.player.circle
+  appName: 电影圈
 spring:
   http:
     encoding:
@@ -29,7 +29,7 @@ spring:
         max-idle: 8 # 连接池中的最大空闲连接
         min-idle: 0 # 连接池中的最小空闲连接
   application:
-    name: player-comment
+    name: player-circle
   datasource:
     druid:
       url: jdbc:mysql://localhost:3306/play?characterEncoding=utf-8
@@ -49,7 +49,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.player.comment.entity
+  type-aliases-package: com.player.circle.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,4 +1,4 @@
-package com.player.comment.service;
+package com.player.circle.service;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.CommentEntity;

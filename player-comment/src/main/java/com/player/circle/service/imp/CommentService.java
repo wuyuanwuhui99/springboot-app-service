@@ -1,7 +1,7 @@
-package com.player.comment.service.imp;
+package com.player.circle.service.imp;
 
-import com.player.comment.mapper.CommentMapper;
-import com.player.comment.service.ICommentService;
+import com.player.circle.mapper.CommentMapper;
+import com.player.circle.service.ICommentService;
 import com.player.common.entity.*;
 import com.player.common.utils.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
