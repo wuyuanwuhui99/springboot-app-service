@@ -1,11 +1,11 @@
 package com.player.circle.mapper;
 
 import com.player.circle.entity.CircleEntity;
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper
+@Repository
 public interface CircleMapper {
 
     List<CircleEntity> getCircleList(int start, int pageSize);

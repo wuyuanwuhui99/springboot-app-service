@@ -16,7 +16,7 @@ public class CircleController {
 
     @ApiOperation("获取电影圈列表")
     @GetMapping("/circle/getCircleList")
-    public ResultEntity getCommentCount(
+    public ResultEntity getCircleList(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum
     ) {
