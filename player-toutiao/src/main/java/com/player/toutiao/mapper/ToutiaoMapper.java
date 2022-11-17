@@ -5,9 +5,11 @@ import com.player.toutiao.entity.ArticleEntity;
 import com.player.toutiao.entity.ChannelEntity;
 import com.player.toutiao.entity.CommentEntity;
 import feign.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ToutiaoMapper {
     /**
      * @author: wuwenqiang

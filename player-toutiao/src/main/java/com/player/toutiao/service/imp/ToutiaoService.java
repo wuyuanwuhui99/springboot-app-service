@@ -20,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static com.player.common.utils.HttpUtils.getRequestData;
+
 @Service
 public class ToutiaoService implements IToutiaoService {
 
@@ -31,20 +33,6 @@ public class ToutiaoService implements IToutiaoService {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
-    public ResultEntity getRequestData(String url,String token,HttpMethod type,Map<String, Object> params){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", token);
-        HttpEntity<String> httpEntity = new HttpEntity<>(JSON.toJSONString(params),headers);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                url,
-                type,
-                httpEntity,
-                ResultEntity.class
-        );
-        return  responseEntity.getBody();
-    }
 
     /**
      * @author: wuwenqiang
@@ -137,7 +125,7 @@ public class ToutiaoService implements IToutiaoService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        return getRequestData("http://player-user/service/user/getUserData",token,HttpMethod.GET,null);
+        return getRequestData(restTemplate,"http://player-user/service/user/getUserData",token,HttpMethod.GET,null);
     }
 
     /**

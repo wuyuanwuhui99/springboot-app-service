@@ -1,6 +1,9 @@
 package com.player.common.utils;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.alibaba.fastjson.JSON;
+import com.player.common.entity.ResultEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -8,12 +11,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.springframework.http.*;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.UUID;
 
 public class HttpUtils {
@@ -208,5 +214,19 @@ public class HttpUtils {
     public static String getRandom(){
         String random = Math.random()+"";
         return random.substring(2,random.length());
+    }
+
+    public static ResultEntity getRequestData(RestTemplate restTemplate, String url, String token, HttpMethod type, Map<String, Object> params){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", token);
+        HttpEntity<String> httpEntity = new HttpEntity<>(JSON.toJSONString(params),headers);
+        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
+                url,
+                type,
+                httpEntity,
+                ResultEntity.class
+        );
+        return  responseEntity.getBody();
     }
 }

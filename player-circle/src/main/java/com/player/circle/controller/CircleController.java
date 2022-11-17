@@ -15,11 +15,17 @@ public class CircleController {
     private ICircleService circleService;
 
     @ApiOperation("获取电影圈列表")
-    @GetMapping("/circle/getCircleList")
-    public ResultEntity getCircleList(
+    @GetMapping("/circle/getCircleArticleList")
+    public ResultEntity getCircleArticleList(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum
     ) {
-        return circleService.getCircleList(pageSize,pageNum);
+        return circleService.getCircleArticleList(pageSize,pageNum);
+    }
+
+    @ApiOperation("获取用户登录信息")
+    @GetMapping("/circle/getUserData")
+    public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
+        return circleService.getUserData(token);
     }
 }

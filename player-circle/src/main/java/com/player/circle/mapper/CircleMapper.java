@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface CircleMapper {
 
-    List<CircleEntity> getCircleList(int start, int pageSize);
+    List<CircleEntity> getCircleArticleList(int start, int pageSize);
 }

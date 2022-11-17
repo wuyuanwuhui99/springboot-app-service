@@ -4,5 +4,7 @@ import com.player.common.entity.ResultEntity;
 
 public interface ICircleService {
 
-    ResultEntity getCircleList(int pageSize,int pageNum);
+    ResultEntity getCircleArticleList(int pageSize,int pageNum);
+
+    ResultEntity getUserData(String token);
 }
