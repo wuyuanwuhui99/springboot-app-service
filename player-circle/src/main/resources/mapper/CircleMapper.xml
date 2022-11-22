@@ -3,7 +3,7 @@
 <mapper namespace="com.player.circle.mapper.CircleMapper">
 
     <select id="getCircleArticleList" resultType="CircleEntity">
-        select * from circle ORDER BY create_time DESC limit #{start}, #{pageSize}
+        SELECT c.*,u.username FROM circle c LEFT JOIN user u on c.user_id = u.user_id ORDER BY c.create_time DESC limit #{start}, #{pageSize}
     </select>
 </mapper>
 

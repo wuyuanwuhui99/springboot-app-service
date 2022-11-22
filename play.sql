@@ -11,11 +11,42 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 05/11/2021 00:08:13
+ Date: 22/11/2022 22:11:07
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for circle
+-- ----------------------------
+DROP TABLE IF EXISTS `circle`;
+CREATE TABLE `circle`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `content` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '内容',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论内容',
+  `parent_id` int(0) NULL DEFAULT NULL COMMENT '评论父级id',
+  `top_id` int(0) NULL DEFAULT NULL COMMENT '一级评论',
+  `relation_id` int(0) NULL DEFAULT NULL COMMENT '文章id',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类型',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `udate_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `reply_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '被回复者',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章评论' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for ebook
@@ -48,7 +79,7 @@ CREATE TABLE `ebook`  (
   `category_img_local` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类本地图片地址',
   `category_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类描述',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 836 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 835 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for ebook_banner
@@ -64,7 +95,7 @@ CREATE TABLE `ebook_banner`  (
   `is_used` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否使用中',
   `sequence` int(0) NULL DEFAULT NULL COMMENT '排名',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for ebook_chapter
@@ -80,39 +111,6 @@ CREATE TABLE `ebook_chapter`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 39720 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for ebook_copy1
--- ----------------------------
-DROP TABLE IF EXISTS `ebook_copy1`;
-CREATE TABLE `ebook_copy1`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '书名',
-  `img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片地址',
-  `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评分',
-  `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '语言',
-  `chapters_num` int(0) NULL DEFAULT NULL COMMENT '章节数量',
-  `frequency` int(0) NULL DEFAULT NULL COMMENT '阅读人数',
-  `collection` int(0) NULL DEFAULT NULL COMMENT '收藏次数',
-  `source_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '来源',
-  `source_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 来源的url',
-  `sharer` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分享人',
-  `share_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分享人地址',
-  `introduction` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '描述',
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '阅读地址',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `local_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '本地图片地址',
-  `label` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标签',
-  `classify` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '大分类',
-  `rank` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '排名',
-  `category_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '小分类',
-  `category_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类url地址',
-  `category_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类网络图片地址',
-  `category_img_local` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类本地图片地址',
-  `category_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类描述',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 836 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for ebook_likes
@@ -347,7 +345,7 @@ CREATE TABLE `log`  (
   `app_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '应用的id',
   `app_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '应用的名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10403 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10675 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie
@@ -383,7 +381,43 @@ CREATE TABLE `movie`  (
   `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
   `douban_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '对应豆瓣网的地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15924 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 22193 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for movie_bpzhe
+-- ----------------------------
+DROP TABLE IF EXISTS `movie_bpzhe`;
+CREATE TABLE `movie_bpzhe`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `movie_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  `movie_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '电影名称',
+  `director` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '导演',
+  `star` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '主演',
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '类型',
+  `country_language` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '国家/语言',
+  `viewing_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '观看状态	',
+  `release_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '上映时间',
+  `plot` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '剧情',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` date NULL DEFAULT NULL COMMENT '更新时间',
+  `is_recommend` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '是否推荐，0:不推荐，1:推荐',
+  `img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '电影海报',
+  `big_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '轮播大图片，category类型为banner才有值',
+  `classify` varchar(8) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '分类 电影,电视剧,动漫,综艺,新片库,福利,午夜,恐怖,其他',
+  `category` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '类目，值为banner首屏，carousel：滚动轮播',
+  `source_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '来源名称，本地，骑士影院，爱奇艺',
+  `source_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '来源地址',
+  `local_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '本地图片',
+  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标签',
+  `original_href` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '源地址',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '简单描述',
+  `target_href` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '链接地址',
+  `use_status` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '0代表未使用，1表示正在使用，是banner和carousel图的才有',
+  `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '评分',
+  `ranks` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '排名',
+  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 34960 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_category
@@ -399,24 +433,7 @@ CREATE TABLE `movie_category`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 798 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Table structure for movie_comment
--- ----------------------------
-DROP TABLE IF EXISTS `movie_comment`;
-CREATE TABLE `movie_comment`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论内容',
-  `parent_id` int(0) NULL DEFAULT NULL COMMENT '评论父级id',
-  `top_id` int(0) NULL DEFAULT NULL COMMENT '一级评论',
-  `movie_id` int(0) NULL DEFAULT NULL COMMENT '文章id',
-  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `udate_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `reply_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '被回复者',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章评论' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1303 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_favorite
@@ -469,8 +486,8 @@ CREATE TABLE `movie_network`  (
   `local_img` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '本地图片',
   `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标签',
   `original_href` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '源地址',
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '简单描述',
-  `target_href` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '链接地址',
+  `description` varchar(3000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '简单描述',
+  `target_href` varchar(3000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '链接地址',
   `use_status` enum('0','1') CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '0代表未使用，1表示正在使用，是banner和carousel图的才有',
   `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '评分',
   `category` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '类目，值为banner首屏，carousel：滚动轮播',
@@ -478,20 +495,20 @@ CREATE TABLE `movie_network`  (
   `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
   `douban_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '对应豆瓣网的地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28611 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 37991 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for movie_record
+-- Table structure for movie_play_record
 -- ----------------------------
-DROP TABLE IF EXISTS `movie_record`;
-CREATE TABLE `movie_record`  (
+DROP TABLE IF EXISTS `movie_play_record`;
+CREATE TABLE `movie_play_record`  (
   `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `movie_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '电影id',
   `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 154 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_stars
@@ -509,7 +526,7 @@ CREATE TABLE `movie_stars`  (
   `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '演员的豆瓣链接地址',
   `works` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代表作',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 134973 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 172034 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_url
@@ -525,8 +542,40 @@ CREATE TABLE `movie_url`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '播放地址',
   `play_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '播放分组，1, 2',
+  `source_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '来源',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 251910 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 270686 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for movie_url_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `movie_url_copy1`;
+CREATE TABLE `movie_url_copy1`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `movie_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '电影名称',
+  `movie_id` int(0) NULL DEFAULT NULL COMMENT '对应的电影的id',
+  `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '源地址',
+  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '集数',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '播放地址',
+  `play_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '播放分组，1, 2',
+  `source_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '来源',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 270523 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for movie_view_record
+-- ----------------------------
+DROP TABLE IF EXISTS `movie_view_record`;
+CREATE TABLE `movie_view_record`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `movie_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '电影id',
+  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 156 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for music_douyin
@@ -645,7 +694,7 @@ CREATE TABLE `toutiao_article`  (
   `ranks` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '排名',
   `disabled` int(1) UNSIGNED ZEROFILL NULL DEFAULT NULL COMMENT '是否禁用，0不禁用，1禁用，2审核中',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 197697 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '头条文章' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 198661 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '头条文章' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_article_favorite
@@ -671,7 +720,7 @@ CREATE TABLE `toutiao_article_like`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `user_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 127352 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '文章和博客点赞表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 127353 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '文章和博客点赞表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_article_record
@@ -738,7 +787,7 @@ CREATE TABLE `toutiao_favorite_channel`  (
   `status` int(0) NULL DEFAULT NULL COMMENT '状态，公开:0,推荐:1,默认:2,非公开:3',
   `sequence` int(0) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 937 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '所有频道' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 950 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '所有频道' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for toutiao_focus
@@ -890,7 +939,7 @@ CREATE TABLE `video`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `user_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户id，在这表中暂时无用，为了跟记录表保持一致',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 88294 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 89022 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for video_api
@@ -898,7 +947,7 @@ CREATE TABLE `video`  (
 DROP TABLE IF EXISTS `video_api`;
 CREATE TABLE `video_api`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
-  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '接口地址',
+  `url` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '接口地址',
   `channel_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '频道id',
   `response` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL COMMENT '相应内容',
   `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '分类地址',
@@ -972,7 +1021,7 @@ CREATE TABLE `video_favorite_channel`  (
   `status` int(0) NULL DEFAULT 0 COMMENT '状态，0:禁用频道，1普通频道，2推荐频道，3：公开频道，4:非公开频道',
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 520 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 534 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for video_like
