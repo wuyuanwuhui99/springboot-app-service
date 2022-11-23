@@ -18,10 +18,16 @@ public class CircleEntity {
     private int id;
 
     @Column(name = "content")
-    private int content;
+    private String content;
+
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "user_id")
-    private int userId;
+    private String userId;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "create_time")
     private Date createTime;

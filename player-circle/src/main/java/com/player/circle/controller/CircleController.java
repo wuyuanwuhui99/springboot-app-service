@@ -18,14 +18,21 @@ public class CircleController {
     @GetMapping("/circle/getCircleArticleList")
     public ResultEntity getCircleArticleList(
             @RequestParam("pageSize") int pageSize,
-            @RequestParam("pageNum") int pageNum
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("type") String type
     ) {
-        return circleService.getCircleArticleList(pageSize,pageNum);
+        return circleService.getCircleArticleList(pageNum, pageSize, type);
     }
 
     @ApiOperation("获取用户登录信息")
     @GetMapping("/circle/getUserData")
-    public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
+    public ResultEntity getUserData(@RequestHeader(required = false, value = "Authorization") String token) {
         return circleService.getUserData(token);
+    }
+
+    @ApiOperation("获取文章的评论数量，浏览数量，收藏数量")
+    @GetMapping("/circle/getCircleArticleCount")
+    public ResultEntity getCircleArticleCount(@RequestParam("id") int id) {
+        return circleService.getCircleArticleCount(id);
     }
 }

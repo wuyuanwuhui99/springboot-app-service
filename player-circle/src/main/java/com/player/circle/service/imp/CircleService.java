@@ -13,21 +13,22 @@ import static com.player.common.utils.HttpUtils.getRequestData;
 
 @Service
 public class CircleService implements ICircleService {
-    
+
     @Autowired
     private CircleMapper circleMapper;
 
     @Autowired
     private RestTemplate restTemplate;
-    
+
     /**
      * @author: wuwenqiang
      * @description: 获取电影圈列表
      * @date: 2022-11-17 23:15
      */
     @Override
-    public ResultEntity getCircleArticleList(int pageSize,int pageNum){
-        return ResultUtil.success(circleMapper.getCircleArticleList(pageSize,pageNum));
+    public ResultEntity getCircleArticleList(int pageNum, int pageSize, String type) {
+        int start = (pageNum - 1) * pageSize;
+        return ResultUtil.success(circleMapper.getCircleArticleList(start, pageSize, type));
     }
 
     /**
@@ -37,6 +38,11 @@ public class CircleService implements ICircleService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        return getRequestData(restTemplate,"http://player-user/service/user/getUserData",token, HttpMethod.GET,null);
+        return getRequestData(restTemplate, "http://player-user/service/user/getUserData", token, HttpMethod.GET, null);
+    }
+
+    @Override
+    public ResultEntity getCircleArticleCount(int id) {
+        return ResultUtil.success(circleMapper.getCircleArticleCount(id));
     }
 }

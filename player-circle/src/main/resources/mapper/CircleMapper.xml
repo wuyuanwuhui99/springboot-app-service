@@ -3,7 +3,16 @@
 <mapper namespace="com.player.circle.mapper.CircleMapper">
 
     <select id="getCircleArticleList" resultType="CircleEntity">
-        SELECT c.*,u.username FROM circle c LEFT JOIN user u on c.user_id = u.user_id ORDER BY c.create_time DESC limit #{start}, #{pageSize}
+        SELECT c.*,u.username FROM circle c LEFT JOIN user u on c.user_id = u.user_id where c.type = #{type} ORDER BY c.create_time DESC limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getCircleArticleCount" resultType="Map">
+        SELECT CAST(c.commentCount as char) AS commentCount,CAST(f.favoriteCount AS char) AS favoriteCount,CAST(v.viewCount AS char) AS viewCount
+        FROM(
+            (SELECT count(*) as commentCount FROM comment WHERE type = "circle" and relation_id = #{id}) c,
+            (SELECT count(*) as favoriteCount FROM circle_favorite WHERE circle_id = #{id}) f,
+            (SELECT count(*) as viewCount FROM circle_record WHERE circle_id = #{id}) v
+        )
     </select>
 </mapper>
 
