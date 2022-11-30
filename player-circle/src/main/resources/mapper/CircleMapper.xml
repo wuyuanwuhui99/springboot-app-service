@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.player.circle.mapper.CircleMapper">
 
+    <select id="getCircleCount" resultType="Long">
+        SELECT COUNT(id) FROM circle WHERE `type` = #{type}
+        <if  test="keyword != '' and keyword != null">
+            and content LIKE label LIKE CONCAT('%',TRIM(#{keyword}),'%')
+        </if>
+    </select>
+
     <select id="getCircleArticleList" resultType="CircleEntity">
         SELECT c.*,u.username FROM circle c LEFT JOIN user u on c.user_id = u.user_id where c.type = #{type} ORDER BY c.create_time DESC limit #{start}, #{pageSize}
     </select>
@@ -11,8 +18,15 @@
         FROM(
             (SELECT count(*) as commentCount FROM comment WHERE type = "circle" and relation_id = #{id}) c,
             (SELECT count(*) as favoriteCount FROM circle_favorite WHERE circle_id = #{id}) f,
-            (SELECT count(*) as viewCount FROM circle_record WHERE circle_id = #{id}) v
+            (SELECT count(distinct user_id) as viewCount FROM circle_record WHERE circle_id = #{id}) v
         )
     </select>
+
+    <insert id="insertLog">
+        INSERT INTO circle_record(circle_id,user_id,create_time,update_time) VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.circleId},#{item.userId},now(),now())
+        </foreach>
+    </insert>
 </mapper>
 

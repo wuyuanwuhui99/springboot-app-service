@@ -19,9 +19,11 @@ public class CircleController {
     public ResultEntity getCircleArticleList(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum,
-            @RequestParam("type") String type
+            @RequestParam("type") String type,
+            @RequestParam("keyword") String keyword,
+            @RequestHeader("Authorization") String token
     ) {
-        return circleService.getCircleArticleList(pageNum, pageSize, type);
+        return circleService.getCircleArticleList(pageNum, pageSize, type, keyword, token);
     }
 
     @ApiOperation("获取用户登录信息")
