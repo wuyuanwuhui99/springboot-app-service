@@ -1,6 +1,7 @@
 package com.player.circle.mapper;
 
 import com.player.circle.entity.CircleEntity;
+import com.player.circle.entity.HotCommentMovieEntity;
 import com.player.circle.entity.LogCircleEntity;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,8 @@ public interface CircleMapper {
     int insertLog(List<LogCircleEntity> logCircleEntities);
 
     Long getCircleCount(String type,String keyword);
+
+    List<HotCommentMovieEntity>getHotCommentMovie();
+
+    List<HotCommentMovieEntity>getLastModifyMovie();
 }

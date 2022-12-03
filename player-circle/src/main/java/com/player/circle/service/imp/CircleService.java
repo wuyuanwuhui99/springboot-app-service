@@ -60,8 +60,33 @@ public class CircleService implements ICircleService {
         return getRequestData(restTemplate, "http://player-user/service/user/getUserData", token, HttpMethod.GET, null);
     }
 
+    /**
+     * @author: wuwenqiang
+     * @description: 获取每条电影圈评论数量和浏览数量和点赞数量
+     * @date: 2022-12-03 16:01
+     */
     @Override
     public ResultEntity getCircleArticleCount(int id) {
         return ResultUtil.success(circleMapper.getCircleArticleCount(id));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取热门影评
+     * @date: 2022-12-03 16:02
+     */
+    @Override
+    public ResultEntity getHotCommentMovie() {
+        return ResultUtil.success(circleMapper.getHotCommentMovie());
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取最近更新的电影
+     * @date: 2022-12-03 16:02
+     */
+    @Override
+    public ResultEntity getLastModifyMovie() {
+        return ResultUtil.success(circleMapper.getLastModifyMovie());
     }
 }

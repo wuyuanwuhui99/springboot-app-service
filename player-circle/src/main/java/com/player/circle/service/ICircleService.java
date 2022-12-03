@@ -1,6 +1,5 @@
 package com.player.circle.service;
 
-import com.player.circle.entity.CircleEntity;
 import com.player.common.entity.ResultEntity;
 
 public interface ICircleService {
@@ -10,4 +9,8 @@ public interface ICircleService {
     ResultEntity getUserData(String token);
 
     ResultEntity getCircleArticleCount(int id);
+
+    ResultEntity getHotCommentMovie();
+
+    ResultEntity getLastModifyMovie();
 }

@@ -28,5 +28,19 @@
             (#{item.circleId},#{item.userId},now(),now())
         </foreach>
     </insert>
+
+    <select id="getHotCommentMovie" resultType="HotCommentMovieEntity">
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '电影周榜单' ORDER BY `rank` asc limit 0,8) t1 UNION ALL
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '电视剧周榜单' ORDER BY `rank` asc  limit 0,8) t2 UNION ALL
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '综艺周榜单'  ORDER BY `rank` asc limit 0,4) t3 UNION ALL
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '动漫周榜单'  ORDER BY `rank` asc limit 0,4) t4
+    </select>
+
+    <select id="getLastModifyMovie" resultType="HotCommentMovieEntity">
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最新电影' ORDER BY `rank` asc limit 0,20) t1 UNION ALL
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最新电视剧' ORDER BY `rank` asc  limit 0,20) t2 UNION ALL
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最近综艺'  ORDER BY `rank` asc limit 0,20) t3 UNION ALL
+        SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最新动漫'  ORDER BY `rank` asc limit 0,20) t4
+    </select>
 </mapper>
 

@@ -37,4 +37,16 @@ public class CircleController {
     public ResultEntity getCircleArticleCount(@RequestParam("id") int id) {
         return circleService.getCircleArticleCount(id);
     }
+
+    @ApiOperation("获取热门影评")
+    @GetMapping("/circle/getHotCommentMovie")
+    public ResultEntity getHotCommentMovie() {
+        return circleService.getHotCommentMovie();
+    }
+
+    @ApiOperation("获取最近更新的影片")
+    @GetMapping("/circle/getLastModifyMovie")
+    public ResultEntity getLastModifyMovie() {
+        return circleService.getLastModifyMovie();
+    }
 }
