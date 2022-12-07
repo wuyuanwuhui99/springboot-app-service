@@ -2,10 +2,13 @@ package com.player.circle.controller;
 
 import com.player.circle.service.ICircleService;
 import com.player.common.entity.ResultEntity;
+import com.player.common.utils.HttpUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/service")
 @Api(value = "电影圈", description = "新增，查询，修改，删除电影圈")
@@ -40,13 +43,13 @@ public class CircleController {
 
     @ApiOperation("获取热门影评")
     @GetMapping("/circle/getHotCommentMovie")
-    public ResultEntity getHotCommentMovie() {
-        return circleService.getHotCommentMovie();
+    public ResultEntity getHotCommentMovie( HttpServletRequest request) {
+        return circleService.getHotCommentMovie(HttpUtils.getPath(request));
     }
 
     @ApiOperation("获取最近更新的影片")
     @GetMapping("/circle/getLastModifyMovie")
-    public ResultEntity getLastModifyMovie() {
-        return circleService.getLastModifyMovie();
+    public ResultEntity getLastModifyMovie( HttpServletRequest request) {
+        return circleService.getLastModifyMovie(HttpUtils.getPath(request));
     }
 }

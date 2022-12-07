@@ -10,7 +10,7 @@ public interface ICircleService {
 
     ResultEntity getCircleArticleCount(int id);
 
-    ResultEntity getHotCommentMovie();
+    ResultEntity getHotCommentMovie(String path);
 
-    ResultEntity getLastModifyMovie();
+    ResultEntity getLastModifyMovie(String path);
 }
