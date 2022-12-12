@@ -3,6 +3,7 @@ package com.player.circle.mapper;
 import com.player.circle.entity.CircleEntity;
 import com.player.circle.entity.HotCommentMovieEntity;
 import com.player.circle.entity.LogCircleEntity;
+import com.player.circle.entity.SayEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public interface CircleMapper {
 
     Map<String,Integer> getCircleArticleCount(int id);
 
-    int insertLog(List<LogCircleEntity> logCircleEntities);
+    Integer insertLog(List<LogCircleEntity> logCircleEntities);
 
     Long getCircleCount(String type,String keyword);
 
     List<HotCommentMovieEntity>getHotCommentMovie();
 
     List<HotCommentMovieEntity>getLastModifyMovie();
+
+    Integer saveSay(CircleEntity circleEntity);
 }

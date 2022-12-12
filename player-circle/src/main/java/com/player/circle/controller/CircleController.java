@@ -1,5 +1,6 @@
 package com.player.circle.controller;
 
+import com.player.circle.entity.SayEntity;
 import com.player.circle.service.ICircleService;
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
@@ -51,5 +52,11 @@ public class CircleController {
     @GetMapping("/circle/getLastModifyMovie")
     public ResultEntity getLastModifyMovie( HttpServletRequest request) {
         return circleService.getLastModifyMovie(HttpUtils.getPath(request));
+    }
+
+    @ApiOperation("保存图片和文字")
+    @PostMapping("/circle-getway/saveSay")
+    public ResultEntity saveSay(@RequestBody SayEntity sayEntity,@RequestHeader("Authorization") String token) {
+        return circleService.saveSay(sayEntity,token);
     }
 }

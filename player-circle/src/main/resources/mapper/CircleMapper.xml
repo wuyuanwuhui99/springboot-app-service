@@ -42,5 +42,9 @@
         SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最近综艺'  ORDER BY `rank` asc limit 0,20) t3 UNION ALL
         SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最新动漫'  ORDER BY `rank` asc limit 0,20) t4
     </select>
+
+    <insert id="saveSay">
+        INSERT INTO circle(content,imgs,`type`,user_id,create_time,update_time) VALUE (#{content},#{imgs},#{type},#{userId},now(),now())
+    </insert>
 </mapper>
 

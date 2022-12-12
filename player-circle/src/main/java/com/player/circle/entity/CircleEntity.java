@@ -20,6 +20,9 @@ public class CircleEntity {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "imgs")
+    private String imgs;
+
     @Column(name = "type")
     private String type;
 

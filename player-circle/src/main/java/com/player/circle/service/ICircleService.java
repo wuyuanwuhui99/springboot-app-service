@@ -1,5 +1,6 @@
 package com.player.circle.service;
 
+import com.player.circle.entity.SayEntity;
 import com.player.common.entity.ResultEntity;
 
 public interface ICircleService {
@@ -13,4 +14,6 @@ public interface ICircleService {
     ResultEntity getHotCommentMovie(String path);
 
     ResultEntity getLastModifyMovie(String path);
+
+    ResultEntity saveSay(SayEntity sayEntity, String token);
 }

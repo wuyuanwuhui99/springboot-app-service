@@ -1,5 +1,5 @@
 static:
-  file-path: E:/
+  upload-path: F:/static/circle/
 server:
   port: 8003
   tomcat:
