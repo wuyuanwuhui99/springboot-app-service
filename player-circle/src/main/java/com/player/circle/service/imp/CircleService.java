@@ -133,9 +133,9 @@ public class CircleService implements ICircleService {
             String ext = base64.replaceAll(";base64,.+","").replaceAll("data:image/","");
             base64 = base64.replaceAll("data:image/.+base64,","");
             String imgName = UUID.randomUUID().toString().replace("-", "") + "." + ext;
-            Boolean result = Common.generateImage(base64, uploadPath+imgName);
-            if(result){
-                imgs += imgName+ (i == sayEntity.getImgs().length - 1 ? "" : ";");
+            String newImgName = Common.generateImage(base64, uploadPath+imgName);
+            if(newImgName != null){
+                imgs += newImgName + (i == sayEntity.getImgs().length - 1 ? "" : ";");
             }
         }
         CircleEntity circleEntity = new CircleEntity();

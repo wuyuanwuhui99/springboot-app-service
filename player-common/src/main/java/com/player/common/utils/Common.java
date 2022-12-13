@@ -6,7 +6,12 @@ import org.springframework.http.RequestEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -64,33 +69,31 @@ public class Common {
         return str == null ?  "" : str;
     }
 
-    /**
-     * 为文件重新命名，命名规则为当前系统时间毫秒数
-     *
-     * @return string
-     */
-    private static String getFileNameNew() {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        return fmt.format(new Date());
-    }
 
-    public static Boolean generateImage(String base64str,String savepath){
-        if (base64str == null)return false;
+    public static String generateImage(String base64str,String savepath){
+        if (base64str == null)return null;
         BASE64Decoder decoder = new BASE64Decoder();
         try {
             byte[] b = decoder.decodeBuffer(base64str);
+            InputStream is=new ByteArrayInputStream(b);
+            BufferedImage read = ImageIO.read(is);
+            WritableRaster raster = read.getRaster();
+            int width = raster.getWidth();
+            int height = raster.getHeight();
             for(int i=0;i<b.length;++i){
                 if(b[i]<0){
                     b[i]+=256;
                 }
             }
+            int i = savepath.lastIndexOf(".");
+            savepath = savepath.substring(0,i) + "_" + width + "x" + height + savepath.substring(i);
             OutputStream out = new FileOutputStream(savepath);
             out.write(b);
             out.flush();
             out.close();
-            return true;
+            return savepath.replaceAll(".+:","");
         }catch (Exception e){
-            return false;
+            return null;
         }
     }
 }
