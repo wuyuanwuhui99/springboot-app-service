@@ -330,4 +330,10 @@ public class MovieController {
     ) {
         return movieService.getMovieListByType(types,classify,HttpUtils.getPath(request));
     }
+
+    @ApiOperation("头像上传")
+    @PutMapping("/movie-getway/updateAvater")
+    public ResultEntity upload(@RequestHeader("Authorization") String token,@RequestBody Map imgMap) {
+        return movieService.updateAvater(token,imgMap);
+    }
 }

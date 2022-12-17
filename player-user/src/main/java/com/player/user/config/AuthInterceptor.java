@@ -29,7 +29,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
         String result = (String) redisTemplate.opsForValue().get(token);
-        if(!StringUtils.isEmpty(result)){
+        if(StringUtils.isEmpty(result)){
             renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
             return false;
         }

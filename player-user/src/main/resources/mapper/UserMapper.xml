@@ -66,6 +66,6 @@
     </insert>
 
     <update id="updateAvater">
-         UPDATE user SET avater = #{avater} WHERE user_id = #{userId}
+         UPDATE user SET avater = #{avater},update_date = now() WHERE user_id = #{userId}
     </update>
 </mapper>

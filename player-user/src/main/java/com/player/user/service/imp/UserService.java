@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -152,10 +153,15 @@ public class UserService implements IUserService {
             return ResultUtil.fail("请选择文件");
         }
         String ext = base64.replaceAll(";base64,.+","").replaceAll("data:image/","");
-        String savePath = avaterPath+ userId + "." + ext;
-        String path = Common.generateImage(base64, savePath);
-        if(path != null){
-            return ResultUtil.success(userMapper.updateAvater(avaterImg + userId + "." + ext,userId));
+
+        base64 = base64.replaceAll("data:image/.+base64,","");
+        String imgName = UUID.randomUUID().toString().replace("-", "") + "." + ext;
+        String savePath = avaterPath+ imgName;
+        String newImgName = Common.generateImage(base64, savePath);
+        if(newImgName != null){
+            String avaterUrl = avaterImg + imgName;
+            userMapper.updateAvater(newImgName,userId);
+            return ResultUtil.success(avaterUrl);
         }else{
             return ResultUtil.fail("修改头像失败");
         }

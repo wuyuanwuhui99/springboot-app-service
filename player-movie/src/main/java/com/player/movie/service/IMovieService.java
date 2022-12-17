@@ -6,6 +6,8 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.movie.entity.MovieEntity;
 
+import java.util.Map;
+
 public interface IMovieService {
 
     ResultEntity findClassify(String path);
@@ -79,4 +81,6 @@ public interface IMovieService {
     ResultEntity getMovieDetail(int movieId);
 
     ResultEntity getMovieListByType(String types,String classify,String path);
+
+    ResultEntity updateAvater(String token, Map imgMap);
 }

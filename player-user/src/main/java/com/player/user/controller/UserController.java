@@ -70,7 +70,7 @@ public class UserController {
         return userService.updatePassword(passwordEntity,token);
     }
 
-    @ApiOperation("上传")
+    @ApiOperation("头像上传")
     @PutMapping("/user-getway/updateAvater")
     public ResultEntity updateAvater(@RequestHeader("Authorization") String token, @RequestBody Map map) {
         return userService.updateAvater(token,map.get("img").toString());

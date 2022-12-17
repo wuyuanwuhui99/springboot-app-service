@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -541,5 +542,20 @@ public class MovieService implements IMovieService {
             redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: updatePassword
+     * @description: 修改头像
+     * @return: ResultEntity
+     * @date: 2020-08-11 23:54
+     */
+    @Override
+    public ResultEntity updateAvater(String token, Map imgMap){
+        return restTemplate.exchange(
+                Common.putRequestEntity("http://player-user/service/user-getway/updateAvater",token,imgMap),
+                ResultEntity.class
+        ).getBody();
     }
 }
