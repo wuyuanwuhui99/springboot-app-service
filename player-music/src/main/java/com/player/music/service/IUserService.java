@@ -5,6 +5,8 @@ import com.player.common.entity.ResultEntity;
 import com.player.music.Entity.UserEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 public interface IUserService {
 
     ResultEntity getUserData(String token);
@@ -21,5 +23,5 @@ public interface IUserService {
 
     ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
-    ResultEntity upload(String token,MultipartFile file);
+    ResultEntity updateAvater(String token, Map imgMap);
 }

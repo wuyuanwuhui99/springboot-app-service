@@ -22,5 +22,5 @@ public interface IUserService {
 
     ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
-    ResultEntity upload(String token, MultipartFile file);
+    ResultEntity updateAvater(String token, String base64);
 }

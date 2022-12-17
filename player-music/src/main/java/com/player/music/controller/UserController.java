@@ -67,8 +67,8 @@ public class UserController {
     }
 
     @ApiOperation("上传")
-    @PostMapping("/music-getway/upload")
-    public ResultEntity upload(@RequestHeader("Authorization") String token,HttpServletRequest request, @RequestParam("img") MultipartFile file) {
-        return userService.upload(token,file);
+    @PutMapping("/music-getway/updateAvater")
+    public ResultEntity upload(@RequestHeader("Authorization") String token,@RequestBody Map imgMap) {
+        return userService.updateAvater(token,imgMap);
     }
 }

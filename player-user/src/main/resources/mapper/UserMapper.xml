@@ -64,4 +64,8 @@
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
        INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
     </insert>
+
+    <update id="updateAvater">
+         UPDATE user SET avater = #{avater} WHERE user_id = #{userId}
+    </update>
 </mapper>

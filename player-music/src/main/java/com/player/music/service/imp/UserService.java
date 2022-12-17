@@ -159,28 +159,15 @@ public class UserService implements IUserService {
     /**
      * @author: wuwenqiang
      * @methodsName: updatePassword
-     * @description: 修改密码
+     * @description: 修改头像
      * @return: ResultEntity
      * @date: 2020-08-11 23:54
      */
     @Override
-    public ResultEntity upload(String token,MultipartFile file){
-        String userId = JwtToken.getUserId(token);
-        if (file.isEmpty()) {
-            return ResultUtil.fail("请选择文件");
-        }
-        String fileName = file.getOriginalFilename();
-        String myFileName = userId + "_" + System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
-        File dest = new File(avaterPath + myFileName);
-        String date = Common.getFullTime(null);
-        try {
-            file.transferTo(dest);
-            userDao.updateAvater(avaterImg + myFileName, date, userId);
-            ResultEntity resultEntity = getUserData(token);
-            resultEntity.getMsg("上传成功");
-            return resultEntity;
-        } catch (IOException e) {
-            return ResultUtil.fail(e,"上传失败");
-        }
+    public ResultEntity updateAvater(String token,Map imgMap){
+        return restTemplate.exchange(
+                Common.putRequestEntity("http://player-user/service/user-getway/updateAvater",token,imgMap),
+                ResultEntity.class
+        ).getBody();
     }
 }

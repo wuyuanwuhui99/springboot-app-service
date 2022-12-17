@@ -3,7 +3,9 @@ package com.player.user.mapper;
 import com.player.common.entity.LogEntity;
 import com.player.common.entity.UserEntity;
 import com.player.user.entity.PasswordEntity;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserMapper {
     /**
      * @author: wuwenqiang
@@ -30,4 +32,6 @@ public interface UserMapper {
     Long updatePassword(PasswordEntity passwordEntity);
 
     Long log(LogEntity logEntity);
+
+    Long updateAvater(String avater,String userId);
 }

@@ -4,6 +4,7 @@ import com.player.common.entity.LogEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
+import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import com.player.user.entity.PasswordEntity;
@@ -145,25 +146,18 @@ public class UserService implements IUserService {
      * @date: 2021-06-18 00:21
      */
     @Override
-    public ResultEntity upload(String token, MultipartFile file){
+    public ResultEntity updateAvater(String token, String base64){
         String userId = JwtToken.getUserId(token);
-        if (file.isEmpty()) {
+        if ("".equals(base64) || base64 == null) {
             return ResultUtil.fail("请选择文件");
         }
-        String fileName = file.getOriginalFilename();
-        String myFileName = userId + "_" + System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
-        File dest = new File(avaterPath + myFileName);
-        try {
-            file.transferTo(dest);
-            UserEntity userEntity = new UserEntity();
-            userEntity.setAvater(avaterImg + myFileName);
-            userEntity.setUserId(userId);
-            userMapper.updateUser(userEntity);
-            ResultEntity resultEntity = getUserData(token);
-            resultEntity.getMsg("上传成功");
-            return resultEntity;
-        } catch (IOException e) {
-            return ResultUtil.fail(e,"上传失败");
+        String ext = base64.replaceAll(";base64,.+","").replaceAll("data:image/","");
+        String savePath = avaterPath+ userId + "." + ext;
+        String path = Common.generateImage(base64, savePath);
+        if(path != null){
+            return ResultUtil.success(userMapper.updateAvater(avaterImg + userId + "." + ext,userId));
+        }else{
+            return ResultUtil.fail("修改头像失败");
         }
     }
 }
