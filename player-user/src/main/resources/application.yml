@@ -7,7 +7,7 @@ app:
   appId: com.player.user
   appName: 用户中心
   avater-img: /static/user/avater/
-  avater-path: F:${app.avater-img}
+  avater-path: G:${app.avater-img}
 spring:
   redis:
     database: 0 # Redis数据库索引（默认为0）

@@ -47,7 +47,7 @@
                 ,sex = #{sex}
             </if>
             <if test="sign != '' and sign != null">
-                sign = #{sign},
+                ,sign = #{sign}
             </if>
             <if test="region != '' and region != null">
                 ,region = #{region}

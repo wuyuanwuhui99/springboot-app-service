@@ -120,7 +120,7 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity updateUser(UserEntity userEntity,String token) {
-        if(userEntity.getUserId() != JwtToken.parserToken(token, UserEntity.class).getUserId()){
+        if(!userEntity.getUserId().equals(JwtToken.parserToken(token, UserEntity.class).getUserId())){
             return ResultUtil.fail(null,"禁止修改其他用户信息");
         }
         return ResultUtil.success(userMapper.updateUser(userEntity));
@@ -159,9 +159,8 @@ public class UserService implements IUserService {
         String savePath = avaterPath+ imgName;
         String newImgName = Common.generateImage(base64, savePath);
         if(newImgName != null){
-            String avaterUrl = avaterImg + imgName;
             userMapper.updateAvater(newImgName,userId);
-            return ResultUtil.success(avaterUrl);
+            return ResultUtil.success(newImgName);
         }else{
             return ResultUtil.fail("修改头像失败");
         }
