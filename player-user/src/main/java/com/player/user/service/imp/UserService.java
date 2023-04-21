@@ -120,9 +120,8 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity updateUser(UserEntity userEntity,String token) {
-        if(!userEntity.getUserId().equals(JwtToken.parserToken(token, UserEntity.class).getUserId())){
-            return ResultUtil.fail(null,"禁止修改其他用户信息");
-        }
+        String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
+        userEntity.setUserId(userId);
         return ResultUtil.success(userMapper.updateUser(userEntity));
     }
 
