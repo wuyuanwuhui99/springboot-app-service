@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.player.music.mapper.MyMusicMapper">
+
+    <sql id="musicSql">
+      select
+      id,
+      album_id,
+      song_name,
+      author_name,
+      album_name,
+      version,
+      `language`,
+      publish_date,
+      wide_audio_id,
+      is_publish,
+      big_pack_id,
+      final_id,
+      audio_id,
+      author_id,
+      similar_audio_id,
+      is_hot,
+      album_audio_id,
+      audio_group_id,
+      cover,
+      play_url,
+      local_play_url,
+      source_name,
+      source_url,
+      create_time,
+      update_time,
+      label,
+      lyrics
+      from music
+    </sql>
+
+    <select id="getKeywordMusic" resultType="MyMusicEntity">
+        <include refid="musicSql"></include>
+         order by is_hot desc limit 0,1
+    </select>
+
+    <select id="getRecommendMusic" resultType="MyMusicEntity">
+        <include refid="musicSql"></include>
+         where is_hot is not null order by is_hot desc limit #{start}, #{pageSize}
+    </select>
+
+</mapper>
+

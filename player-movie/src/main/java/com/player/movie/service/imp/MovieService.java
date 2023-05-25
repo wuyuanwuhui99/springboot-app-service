@@ -63,14 +63,14 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-24 22:40
      */
     @Override
-    public ResultEntity findClassify(String path) {
-        String result = (String) redisTemplate.opsForValue().get(path);
+    public ResultEntity findClassify(String redisKey) {
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             ResultEntity resultEntity = ResultUtil.success(movieMapper.findClassify());
-            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -236,8 +236,8 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String path) {
-        String result = (String) redisTemplate.opsForValue().get(path);
+    public ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String redisKey) {
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
@@ -247,7 +247,7 @@ public class MovieService implements IMovieService {
             ResultEntity resultEntity =  ResultUtil.success(movieMapper.search(classify, category, label,star,director,keyword,start,pageSize));
             Long total = movieMapper.searchTotal(classify, category, label,star,director,keyword);
             resultEntity.setTotal(total);
-            redisTemplate.opsForValue().set(path, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -259,15 +259,15 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-26 10:41
      */
     @Override
-    public ResultEntity getStar(Long movieId,String path) {
-        String url = path + "?movieId=" + movieId;
-        String result = (String) redisTemplate.opsForValue().get(url);
+    public ResultEntity getStar(Long movieId,String redisKey) {
+        redisKey += "?movieId=" + movieId;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             ResultEntity resultEntity =  ResultUtil.success(movieMapper.getStar(movieId));
-            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -278,15 +278,15 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-26 10:41
      */
     @Override
-    public ResultEntity getMovieUrl(Long movieId,String path) {
-        String url = path + "?movieId=" + movieId;
-        String result = (String) redisTemplate.opsForValue().get(url);
+    public ResultEntity getMovieUrl(Long movieId,String redisKey) {
+        redisKey += "?movieId=" + movieId;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             ResultEntity resultEntity =  ResultUtil.success(movieMapper.getMovieUrl(movieId));
-            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -376,9 +376,9 @@ public class MovieService implements IMovieService {
     }
 
     @Override
-    public ResultEntity getYourLikes(String labels,String classify,String path) {
-        String url = path + "?labels=" + labels;
-        String result = (String) redisTemplate.opsForValue().get(url);
+    public ResultEntity getYourLikes(String labels,String classify,String redisKey) {
+        redisKey += "?labels=" + labels;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
@@ -386,21 +386,21 @@ public class MovieService implements IMovieService {
             labels = labels.replaceAll("^/|/$","");
             String[] myLabels = labels.split("/");
             ResultEntity resultEntity = ResultUtil.success(movieMapper.getYourLikes(myLabels,classify));
-            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
 
     @Override
-    public ResultEntity getRecommend(String classify,String path) {
-        String url = path + "?classify=" + classify;
-        String result = (String) redisTemplate.opsForValue().get(url);
+    public ResultEntity getRecommend(String classify,String redisKey) {
+        redisKey += "?classify=" + classify;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity = JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             ResultEntity resultEntity = ResultUtil.success(movieMapper.getRecommend(classify));
-            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -530,16 +530,16 @@ public class MovieService implements IMovieService {
      * @date: 2021-08-28 11:43
      */
     @Override
-    public ResultEntity getMovieListByType(String types,String classify,String path) {
-        String url = path + "?classify="+classify+"&types=" + types;
-        String result = (String) redisTemplate.opsForValue().get(url);
+    public ResultEntity getMovieListByType(String types,String classify,String redisKey) {
+        redisKey += "?classify="+classify+"&types=" + types;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
             String[] myTypes = types.split(" ");
             ResultEntity resultEntity = ResultUtil.success(movieMapper.getMovieListByType(myTypes,classify));
-            redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }

@@ -10,23 +10,23 @@ import java.util.Map;
 
 public interface IMovieService {
 
-    ResultEntity findClassify(String path);
+    ResultEntity findClassify(String redisKey);
 
-    ResultEntity getKeyWord(String classify,String path);
+    ResultEntity getKeyWord(String classify,String redisKey);
 
     ResultEntity getUserData(String token);
 
     ResultEntity getUserMsg(String token);
 
-    ResultEntity getAllCategoryByClassify(String classsify,String path);
+    ResultEntity getAllCategoryByClassify(String classsify,String redisKey);
 
-    ResultEntity getAllCategoryListByPageName(String pageName,String path);
+    ResultEntity getAllCategoryListByPageName(String pageName,String redisKey);
 
-    ResultEntity getCategoryList(String classify, String category,String path);
+    ResultEntity getCategoryList(String classify, String category,String redisKey);
 
-    ResultEntity getTopMovieList(String classify, String category,String path);
+    ResultEntity getTopMovieList(String classify, String category,String redisKey);
 
-    ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String path);
+    ResultEntity search(String classify, String category, String label,String star,String director,String keyword,int pageNum,int pageSize,String redisKey);
 
     ResultEntity login(UserEntity userEntity);
 
@@ -34,9 +34,9 @@ public interface IMovieService {
 
     ResultEntity getUserById(String userId);
 
-    ResultEntity getStar(Long movieId,String path);
+    ResultEntity getStar(Long movieId,String redisKey);
 
-    ResultEntity getMovieUrl(Long movieId,String path);
+    ResultEntity getMovieUrl(Long movieId,String redisKey);
 
     ResultEntity getPlayRecord(String token);
 
@@ -58,9 +58,9 @@ public interface IMovieService {
 
     ResultEntity isLike(Long movieId, String token);
 
-    ResultEntity getYourLikes(String labels,String classify,String path);
+    ResultEntity getYourLikes(String labels,String classify,String redisKey);
 
-    ResultEntity getRecommend(String classify,String path);
+    ResultEntity getRecommend(String classify,String redisKey);
 
     ResultEntity updateUser(UserEntity userEntity,String token);
 
@@ -80,7 +80,7 @@ public interface IMovieService {
 
     ResultEntity getMovieDetail(int movieId);
 
-    ResultEntity getMovieListByType(String types,String classify,String path);
+    ResultEntity getMovieListByType(String types,String classify,String redisKey);
 
     ResultEntity updateAvater(String token, Map imgMap);
 }
