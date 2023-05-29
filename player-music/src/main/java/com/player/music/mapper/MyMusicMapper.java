@@ -9,5 +9,7 @@ import java.util.List;
 public interface MyMusicMapper {
     MyMusicEntity getKeywordMusic();
 
-    List<MyMusicEntity> getRecommendMusic(int start,int pageSize);
+    List<MyMusicEntity> getMusicClassify();
+
+    List<MyMusicEntity> getMusicByClassifyName(String classifyName,int start,int pageSize);
 }

@@ -39,9 +39,12 @@
          order by is_hot desc limit 0,1
     </select>
 
-    <select id="getRecommendMusic" resultType="MyMusicEntity">
-        <include refid="musicSql"></include>
-         where is_hot is not null order by is_hot desc limit #{start}, #{pageSize}
+    <select id="getMusicClassify" resultType="MusicClassifyEntity">
+        select classify_name,classify_rank from music_classify group by classify_name,classify_rank order by classify_rank desc
+    </select>
+
+    <select id="getMusicByClassifyName" resultType="MyMusicEntity">
+        select m.* from music_classify c left join music m on c.audio_id = m.audio_id where classify_name = #{classifyName} order by c.audio_rank desc limit #{start},#{pageSize}
     </select>
 
 </mapper>

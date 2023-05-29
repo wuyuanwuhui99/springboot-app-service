@@ -50,15 +50,34 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2023-05-25 21:00
      */
     @Override
-    public ResultEntity getRecommendMusic(String redisKey,int pageNum,int pageSize) {
-        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageNum;
+    public ResultEntity getMusicClassify(String redisKey) {
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
+        if(!StringUtils.isEmpty(result)){
+            return JSON.parseObject(result,ResultEntity.class);
+        }else{
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicClassify());
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: getKeywordMusic
+     * @description: 获取推荐音乐列表
+     * @return: String
+     * @date: 2023-05-25 21:00
+     */
+    @Override
+    public ResultEntity getMusicByClassifyName(String redisKey,String classifyName,int pageNum,int pageSize) {
+        redisKey += "?classifyName="+classifyName+"&pageNum=" + pageNum + "&pageSize=" + pageNum;
         String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             return JSON.parseObject(result,ResultEntity.class);
         }else{
             if(pageSize > 100)pageSize = 100;
             int start = (pageNum - 1) * pageSize;
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getRecommendMusic(start,pageSize));
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicByClassifyName(classifyName,start,pageSize));
             redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
             return resultEntity;
         }
