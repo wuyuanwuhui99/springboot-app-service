@@ -6,7 +6,6 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.music.mapper.MyMusicMapper;
 import com.player.music.service.IMyMusicService;
-import com.player.music.utils.RedisUitls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -69,15 +68,34 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2023-05-25 21:00
      */
     @Override
-    public ResultEntity getMusicByClassifyName(String redisKey,String classifyName,int pageNum,int pageSize) {
-        redisKey += "?classifyName="+classifyName+"&pageNum=" + pageNum + "&pageSize=" + pageNum;
+    public ResultEntity getMusicListByClassifyId(String redisKey,int classifyId,int pageNum,int pageSize) {
+        redisKey += "?classifyId="+classifyId+"&pageNum=" + pageNum + "&pageSize=" + pageNum;
         String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             return JSON.parseObject(result,ResultEntity.class);
         }else{
             if(pageSize > 100)pageSize = 100;
             int start = (pageNum - 1) * pageSize;
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicByClassifyName(classifyName,start,pageSize));
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByClassifyId(classifyId,start,pageSize));
+            Long musicTotalByClassifyId = myMusicMapper.getMusicTotalByClassifyId(classifyId);
+            resultEntity.setTotal(musicTotalByClassifyId);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
+
+    @Override
+    public ResultEntity getSingerList(String redisKey, int pageNum, int pageSize) {
+        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageNum;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
+        if(!StringUtils.isEmpty(result)){
+            return JSON.parseObject(result,ResultEntity.class);
+        }else{
+            if(pageSize > 100)pageSize = 100;
+            int start = (pageNum - 1) * pageSize;
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerList(start,pageSize));
+            Long singerTotal = myMusicMapper.getSingerTotal();
+            resultEntity.setTotal(singerTotal);
             redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
             return resultEntity;
         }

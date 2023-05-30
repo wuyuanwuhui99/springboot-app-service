@@ -49,4 +49,7 @@ public class UserEntity {
 
     @ApiModelProperty(value = "是否禁用")
     private int disabled;
+
+    @ApiModelProperty(value = "权限")
+    private int permission;
 }

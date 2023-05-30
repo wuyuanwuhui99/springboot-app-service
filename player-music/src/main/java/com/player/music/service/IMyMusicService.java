@@ -5,8 +5,9 @@ import com.player.common.entity.ResultEntity;
 public interface IMyMusicService {
     ResultEntity getKeywordMusic(String redisKey);
 
-
     ResultEntity getMusicClassify(String redisKey);
 
-    ResultEntity getMusicByClassifyName(String redisKey,String classifyName,int pageNum,int pageSize);
+    ResultEntity getMusicListByClassifyId(String redisKey,int classifyId,int pageNum,int pageSize);
+
+    ResultEntity getSingerList(String redisKey,int pageNum,int pageSize);
 }

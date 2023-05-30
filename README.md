@@ -39,7 +39,7 @@ VM options: -DPORT=4002 -DEUREKA_SERVER=http://localhost:4001/euraka/  -DEUREKA_
 ================================sql实例===============================
 
 ![app首页](https://raw.githubusercontent.com/wuyuanwuhui99/springboot-app-service/main/mysql.png)
-sql数据来自于python爬虫项目，自动爬取第三方电影网站，由于涉及到网络信息安全问题，爬虫项目暂未公开
+sql数据来自于python爬虫项目，自动爬取第三方电影网站，由于涉及到资源版权，爬虫项目暂未公开
 
 ================================sql实例===============================
 

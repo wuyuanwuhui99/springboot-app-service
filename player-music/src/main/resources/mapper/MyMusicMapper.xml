@@ -40,12 +40,23 @@
     </select>
 
     <select id="getMusicClassify" resultType="MusicClassifyEntity">
-        select classify_name,classify_rank from music_classify group by classify_name,classify_rank order by classify_rank desc
+        select * from music_classify_relation where disabled = 0 and permission >= 0 order by classify_rank desc
     </select>
 
-    <select id="getMusicByClassifyName" resultType="MyMusicEntity">
-        select m.* from music_classify c left join music m on c.audio_id = m.audio_id where classify_name = #{classifyName} order by c.audio_rank desc limit #{start},#{pageSize}
+    <select id="getMusicListByClassifyId" resultType="MyMusicEntity">
+        select m.* from music_classify c left join music m on c.audio_id = m.audio_id where c.classify_id = #{classifyId} order by c.audio_rank desc limit #{start},#{pageSize}
     </select>
 
+    <select id="getMusicTotalByClassifyId" resultType="Long">
+        select count(*) as total from music_classify where classify_id = #{classifyId}
+    </select>
+
+    <select id="getSingerList" resultType="MusicAuthorEntity">
+        select * from music_authors where avatar is not null order by `rank` desc limit  #{start},#{pageSize}
+    </select>
+
+    <select id="getSingerTotal" resultType="Long">
+        select count(*) as total from music_authors where avatar is not null
+    </select>
 </mapper>
 

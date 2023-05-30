@@ -33,8 +33,14 @@ public class MyMusicController {
     }
 
     @ApiOperation("获取推荐音乐列表")
-    @GetMapping("/myMusic/getMusicByClassifyName")
-    public ResultEntity getMusicByClassifyName(HttpServletRequest request, String classifyName, int pageNum, int pageSize) {
-        return myMusicService.getMusicByClassifyName(HttpUtils.getPath(request),classifyName, pageNum, pageSize);
+    @GetMapping("/myMusic/getMusicListByClassifyId")
+    public ResultEntity getMusicListByClassifyId(HttpServletRequest request, int classifyId, int pageNum, int pageSize) {
+        return myMusicService.getMusicListByClassifyId(HttpUtils.getPath(request),classifyId, pageNum, pageSize);
+    }
+
+    @ApiOperation("获取歌手")
+    @GetMapping("/myMusic/getSingerList")
+    public ResultEntity getSingerList(HttpServletRequest request, int pageNum, int pageSize) {
+        return myMusicService.getSingerList(HttpUtils.getPath(request), pageNum, pageSize);
     }
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.player.user.mapper.UserMapper">
     <sql id="userData">
-        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sign,sex,role,disabled from  user
+        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sign,sex,role,disabled,permission from  user
     </sql>
 
     <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
