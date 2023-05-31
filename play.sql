@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 29/05/2023 23:50:01
+ Date: 31/05/2023 23:54:24
 */
 
 SET NAMES utf8mb4;
@@ -426,7 +426,7 @@ CREATE TABLE `movie_category`  (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1304 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1303 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_favorite
@@ -488,7 +488,7 @@ CREATE TABLE `movie_network`  (
   `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户名，这这个表不需要，为了跟记录叫和收藏表的结构一致',
   `douban_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '对应豆瓣网的地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38325 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 38324 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for movie_play_record
@@ -602,6 +602,7 @@ CREATE TABLE `music`  (
   `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签',
   `lyrics` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '歌词',
+  `permission` int(0) NULL DEFAULT NULL COMMENT '播放权限',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 63878 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -611,19 +612,41 @@ CREATE TABLE `music`  (
 DROP TABLE IF EXISTS `music_authors`;
 CREATE TABLE `music_authors`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
-  `author_id` int(0) NULL DEFAULT NULL,
-  `author_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `is_publish` int(0) NULL DEFAULT NULL,
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `type` int(0) NULL DEFAULT NULL,
-  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `identity` int(0) NULL DEFAULT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `author_id` int(0) NULL DEFAULT NULL COMMENT '歌手id',
+  `author_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '歌手名称',
+  `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言',
+  `is_publish` int(0) NULL DEFAULT NULL COMMENT '是否发布',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `type` int(0) NULL DEFAULT NULL COMMENT '类型',
+  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '国家',
+  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生日',
+  `identity` int(0) NULL DEFAULT NULL COMMENT '身份',
+  `rank` int(0) NULL DEFAULT NULL COMMENT '歌手排名',
+  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4465 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for music_authors_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `music_authors_copy1`;
+CREATE TABLE `music_authors_copy1`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `author_id` int(0) NULL DEFAULT NULL COMMENT '歌手id',
+  `author_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '歌手名称',
+  `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言',
+  `is_publish` int(0) NULL DEFAULT NULL COMMENT '是否发布',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `type` int(0) NULL DEFAULT NULL COMMENT '类型',
+  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '国家',
+  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '生日',
+  `identity` int(0) NULL DEFAULT NULL COMMENT '身份',
+  `rank` int(0) NULL DEFAULT NULL COMMENT '歌手排名',
+  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4466 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for music_category
@@ -658,14 +681,64 @@ CREATE TABLE `music_category_relation`  (
 DROP TABLE IF EXISTS `music_classify`;
 CREATE TABLE `music_classify`  (
   `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `classify_id` int(0) NULL DEFAULT NULL,
   `audio_id` int(0) NULL DEFAULT NULL COMMENT '歌曲id',
-  `classify_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签',
   `audio_rank` int(0) NULL DEFAULT NULL COMMENT '歌曲排名，数值越大越靠前',
-  `classify_rank` int(0) NULL DEFAULT NULL COMMENT '分类排序，数值越大越靠前',
   `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1024 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for music_classify_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `music_classify_relation`;
+CREATE TABLE `music_classify_relation`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `classify_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签',
+  `permission` int(0) NULL DEFAULT NULL COMMENT '权限',
+  `classify_rank` int(0) NULL DEFAULT NULL COMMENT '分类排序，数值越大越靠前',
+  `disabled` int(0) NULL DEFAULT NULL COMMENT '是否启用',
+  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1024 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for music_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `music_copy1`;
+CREATE TABLE `music_copy1`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `album_id` int(0) NULL DEFAULT NULL COMMENT '歌曲id',
+  `song_name` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '歌曲名称',
+  `author_id` int(0) NULL DEFAULT NULL COMMENT '歌手id',
+  `author_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者名称',
+  `album_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '专辑名称',
+  `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '版本',
+  `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '语言',
+  `publish_date` datetime(6) NULL DEFAULT NULL COMMENT '发布日期',
+  `wide_audio_id` int(0) NULL DEFAULT NULL,
+  `is_publish` int(0) NULL DEFAULT NULL,
+  `big_pack_id` int(0) NULL DEFAULT NULL,
+  `final_id` int(0) NULL DEFAULT NULL,
+  `audio_id` int(0) NULL DEFAULT NULL,
+  `similar_audio_id` int(0) NULL DEFAULT NULL,
+  `is_hot` int(0) NULL DEFAULT NULL COMMENT '是否热门',
+  `album_audio_id` int(0) NULL DEFAULT NULL COMMENT '歌曲音频id',
+  `audio_group_id` int(0) NULL DEFAULT NULL COMMENT '专辑id',
+  `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '歌曲图片',
+  `play_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '网络播放地址',
+  `local_play_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '本地播放地址',
+  `source_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '播放源',
+  `source_url` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '播放地址',
+  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签',
+  `lyrics` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '歌词',
+  `permission` int(0) NULL DEFAULT NULL COMMENT '播放权限',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 63878 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for music_douyin
@@ -992,6 +1065,7 @@ CREATE TABLE `user`  (
   `sign` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '个性签名',
   `region` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区',
   `disabled` int(10) UNSIGNED ZEROFILL NULL DEFAULT 0000000000 COMMENT '是否禁用，0表示不不禁用，1表示禁用',
+  `permission` int(0) NULL DEFAULT NULL COMMENT '权限大小',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 

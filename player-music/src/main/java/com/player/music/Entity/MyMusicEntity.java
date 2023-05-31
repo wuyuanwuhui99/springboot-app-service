@@ -1,11 +1,8 @@
 package com.player.music.Entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -93,4 +90,7 @@ public class MyMusicEntity {
 
     @ApiModelProperty(value = "歌词")
     private String lyrics;
+
+    @ApiModelProperty(value = "播放权限")
+    private int permission;
 }
