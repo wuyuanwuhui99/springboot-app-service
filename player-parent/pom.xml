@@ -50,6 +50,7 @@
         <module>../player-video</module>
         <module>../player-comment</module>
         <module>../player-circle</module>
+        <module>../player-user</module>
     </modules>
     <dependencyManagement>
         <dependencies>
