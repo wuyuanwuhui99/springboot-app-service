@@ -8,6 +8,7 @@ package com.player.music.controller;
         import io.swagger.annotations.ApiOperation;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.web.bind.annotation.GetMapping;
+        import org.springframework.web.bind.annotation.RequestHeader;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +35,8 @@ public class MyMusicController {
 
     @ApiOperation("获取推荐音乐列表")
     @GetMapping("/myMusic/getMusicListByClassifyId")
-    public ResultEntity getMusicListByClassifyId(HttpServletRequest request, int classifyId, int pageNum, int pageSize) {
-        return myMusicService.getMusicListByClassifyId(HttpUtils.getPath(request),classifyId, pageNum, pageSize);
+    public ResultEntity getMusicListByClassifyId(HttpServletRequest request, int classifyId, int pageNum, int pageSize,@RequestHeader(required = false,value = "Authorization") String token) {
+        return myMusicService.getMusicListByClassifyId(HttpUtils.getPath(request),classifyId, pageNum, pageSize,token);
     }
 
     @ApiOperation("获取歌手")

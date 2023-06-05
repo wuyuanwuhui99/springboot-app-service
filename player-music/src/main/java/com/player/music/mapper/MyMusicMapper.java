@@ -11,7 +11,7 @@ public interface MyMusicMapper {
 
     List<MyMusicEntity> getMusicClassify();
 
-    List<MyMusicEntity> getMusicListByClassifyId(int classifyId,int start,int pageSize);
+    List<MyMusicEntity> getMusicListByClassifyId(int classifyId,int start,int pageSize,String userId);
 
     Long getMusicTotalByClassifyId(int classifyId);
 

@@ -44,7 +44,7 @@
     </select>
 
     <select id="getMusicListByClassifyId" resultType="MyMusicEntity">
-        select m.* from music_classify c left join music m on c.audio_id = m.audio_id where c.classify_id = #{classifyId} order by c.audio_rank desc limit #{start},#{pageSize}
+        select m.*,(case when d.audio_id is not null then 1 else 0 end) as is_like from music_classify c left join music m on c.audio_id = m.audio_id left join music_directory d on c.audio_id = d.audio_id and d.user_id=#{userId} where c.classify_id =1 order by c.audio_rank desc limit #{start},#{pageSize}
     </select>
 
     <select id="getMusicTotalByClassifyId" resultType="Long">

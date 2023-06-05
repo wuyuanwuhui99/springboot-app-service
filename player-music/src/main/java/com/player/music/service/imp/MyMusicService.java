@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
+import com.player.common.entity.UserEntity;
+import com.player.common.utils.JwtToken;
 import com.player.music.mapper.MyMusicMapper;
 import com.player.music.service.IMyMusicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +70,19 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2023-05-25 21:00
      */
     @Override
-    public ResultEntity getMusicListByClassifyId(String redisKey,int classifyId,int pageNum,int pageSize) {
-        redisKey += "?classifyId="+classifyId+"&pageNum=" + pageNum + "&pageSize=" + pageNum;
+    public ResultEntity getMusicListByClassifyId(String redisKey,int classifyId,int pageNum,int pageSize,String token) {
+        String userId = "";
+        if(!StringUtils.isEmpty(token)){
+            userId =  JwtToken.parserToken(token, UserEntity.class).getUserId();
+        }
+        redisKey += "?classifyId="+classifyId+"&pageNum=" + pageNum + "&pageSize=" + pageNum + "&userId=" + userId;
         String result = (String) redisTemplate.opsForValue().get(redisKey);
         if(!StringUtils.isEmpty(result)){
             return JSON.parseObject(result,ResultEntity.class);
         }else{
             if(pageSize > 100)pageSize = 100;
             int start = (pageNum - 1) * pageSize;
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByClassifyId(classifyId,start,pageSize));
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByClassifyId(classifyId,start,pageSize,userId));
             Long musicTotalByClassifyId = myMusicMapper.getMusicTotalByClassifyId(classifyId);
             resultEntity.setTotal(musicTotalByClassifyId);
             redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);

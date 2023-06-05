@@ -93,4 +93,7 @@ public class MyMusicEntity {
 
     @ApiModelProperty(value = "播放权限")
     private int permission;
+
+    @ApiModelProperty(value = "是否是喜欢，0表示不在喜欢的列表中，1表示在喜欢的列表中")
+    private int isLike;
 }
