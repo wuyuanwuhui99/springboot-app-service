@@ -188,18 +188,6 @@
         SELECT * FROM movie WHERE classify = #{classify} ORDER BY create_time DESC LIMIT 0,20
     </select>
 
-    <insert id="saveLike">
-        INSERT INTO movie_like(movie_id,user_id,create_time,update_time) SELECT #{movieId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE movie_id = #{movieId})
-    </insert>
-
-    <delete id="deleteLike">
-        DELETE FROM movie_like WHERE user_id =#{userId} AND movie_id=#{movieId}
-    </delete>
-
-    <select id="isLike" resultType="Long">
-        SELECT COUNT(*) as total FROM movie_like WHERE user_id=#{userId} AND movie_id = #{movieId}
-    </select>
-
     <select id="getRecordList" resultType="MovieEntity">
         SELECT t.*,u.* FROM (SELECT m.* FROM movie m,video_record r WHERE m.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
     </select>

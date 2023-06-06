@@ -43,16 +43,11 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        UserEntity userEntity = null;
-        if (token == null || StringUtils.isEmpty(token)) {
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        if (token == null || StringUtils.isEmpty(token) || userEntity == null) {
             userEntity = userMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
         } else {
-            userEntity = JwtToken.parserToken(token, UserEntity.class);
-            if (userEntity == null) {//如果用户签名为空，随机从数据库中查询一个公共的账号
-                userEntity = userMapper.getUserData();
-            }else{
-                userEntity = userMapper.getMyUserData(userEntity.getUserId());
-            }
+            userEntity = userMapper.getMyUserData(userEntity.getUserId());
         }
         String newToken = JwtToken.createToken(userEntity);
         redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);

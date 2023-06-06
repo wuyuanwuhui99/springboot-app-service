@@ -1,7 +1,7 @@
 static:
-  upload-path: F:/static/social/
+  file-path: E:/
 server:
-  port: 8003
+  port: 8002
   tomcat:
     uri-encoding: UTF-8
 token:
@@ -9,7 +9,7 @@ token:
   secret: wuwenqiang #token秘钥
 app:
   appId: com.player.social
-  appName: 电影圈
+  appName: 评论
 spring:
   http:
     encoding:

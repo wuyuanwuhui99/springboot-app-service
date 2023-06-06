@@ -52,12 +52,6 @@ public interface IMovieService {
 
     ResultEntity isFavorite(Long movieId, String token);
 
-    ResultEntity saveLike(Long movieId,String token);
-
-    ResultEntity deleteLike(Long movieId,String token);
-
-    ResultEntity isLike(Long movieId, String token);
-
     ResultEntity getYourLikes(String labels,String classify,String redisKey);
 
     ResultEntity getRecommend(String classify,String redisKey);

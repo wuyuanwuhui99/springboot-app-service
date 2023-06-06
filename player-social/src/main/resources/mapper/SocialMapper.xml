@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.player.social.mapper.SocialMapper">
+
+    <select id="getCommentCount" resultType="Long">
+        SELECT COUNT(*) FROM social_comment WHERE relation_id = #{relationId} and `type` = #{type}
+    </select>
+
+    <select id="getTopCommentList" resultType="com.player.common.entity.CommentEntity">
+        SELECT tc.*,u.username,u.avater FROM (
+	        SELECT tu.* FROM (
+		        (SELECT c.*,COUNT(t.id) AS replyCount FROM social_comment c  LEFT JOIN social_comment t ON  c.id = t.top_id  WHERE c.realtion_id = #{relationId} AND `type` = #{type} AND c.top_id is null GROUP BY c.id)
+	        ) tu
+        ) tc
+        LEFT JOIN `user` u ON u.user_id = tc.user_id LIMIT #{start},#{pageSize}
+    </select>
+
+    <insert id="insertComment" parameterType="com.player.common.entity.CommentEntity"  keyProperty="id"  useGeneratedKeys="true">
+        INSERT INTO social_comment(content,parent_id,top_id,relation_id,`type`,user_id,reply_user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{relationId},#{type},#{userId},#{replyUserId},NOW(),NOW())
+    </insert>
+
+    <delete id="deleteComment">
+        DELETE FROM social_comment WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+
+    <select id="getReplyCommentList" resultType="com.player.common.entity.CommentEntity">
+        SELECT tu.*,ru.username as reply_user_name FROM (SELECT c.*,u.username,u.avater FROM social_comment c LEFT JOIN `user` u ON c.user_id = u.user_id WHERE c.top_id = #{topId})tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id LIMIT #{start},#{pageSize}
+    </select>
+
+    <select id="getCommentItem" resultType="com.player.common.entity.CommentEntity">
+        SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM social_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
+    </select>
+
+    <insert id="saveLike" parameterType="com.player.common.entity.LikeEntity">
+        INSERT INTO social_like(relation_id,`type`,user_id,create_time,update_time) SELECT #{relationId},#{type},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE relation_id = #{movieId})
+    </insert>
+
+    <delete id="deleteLike">
+        DELETE FROM social_like WHERE user_id =#{userId} AND relation_id=#{relationId} and `type` = #{type}
+    </delete>
+
+    <select id="isLike" resultType="Long">
+        SELECT COUNT(*) as total FROM social_like WHERE user_id=#{userId} AND relation_id = #{relationId} and `type` = #{type}
+    </select>
+</mapper>
+

@@ -48,7 +48,7 @@
         <module>../player-ebook</module>
         <module>../player-toutiao</module>
         <module>../player-video</module>
-        <module>../player-comment</module>
+        <module>../player-social</module>
         <module>../player-circle</module>
         <module>../player-user</module>
     </modules>

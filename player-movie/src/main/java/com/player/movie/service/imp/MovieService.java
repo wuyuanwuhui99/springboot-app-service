@@ -407,40 +407,13 @@ public class MovieService implements IMovieService {
 
     /**
      * @author: wuwenqiang
-     * @description: 添加收藏
-     * @date: 2020-12-25 22:29
-     */
-    @Override
-    public ResultEntity saveLike(Long movieId, String token) {
-        return ResultUtil.success(movieMapper.saveLike(movieId,JwtToken.getUserId(token)));
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 删除收藏
-     * @date: 2021-03-07 16:10
-     */
-    @Override
-    public ResultEntity deleteLike(Long movieId,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.deleteLike(movieId,userEntity.getUserId()));
-    }
-
-    @Override
-    public ResultEntity isLike(Long movieId,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.isLike(movieId,userEntity.getUserId()));
-    }
-
-    /**
-     * @author: wuwenqiang
      * @description: 获取总评论数量
      * @date: 2021-08-21 23:15
      */
     @Override
     public ResultEntity getCommentCount(int relationId,String type){
         return restTemplate.exchange(
-                "http://player-comment/service/comment/getCommentCount?relationId="+relationId+"&type="+type,
+                "http://player-social/service/social/getCommentCount?relationId="+relationId+"&type="+type,
                 HttpMethod.GET,
                 new HttpEntity<String>(new HttpHeaders()),
                 ResultEntity.class
@@ -455,7 +428,7 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getTopCommentList(int relationId,String type,int pageNum, int pageSize){
         return restTemplate.exchange(
-                "http://player-comment/service/comment/getTopCommentList?relationId="+relationId+"&type="+type+"&pageNum="+pageNum + "&pageSize="+pageSize,
+                "http://player-social/service/social/getTopCommentList?relationId="+relationId+"&type="+type+"&pageNum="+pageNum + "&pageSize="+pageSize,
                 HttpMethod.GET,
                 new HttpEntity<String>(new HttpHeaders()),
                 ResultEntity.class
@@ -470,7 +443,7 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity insertComment(String token, CommentEntity commentEntity){
         return restTemplate.exchange(
-                Common.postRequestEntity("http://player-comment/service/comment-getway/insertComment",token,commentEntity),
+                Common.postRequestEntity("http://player-social/service/social-getway/insertComment",token,commentEntity),
                 ResultEntity.class
         ).getBody();
     }
@@ -483,7 +456,7 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity deleteComment(int id,String token){
         return restTemplate.exchange(
-                Common.deleteRequestEntity("http://player-comment/service/comment-getway/delete/"+id,token),
+                Common.deleteRequestEntity("http://player-social/service/social-getway/delete/"+id,token),
                 ResultEntity.class
         ).getBody();
     }
@@ -496,7 +469,7 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize){
         return restTemplate.exchange(
-                "http://player-comment/service/comment/getReplyCommentList?topId="+topId+"&pageNum="+pageNum+"&pageSize="+pageNum + "&pageSize="+pageSize,
+                "http://player-social/service/social/getReplyCommentList?topId="+topId+"&pageNum="+pageNum+"&pageSize="+pageNum + "&pageSize="+pageSize,
                 HttpMethod.GET,
                 new HttpEntity<String>(new HttpHeaders()),
                 ResultEntity.class

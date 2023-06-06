@@ -34,11 +34,11 @@ public class MyMusicService implements IMyMusicService {
     @Override
     public ResultEntity getKeywordMusic(String redisKey) {
         String result = (String) redisTemplate.opsForValue().get(redisKey);
-        if(!StringUtils.isEmpty(result)){
-            return JSON.parseObject(result,ResultEntity.class);
-        }else{
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
             ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getKeywordMusic());
-            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -53,11 +53,11 @@ public class MyMusicService implements IMyMusicService {
     @Override
     public ResultEntity getMusicClassify(String redisKey) {
         String result = (String) redisTemplate.opsForValue().get(redisKey);
-        if(!StringUtils.isEmpty(result)){
-            return JSON.parseObject(result,ResultEntity.class);
-        }else{
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
             ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicClassify());
-            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
             return resultEntity;
         }
     }
@@ -70,39 +70,47 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2023-05-25 21:00
      */
     @Override
-    public ResultEntity getMusicListByClassifyId(String redisKey,int classifyId,int pageNum,int pageSize,String token) {
+    public ResultEntity getMusicListByClassifyId(String redisKey, int classifyId, int pageNum, int pageSize, boolean isRedis, String token) {
         String userId = "";
-        if(!StringUtils.isEmpty(token)){
-            userId =  JwtToken.parserToken(token, UserEntity.class).getUserId();
+        if (!StringUtils.isEmpty(token)) {
+            userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
         }
-        redisKey += "?classifyId="+classifyId+"&pageNum=" + pageNum + "&pageSize=" + pageNum + "&userId=" + userId;
-        String result = (String) redisTemplate.opsForValue().get(redisKey);
-        if(!StringUtils.isEmpty(result)){
-            return JSON.parseObject(result,ResultEntity.class);
+        if(isRedis){
+            redisKey += "?classifyId=" + classifyId + "&pageNum=" + pageNum + "&pageSize=" + pageNum + "&userId=" + userId;
+            String result = (String) redisTemplate.opsForValue().get(redisKey);
+            if (!StringUtils.isEmpty(result)) {// 如果缓存中有数据
+                return JSON.parseObject(result, ResultEntity.class);
+            } else {// 如果缓存中没有数据，从数据库中查询，并将查询结果写入缓存
+                ResultEntity resultEntity = findMusicListByClassifyId(classifyId, pageNum, pageSize, userId);
+                redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
+                return resultEntity;
+            }
         }else{
-            if(pageSize > 100)pageSize = 100;
-            int start = (pageNum - 1) * pageSize;
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByClassifyId(classifyId,start,pageSize,userId));
-            Long musicTotalByClassifyId = myMusicMapper.getMusicTotalByClassifyId(classifyId);
-            resultEntity.setTotal(musicTotalByClassifyId);
-            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
-            return resultEntity;
+            return findMusicListByClassifyId(classifyId, pageNum, pageSize,userId);
         }
+    }
+
+    private ResultEntity findMusicListByClassifyId(int classifyId, int pageNum, int pageSize,String userId){
+        if (pageSize > 100) pageSize = 100;
+        int start = (pageNum - 1) * pageSize;
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByClassifyId(classifyId, start, pageSize, userId));
+        Long musicTotalByClassifyId = myMusicMapper.getMusicTotalByClassifyId(classifyId);
+        resultEntity.setTotal(musicTotalByClassifyId);
+        return resultEntity;
     }
 
     @Override
     public ResultEntity getSingerList(String redisKey, int pageNum, int pageSize) {
         redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageNum;
         String result = (String) redisTemplate.opsForValue().get(redisKey);
-        if(!StringUtils.isEmpty(result)){
-            return JSON.parseObject(result,ResultEntity.class);
-        }else{
-            if(pageSize > 100)pageSize = 100;
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
+            if (pageSize > 100) pageSize = 100;
             int start = (pageNum - 1) * pageSize;
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerList(start,pageSize));
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerList(start, pageSize));
             Long singerTotal = myMusicMapper.getSingerTotal();
             resultEntity.setTotal(singerTotal);
-            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat),1, TimeUnit.DAYS);
             return resultEntity;
         }
     }

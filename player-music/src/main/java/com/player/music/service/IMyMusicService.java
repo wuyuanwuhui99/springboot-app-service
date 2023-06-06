@@ -7,7 +7,7 @@ public interface IMyMusicService {
 
     ResultEntity getMusicClassify(String redisKey);
 
-    ResultEntity getMusicListByClassifyId(String redisKey,int classifyId,int pageNum,int pageSize,String token);
+    ResultEntity getMusicListByClassifyId(String redisKey, int classifyId, int pageNum, int pageSize, boolean isRedis, String token);
 
-    ResultEntity getSingerList(String redisKey,int pageNum,int pageSize);
+    ResultEntity getSingerList(String redisKey, int pageNum, int pageSize);
 }

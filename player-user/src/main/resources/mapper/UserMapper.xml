@@ -10,7 +10,7 @@
     </select>
 
     <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE user_id = #{userId}
+        <include refid="userData"></include> WHERE user_id = #{userId} and disabled = 0
     </select>
 
     <select id="login" resultType="com.player.common.entity.UserEntity" parameterType="com.player.common.entity.UserEntity">
@@ -22,7 +22,7 @@
     </insert>
 
     <select id="getUserById" resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE user_id = #{userId}
+        <include refid="userData"></include> WHERE user_id = #{userId}  and disabled = 0
     </select>
 
     <update id="updateUser" parameterType="com.player.common.entity.UserEntity">
@@ -52,7 +52,7 @@
             <if test="region != '' and region != null">
                 ,region = #{region}
             </if>
-        WHERE user_id = #{userId}
+        WHERE user_id = #{userId}  and disabled = 0
     </update>
 
     <update id="PasswordEntity" parameterType="Map">

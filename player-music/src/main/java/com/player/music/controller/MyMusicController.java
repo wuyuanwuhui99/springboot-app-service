@@ -1,18 +1,15 @@
 package com.player.music.controller;
 
-        import com.player.common.entity.ResultEntity;
-        import com.player.common.utils.HttpUtils;
-        import com.player.music.service.IMyMusicService;
-        import com.player.music.service.IQQMusicService;
-        import feign.Param;
-        import io.swagger.annotations.ApiOperation;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.web.bind.annotation.GetMapping;
-        import org.springframework.web.bind.annotation.RequestHeader;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RestController;
+import com.player.common.entity.ResultEntity;
+import com.player.common.utils.HttpUtils;
+import com.player.music.service.IMyMusicService;
+import com.player.music.service.IQQMusicService;
+import feign.Param;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-        import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 
@@ -33,10 +30,17 @@ public class MyMusicController {
         return myMusicService.getMusicClassify(HttpUtils.getPath(request));
     }
 
-    @ApiOperation("获取推荐音乐列表")
+    @ApiOperation("获取推荐音乐列表,isRedis表示是否从redis中获取数据")
     @GetMapping("/myMusic/getMusicListByClassifyId")
-    public ResultEntity getMusicListByClassifyId(HttpServletRequest request, int classifyId, int pageNum, int pageSize,@RequestHeader(required = false,value = "Authorization") String token) {
-        return myMusicService.getMusicListByClassifyId(HttpUtils.getPath(request),classifyId, pageNum, pageSize,token);
+    public ResultEntity getMusicListByClassifyId(
+            HttpServletRequest request,
+            @RequestParam(name = "classifyId",required = true) int classifyId,
+            @RequestParam(name = "pageNum",required = true) int pageNum,
+            @RequestParam(name = "pageSize",required = true) int pageSize,
+            @RequestParam(name = "isRedis",defaultValue = "0",required = false) int isRedis,
+            @RequestHeader(required = false, value = "Authorization") String token
+    ) {
+        return myMusicService.getMusicListByClassifyId(HttpUtils.getPath(request), classifyId, pageNum, pageSize, isRedis != 0, token);
     }
 
     @ApiOperation("获取歌手")

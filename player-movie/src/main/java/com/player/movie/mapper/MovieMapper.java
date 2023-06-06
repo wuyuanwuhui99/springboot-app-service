@@ -84,12 +84,6 @@ public interface MovieMapper {
 
     Long isFavorite(Long movieId, String userId);
 
-    Long saveLike(Long movieId, String userId);
-
-    Long deleteLike(Long movieId,String userId);
-
-    Long isLike(Long movieId, String userId);
-
     List<MovieEntity> getYourLikes(@Param("labels") String[] labels,String classify);
 
     List<MovieEntity> getRecommend(String classify);

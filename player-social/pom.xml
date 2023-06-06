@@ -3,11 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.player.circle</groupId>
-    <artifactId>player-circle</artifactId>
+    <groupId>com.player.social</groupId>
+    <artifactId>player-social</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>player-circle</name>
-    <description>player-circle project for Spring Boot</description>
+    <name>player-social</name>
+    <description>player-social project for Spring Boot</description>
     <parent>
         <artifactId>player-parent</artifactId>
         <groupId>com.player</groupId>
@@ -117,7 +117,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.player.social.CircleApplication</mainClass>
+                    <mainClass>com.player.common.CommentApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
