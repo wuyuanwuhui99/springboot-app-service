@@ -2,6 +2,7 @@ package com.player.social.service.imp;
 
 import com.alibaba.fastjson.JSON;
 import com.player.social.entity.CircleEntity;
+import com.player.social.entity.CircleLikeEntity;
 import com.player.social.entity.LogCircleEntity;
 import com.player.social.entity.SayEntity;
 import com.player.social.mapper.CircleMapper;
@@ -14,6 +15,8 @@ import com.player.common.utils.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -47,19 +50,41 @@ public class CircleService implements ICircleService {
      */
     @Override
     public ResultEntity getCircleArticleList(int pageNum, int pageSize, String type,String keyword,String token) {
-        int start = (pageNum - 1) * pageSize;
-        List<CircleEntity>circleEntities = circleMapper.getCircleArticleList(start, pageSize, type);
-        Long total = circleMapper.getCircleCount("movie",keyword);
-        List<LogCircleEntity>logCircleEntities = new ArrayList<>();
-        String userId = JwtToken.getUserId(token);
-        for(CircleEntity circleEntity:circleEntities){
-            LogCircleEntity logCircleEntity = new LogCircleEntity();
-            logCircleEntity.setCircleId(circleEntity.getId());
-            logCircleEntity.setUserId(userId);
-            logCircleEntities.add(logCircleEntity);
+        int permission;
+        if(StringUtils.isEmpty(token)){// 如果没有token，权限就是0
+            permission = 0;
+        }else{// 查询用户信息的权限
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", token);
+            ResultEntity userResultEntity = restTemplate.exchange(
+                    "http://player-user/service/user/getUserData",
+                    HttpMethod.GET,
+                    new HttpEntity<String>(headers),ResultEntity.class
+            ).getBody();
+            UserEntity userEntity = JSON.parseObject(JSON.toJSONString(userResultEntity.getData()),UserEntity.class);
+            if(userEntity == null){
+                permission = 0;
+            }else{
+                permission = userEntity.getPermission();
+            }
         }
-        circleMapper.insertLog(logCircleEntities);
-        ResultEntity resultEntity = ResultUtil.success(circleMapper.getCircleArticleList(start, pageSize, type));
+        int start = (pageNum - 1) * pageSize;
+        List<CircleEntity>circleArticleList = circleMapper.getCircleList(start, pageSize, type, permission);
+//        List<String> circleIds = new ArrayList<>();
+//        for(CircleEntity circleEntity : circleArticleList){
+//            circleIds.add(circleEntity.getRelationId());
+//        }
+//        List<CircleLikeEntity> circleLikesByCircleIds = circleMapper.getCircleLikesByCircleIds(circleIds);
+//        for (CircleLikeEntity circleLikeEntity: circleLikesByCircleIds){
+//            for(CircleEntity circleEntity : circleArticleList){// 把点赞的人数放入相对应的说说里面
+//                if(circleEntity.getId() == circleLikeEntity.getCircleId()){
+//                    circleEntity.getCircleLikes().add(circleLikeEntity);
+//                    break;
+//                }
+//            }
+//        }
+        Long total = circleMapper.getCircleCount(type,keyword);
+        ResultEntity resultEntity = ResultUtil.success(circleArticleList);
         resultEntity.setTotal(total);
         return resultEntity;
     }

@@ -13,9 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 @SpringBootApplication(scanBasePackages = "com.player.social")
 @MapperScan("com.player.social.mapper")
-public class CircleApplication {
+public class PlayerCircleApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CircleApplication.class, args);
+        SpringApplication.run(PlayerCircleApplication.class, args);
     }
 
     @Bean

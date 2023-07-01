@@ -9,8 +9,82 @@
         </if>
     </select>
 
-    <select id="getCircleArticleList" resultType="CircleEntity">
-        SELECT c.*,u.username FROM circle c LEFT JOIN user u on c.user_id = u.user_id where c.type = #{type} ORDER BY c.create_time DESC limit #{start}, #{pageSize}
+    <resultMap id="getCircleList" type="CircleEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="relation_id" property="relationId" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="imgs" property="imgs" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="useravater" property="useravater" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+        <result column="create_time" property="updateTime" jdbcType="VARCHAR" />
+        <result column="music_song_name" property="musicSongName" jdbcType="VARCHAR" />
+        <result column="music_audio_id" property="musicAudioId" jdbcType="INTEGER" />
+        <result column="music_author_name" property="musicAuthorName" jdbcType="VARCHAR" />
+        <result column="music_album_name" property="musicAlbumName" jdbcType="VARCHAR" />
+        <result column="music_cover" property="musicCover" jdbcType="VARCHAR" />
+        <result column="music_play_url" property="musicPlayUrl" jdbcType="VARCHAR" />
+        <result column="music_local_play_url" property="musicLocalPlayUrl" jdbcType="VARCHAR" />
+        <result column="music_lyrics" property="musicLyrics" jdbcType="VARCHAR" />
+        <result column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+        <result column="movie_director" property="movieDirector" jdbcType="VARCHAR" />
+        <result column="movie_star" property="movieStar" jdbcType="VARCHAR" />
+        <result column="movie_type" property="movieType" jdbcType="VARCHAR" />
+        <result column="movie_country_language" property="movieCountryLanguage" jdbcType="VARCHAR" />
+        <result column="movie_viewing_state" property="movieViewingState" jdbcType="VARCHAR" />
+        <result column="movie_release_time" property="movieReleaseTime" jdbcType="VARCHAR" />
+        <result column="movie_img" property="movieImg" jdbcType="VARCHAR" />
+        <result column="movie_classify" property="movieClassify" jdbcType="VARCHAR" />
+        <result column="movie_local_img" property="movieLocalImg" jdbcType="VARCHAR" />
+        <result column="movie_score" property="movieScore" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="getCircleListAssociation" type="CircleEntity" extends="getCircleList">
+        <association property="circleLikes"  column="id" select="getCircleLikeByCircleId"/>
+    </resultMap>
+
+    <select id="getCircleList" resultMap="getCircleListAssociation">
+        SELECT
+        c.*,
+        <if test="type == 'music'">
+            m.song_name as music_song_name,
+            m.audio_id as music_audio_id,
+            m.author_name as music_author_name,
+            m.album_name as music_album_name,
+            m.cover as music_cover,
+            case when 0 >= m.permission then m.play_url else null end as music_play_url,
+            case when 0 >= m.permission then m.local_play_url else null end as music_local_play_url,
+            case when 0 >= m.permission then m.lyrics else null end as music_lyrics,
+        </if>
+
+        <if test="type == 'movie'">
+            o.movie_id,
+            o.movie_name,
+            o.director as movie_director,
+            o.star as movie_star,
+            o.type as movie_type,
+            o.country_language as movie_country_language,
+            o.viewing_state as movie_country_viewing_state,
+            o.release_time as movie_country_release_time,
+            o.img as movie_img,
+            o.classify as movie_classify,
+            o.local_img as movie_local_img,
+            o.score as movie_score,
+        </if>
+        u.username,
+        u.avater as useravater
+        FROM circle c
+        LEFT JOIN user u on c.user_id = u.user_id
+        <if test="type=='music'">
+            LEFT JOIN music m on c.relation_id = m.audio_id
+        </if>
+        <if test="type=='movie'">
+            LEFT JOIN movie o on c.relation_id = o.movie_id
+        </if>
+        where c.type = #{type} ORDER BY c.create_time DESC limit #{start}, #{pageSize}
     </select>
 
     <select id="getCircleArticleCount" resultType="Map">
@@ -46,5 +120,9 @@
     <insert id="saveSay">
         INSERT INTO circle(content,imgs,`type`,user_id,create_time,update_time) VALUE (#{content},#{imgs},#{type},#{userId},now(),now())
     </insert>
+
+    <select id="getCircleLikeByCircleId" resultType="CircleLikeEntity" parameterType="int">
+        SELECT c.*,u.username FROM circle_like c LEFT JOIN user u on c.user_id = u.user_id where c.circle_id = #{id}
+    </select>
 </mapper>
 

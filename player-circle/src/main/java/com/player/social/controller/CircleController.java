@@ -18,14 +18,14 @@ public class CircleController {
     @Autowired
     private ICircleService circleService;
 
-    @ApiOperation("获取电影圈列表")
-    @GetMapping("/circle/getCircleArticleList")
+    @ApiOperation("获取朋友圈列表")
+    @GetMapping("/circle/getCircleListByType")
     public ResultEntity getCircleArticleList(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum,
             @RequestParam("type") String type,
-            @RequestParam("keyword") String keyword,
-            @RequestHeader("Authorization") String token
+            @RequestParam(value = "keyword",required = false) String keyword,
+            @RequestHeader(value = "Authorization",required = false) String token
     ) {
         return circleService.getCircleArticleList(pageNum, pageSize, type, keyword, token);
     }

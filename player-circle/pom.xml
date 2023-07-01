@@ -117,7 +117,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.player.social.CircleApplication</mainClass>
+                    <mainClass>com.player.social.PlayerCircleApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
