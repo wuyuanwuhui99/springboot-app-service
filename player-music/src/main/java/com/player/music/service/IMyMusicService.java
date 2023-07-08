@@ -10,4 +10,6 @@ public interface IMyMusicService {
     ResultEntity getMusicListByClassifyId(String redisKey, int classifyId, int pageNum, int pageSize, boolean isRedis, String token);
 
     ResultEntity getSingerList(String redisKey, int pageNum, int pageSize);
+
+    ResultEntity getMusiPlayMenu(String redisKey,String token);
 }

@@ -1,5 +1,6 @@
 package com.player.music.mapper;
 
+import com.player.music.Entity.MyMusiPlayListEntity;
 import com.player.music.Entity.MyMusicEntity;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,6 @@ public interface MyMusicMapper {
     List<MyMusicEntity> getSingerList(int start,int pageSize);
 
     Long getSingerTotal();
+
+    List<MyMusiPlayListEntity> getMusiPlayMenu(String userId);
 }

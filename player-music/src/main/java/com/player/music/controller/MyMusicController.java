@@ -22,7 +22,8 @@ public class MyMusicController {
 
     @ApiOperation("获取搜索框默认推荐音乐")
     @GetMapping("/myMusic/getKeywordMusic")
-    public ResultEntity getKeywordMusic(HttpServletRequest request) {
+    public ResultEntity getKeywordMusic(HttpServletRequest request,@RequestHeader("Authorization") String token) {
+        System.out.println(token);
         return myMusicService.getKeywordMusic(HttpUtils.getPath(request));
     }
 
@@ -49,5 +50,11 @@ public class MyMusicController {
     @GetMapping("/myMusic/getSingerList")
     public ResultEntity getSingerList(HttpServletRequest request, int pageNum, int pageSize) {
         return myMusicService.getSingerList(HttpUtils.getPath(request), pageNum, pageSize);
+    }
+
+    @ApiOperation("查询歌单")
+    @GetMapping("/myMusic-getway/getMusicPlayMenu")
+    public ResultEntity getMusiPlayList(HttpServletRequest request,@RequestHeader("Authorization") String token) {
+        return myMusicService.getMusiPlayMenu(HttpUtils.getPath(request),token);
     }
 }

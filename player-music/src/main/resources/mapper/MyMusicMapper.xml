@@ -58,5 +58,22 @@
     <select id="getSingerTotal" resultType="Long">
         select count(*) as total from music_authors where avatar is not null
     </select>
+
+    <resultMap id="getMusiPlayListAssociation" type="MyMusiPlayListEntity">
+        <association property="total"  column="id" select="getMusiPlayListTotalByMenuId"/>
+        <association property="cover"  column="audio_id" select="getMusiCoverByAudioId"/>
+    </resultMap>
+
+    <select id="getMusiPlayMenu" resultMap="getMusiPlayListAssociation">
+        select m.*,p.audio_id from music_play_menu m LEFT JOIN music_play_list p on m.id = p.menu_id  where m.user_id = #{userId}
+    </select>
+
+    <select id="getMusiPlayListTotalByMenuId" resultType="int">
+       SELECT count(id) as total FROM music_play_list where menu_id = #{id}
+    </select>
+
+    <select id="getMusiCoverByAudioId" resultType="String">
+       SELECT cover FROM music where audio_id = #{audio_id} limit 0,1
+    </select>
 </mapper>
 
