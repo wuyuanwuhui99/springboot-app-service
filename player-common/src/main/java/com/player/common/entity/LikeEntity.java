@@ -16,6 +16,9 @@ public class LikeEntity {
     @ApiModelProperty(value = "用户id")
     private String userId;
 
+    @ApiModelProperty(value = "用户名称")
+    private String username;
+
     @ApiModelProperty(value = "关联的影片id")
     private Long relationId;
 

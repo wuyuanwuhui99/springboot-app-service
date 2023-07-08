@@ -1,5 +1,7 @@
 package com.player.social.entity;
 
+import com.player.common.entity.CommentEntity;
+import com.player.common.entity.LikeEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -103,5 +105,8 @@ public class CircleEntity {
     private String movieScore;
 
     @ApiModelProperty(value = "喜欢列表")
-    private List<CircleLikeEntity> circleLikes;
+    private List<LikeEntity> circleLikes;
+
+    @ApiModelProperty(value = "喜欢列表")
+    private List<CommentEntity> circleComments;
 }
