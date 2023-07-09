@@ -3,15 +3,11 @@ package com.player.music.controller;
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
 import com.player.music.service.IMyMusicService;
-import com.player.music.service.IQQMusicService;
-import feign.Param;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 @RestController
 
@@ -23,7 +19,6 @@ public class MyMusicController {
     @ApiOperation("获取搜索框默认推荐音乐")
     @GetMapping("/myMusic/getKeywordMusic")
     public ResultEntity getKeywordMusic(HttpServletRequest request,@RequestHeader("Authorization") String token) {
-        System.out.println(token);
         return myMusicService.getKeywordMusic(HttpUtils.getPath(request));
     }
 
@@ -56,5 +51,16 @@ public class MyMusicController {
     @GetMapping("/myMusic-getway/getMusicPlayMenu")
     public ResultEntity getMusiPlayList(HttpServletRequest request,@RequestHeader("Authorization") String token) {
         return myMusicService.getMusiPlayMenu(HttpUtils.getPath(request),token);
+    }
+
+    @ApiOperation("获取我关注的歌手")
+    @GetMapping("/myMusic-getway/getMySinger")
+    public ResultEntity getMySinger(
+            HttpServletRequest request,
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "pageNum",required = true) int pageNum,
+            @RequestParam(name = "pageSize",required = true) int pageSize
+    ) {
+        return myMusicService.getMySinger(HttpUtils.getPath(request),token,pageNum,pageSize);
     }
 }

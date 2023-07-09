@@ -1,10 +1,10 @@
 package com.player.music.mapper;
 
-import com.player.music.Entity.MyMusiPlayListEntity;
+import com.player.music.Entity.MyMusiPlayMenuEntity;
 import com.player.music.Entity.MyMusicEntity;
+import com.player.music.Entity.MySingerEntity;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 @Repository
@@ -21,5 +21,9 @@ public interface MyMusicMapper {
 
     Long getSingerTotal();
 
-    List<MyMusiPlayListEntity> getMusiPlayMenu(String userId);
+    List<MyMusiPlayMenuEntity> getMusiPlayMenu(String userId);
+
+    List<MySingerEntity> getMySinger(String userId,int start, int pageSize);
+
+    Long getMySingerCount(String userId);
 }

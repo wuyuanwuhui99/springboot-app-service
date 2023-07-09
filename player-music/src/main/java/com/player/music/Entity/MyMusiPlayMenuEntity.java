@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @ToString
-public class MyMusiPlayListEntity {
+public class MyMusiPlayMenuEntity {
     @ApiModelProperty(value = "主键")
     private int id;//主键
 

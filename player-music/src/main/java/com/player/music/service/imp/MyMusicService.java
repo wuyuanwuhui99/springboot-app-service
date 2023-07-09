@@ -101,7 +101,7 @@ public class MyMusicService implements IMyMusicService {
 
     @Override
     public ResultEntity getSingerList(String redisKey, int pageNum, int pageSize) {
-        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageNum;
+        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageSize;
         String result = (String) redisTemplate.opsForValue().get(redisKey);
         if (!StringUtils.isEmpty(result)) {
             return JSON.parseObject(result, ResultEntity.class);
@@ -123,6 +123,24 @@ public class MyMusicService implements IMyMusicService {
             return JSON.parseObject(result, ResultEntity.class);
         } else {
             ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusiPlayMenu(userEntity.getUserId()));
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
+
+    @Override
+    public ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize){
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        redisKey += "?userId=" + userEntity.getUserId() + "pageNum=" + pageNum + "&pageSize=" + pageSize;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
+            if (pageSize > 100) pageSize = 100;
+            int start = (pageNum - 1) * pageSize;
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMySinger(userEntity.getUserId(),start,pageSize));
+            Long mySingerCount = myMusicMapper.getMySingerCount(userEntity.getUserId());
+            resultEntity.setTotal(mySingerCount);
             redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
             return resultEntity;
         }
