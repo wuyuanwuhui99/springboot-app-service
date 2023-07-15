@@ -96,4 +96,7 @@ public class MyMusicEntity {
 
     @ApiModelProperty(value = "是否是喜欢，0表示不在喜欢的列表中，1表示在喜欢的列表中")
     private int isLike;
+
+    @ApiModelProperty(value = "听过的次数，在获取播放记录的时候才有")
+    private int times;
 }

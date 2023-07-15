@@ -63,4 +63,15 @@ public class MyMusicController {
     ) {
         return myMusicService.getMySinger(HttpUtils.getPath(request),token,pageNum,pageSize);
     }
+
+    @ApiOperation("获取最近播放的歌曲")
+    @GetMapping("/myMusic-getway/getMusicRecord")
+    public ResultEntity getMusicRecord(
+            HttpServletRequest request,
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "pageNum",required = true) int pageNum,
+            @RequestParam(name = "pageSize",required = true) int pageSize
+    ) {
+        return myMusicService.getMusicRecord(HttpUtils.getPath(request),token,pageNum,pageSize);
+    }
 }

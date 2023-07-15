@@ -145,4 +145,15 @@ public class MyMusicService implements IMyMusicService {
             return resultEntity;
         }
     }
+
+    @Override
+    public ResultEntity getMusicRecord(String path, String token, int pageNum, int pageSize){
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        if (pageSize > 100) pageSize = 100;
+        int start = (pageNum - 1) * pageSize;
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicRecord(userEntity.getUserId(),start,pageSize));
+        Long mySingerCount = myMusicMapper.getMusicRecordCount(userEntity.getUserId());
+        resultEntity.setTotal(mySingerCount);
+        return resultEntity;
+    }
 }

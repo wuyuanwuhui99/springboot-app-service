@@ -26,4 +26,8 @@ public interface MyMusicMapper {
     List<MySingerEntity> getMySinger(String userId,int start, int pageSize);
 
     Long getMySingerCount(String userId);
+
+    List<MyMusicEntity> getMusicRecord(String userId, int start, int pageSize);
+
+    Long getMusicRecordCount(String userId);
 }

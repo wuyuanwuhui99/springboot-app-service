@@ -14,4 +14,6 @@ public interface IMyMusicService {
     ResultEntity getMusiPlayMenu(String redisKey,String token);
 
     ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize);
+
+    ResultEntity getMusicRecord(String path, String token, int pageNum, int pageSize);
 }

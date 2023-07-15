@@ -67,19 +67,56 @@
     </select>
 
     <select id="getMySinger" resultType="MySingerEntity">
-        select t5.*,t4.author_name,t4.total,t4.avatar from
-            (select t1.*,t2.author_name,t2.avatar from
-                (
-                    select count(audio_id) as total,author_id from music where author_id in
-                    (select t3.author_id from
-                        (select * from music_my_singer where user_id = #{userId} limit #{start},#{pageSize}) t3
-                ) group by author_id) t1
-            LEFT JOIN music_authors t2 on t1.author_id = t2.author_id) t4
-        LEFT JOIN music_my_singer t5 on t4.author_id = t5.author_id
+        SELECT t5.*, t4.author_name, t4.total, t4.avatar
+        FROM (
+            SELECT t1.*, t2.author_name, t2.avatar
+            FROM (
+                SELECT count(audio_id) AS total, author_id
+                FROM music
+                WHERE author_id IN (
+                    SELECT t3.author_id
+                    FROM (
+                        SELECT *
+                        FROM music_my_singer
+                        WHERE user_id = #{userId}
+                        LIMIT #{start}, #{pageSize}
+                    ) t3
+                )
+                GROUP BY author_id
+            ) t1
+                LEFT JOIN music_authors t2 ON t1.author_id = t2.author_id
+        ) t4
+            LEFT JOIN music_my_singer t5 ON t4.author_id = t5.author_id
     </select>
 
     <select id="getMySingerCount" resultType="Long">
        SELECT count(*) as total FROM music_my_singer where user_id = #{userId}
+    </select>
+
+    <select id="getMusicRecord" resultType="MyMusicEntity">
+        SELECT t4.*, t3.times
+        FROM (
+            SELECT t1.*, t2.times
+            FROM (
+                SELECT DISTINCT audio_id, id, user_id, create_time, update_time
+                FROM music_record
+                WHERE user_id = #{userId}
+                ORDER BY create_time DESC
+                LIMIT #{start}, #{pageSize}
+            ) t1
+                LEFT JOIN (
+                    SELECT COUNT(audio_id) AS times, audio_id
+                    FROM music_record
+                    WHERE user_id = #{userId}
+                    GROUP BY audio_id
+                ) t2
+                ON t1.audio_id = t2.audio_id
+        ) t3
+            LEFT JOIN music t4 ON t3.audio_id = t4.audio_id
+    </select>
+
+    <select id="getMusicRecordCount" resultType="Long">
+        select count(*) as total from (SELECT DISTINCT audio_id,id,user_id,create_time,update_time FROM music_record WHERE user_id = #{userId}) t1
     </select>
 </mapper>
 
