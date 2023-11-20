@@ -30,4 +30,6 @@ public interface MyMusicMapper {
     List<MyMusicEntity> getMusicRecord(String userId, int start, int pageSize);
 
     Long getMusicRecordCount(String userId);
+
+    Long insertLog(String userId,Long musicId);
 }

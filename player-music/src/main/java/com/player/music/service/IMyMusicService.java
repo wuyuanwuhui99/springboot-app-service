@@ -1,6 +1,7 @@
 package com.player.music.service;
 
 import com.player.common.entity.ResultEntity;
+import com.player.music.Entity.MyMusicEntity;
 
 public interface IMyMusicService {
     ResultEntity getKeywordMusic(String redisKey);
@@ -16,4 +17,6 @@ public interface IMyMusicService {
     ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize);
 
     ResultEntity getMusicRecord(String path, String token, int pageNum, int pageSize);
+
+    ResultEntity insertLog(String token,MyMusicEntity myMusicEntity);
 }

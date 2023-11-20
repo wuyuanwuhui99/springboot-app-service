@@ -6,6 +6,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
+import com.player.music.Entity.MyMusicEntity;
 import com.player.music.mapper.MyMusicMapper;
 import com.player.music.service.IMyMusicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,5 +156,19 @@ public class MyMusicService implements IMyMusicService {
         Long mySingerCount = myMusicMapper.getMusicRecordCount(userEntity.getUserId());
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: insertLog
+     * @description: 插入播放记录
+     * @return: ResultEntity
+     * @date: 2023-11-20 21:52
+     */
+    @Override
+    public ResultEntity insertLog(String token, MyMusicEntity myMusicEntity){
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        Long musicId = myMusicEntity.getId();
+        return ResultUtil.success(myMusicMapper.insertLog(userEntity.getUserId(),musicId));
     }
 }

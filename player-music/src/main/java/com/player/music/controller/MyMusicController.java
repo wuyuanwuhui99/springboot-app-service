@@ -2,6 +2,7 @@ package com.player.music.controller;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
+import com.player.music.Entity.MyMusicEntity;
 import com.player.music.service.IMyMusicService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,14 @@ public class MyMusicController {
             @RequestParam(name = "pageSize",required = true) int pageSize
     ) {
         return myMusicService.getMusicRecord(HttpUtils.getPath(request),token,pageNum,pageSize);
+    }
+
+    @ApiOperation("插入播放记录")
+    @PostMapping("/myMusic-getway/insertLog")
+    public ResultEntity insertLog(
+            @RequestHeader("Authorization") String token,
+            @RequestBody MyMusicEntity myMusicEntity
+    ) {
+        return myMusicService.insertLog(token,myMusicEntity);
     }
 }

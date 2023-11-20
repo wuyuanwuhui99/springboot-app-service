@@ -98,25 +98,29 @@
         FROM (
             SELECT t1.*, t2.times
             FROM (
-                SELECT DISTINCT audio_id, id, user_id, create_time, update_time
+                SELECT DISTINCT music_id, id, user_id, create_time, update_time
                 FROM music_record
                 WHERE user_id = #{userId}
                 ORDER BY create_time DESC
                 LIMIT #{start}, #{pageSize}
             ) t1
                 LEFT JOIN (
-                    SELECT COUNT(audio_id) AS times, audio_id
+                    SELECT COUNT(music_id) AS times, music_id
                     FROM music_record
                     WHERE user_id = #{userId}
-                    GROUP BY audio_id
+                    GROUP BY music_id
                 ) t2
-                ON t1.audio_id = t2.audio_id
+                ON t1.music_id = t2.music_id
         ) t3
-            LEFT JOIN music t4 ON t3.audio_id = t4.audio_id
+            LEFT JOIN music t4 ON t3.music_id = t4.id
     </select>
 
     <select id="getMusicRecordCount" resultType="Long">
-        select count(*) as total from (SELECT DISTINCT audio_id,id,user_id,create_time,update_time FROM music_record WHERE user_id = #{userId}) t1
+        select count(*) as total from (SELECT DISTINCT id,music_id,user_id,create_time,update_time FROM music_record WHERE user_id = #{userId}) t1
     </select>
+
+    <insert id="insertLog">
+        insert into music_record (music_id,user_id,create_time,update_time) VALUES (#{musicId},#{userId},now(),now())
+    </insert>
 </mapper>
 
