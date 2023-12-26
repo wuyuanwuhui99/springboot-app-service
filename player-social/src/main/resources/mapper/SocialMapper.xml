@@ -9,7 +9,7 @@
     <select id="getTopCommentList" resultType="com.player.common.entity.CommentEntity">
         SELECT tc.*,u.username,u.avater FROM (
 	        SELECT tu.* FROM (
-		        (SELECT c.*,COUNT(t.id) AS replyCount FROM social_comment c  LEFT JOIN social_comment t ON  c.id = t.top_id  WHERE c.realtion_id = #{relationId} AND `type` = #{type} AND c.top_id is null GROUP BY c.id)
+		        (SELECT c.*,COUNT(t.id) AS replyCount FROM social_comment c  LEFT JOIN social_comment t ON  c.id = t.top_id  WHERE c.relation_id = #{relationId} AND c.type = #{type} AND c.top_id is null GROUP BY c.id)
 	        ) tu
         ) tc
         LEFT JOIN `user` u ON u.user_id = tc.user_id LIMIT #{start},#{pageSize}
@@ -24,7 +24,10 @@
     </delete>
 
     <select id="getReplyCommentList" resultType="com.player.common.entity.CommentEntity">
-        SELECT tu.*,ru.username as reply_user_name FROM (SELECT c.*,u.username,u.avater FROM social_comment c LEFT JOIN `user` u ON c.user_id = u.user_id WHERE c.top_id = #{topId})tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id LIMIT #{start},#{pageSize}
+        SELECT t3.*,t4.username as reply_user_name from (
+                SELECT t1.*, t2.user_id as reply_user_id from
+                            (SELECT c.*,u.username,u.avater FROM social_comment c LEFT JOIN `user` u ON c.user_id = u.user_id WHERE c.top_id = #{topId} limit #{start},#{pageSize}) t1 					LEFT JOIN social_comment T2 ON T1.top_id = t2.id
+        ) t3 LEFT JOIN `user` t4 ON t3.reply_user_id = t4.user_id
     </select>
 
     <select id="getCommentItem" resultType="com.player.common.entity.CommentEntity">

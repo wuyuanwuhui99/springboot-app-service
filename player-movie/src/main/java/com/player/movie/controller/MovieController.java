@@ -150,7 +150,7 @@ public class MovieController {
     }
 
     @OperLog(message = "获取演员列表", operation = OperationType.QUERY)
-    @ApiOperation("获取演员列表：/service/movie/getStar/{movieId}")
+    @ApiOperation("获取演员列表：/service/movie/getStar/{id}")
     @GetMapping("/movie/getStar/{movieId}")
     public ResultEntity getStar(
             @PathVariable("movieId") Long movieId,
@@ -177,17 +177,27 @@ public class MovieController {
     }
 
     @OperLog(message = "保存观看记录", operation = OperationType.ADD)
-    @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/saveViewRecord")
-    @PostMapping("/movie-getway/saveViewRecord")
-    public ResultEntity saveViewRecord(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
-        return movieService.saveViewRecord(movieEntity,token);
-    }
-
-    @OperLog(message = "保存观看记录", operation = OperationType.ADD)
     @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/savePlayRecord")
     @PostMapping("/movie-getway/savePlayRecord")
     public ResultEntity savePlayRecord(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
         return movieService.savePlayRecord(movieEntity,token);
+    }
+
+    @OperLog(message = "获取观看记录", operation = OperationType.ADD)
+    @ApiOperation("获取观看记录,请求地地址：/service/movie-getway/getViewRecord")
+    @GetMapping("/movie-getway/getViewRecord")
+    public ResultEntity getViewRecord(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("pageNum")int pageNum,
+            @RequestParam("pageSize")int pageSize) {
+        return movieService.getViewRecord(token,pageNum,pageSize);
+    }
+
+    @OperLog(message = "保存观看记录", operation = OperationType.ADD)
+    @ApiOperation("获取播放记录,请求地地址：/service/movie-getway/saveViewRecord")
+    @PostMapping("/movie-getway/saveViewRecord")
+    public ResultEntity saveViewRecord(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
+        return movieService.saveViewRecord(movieEntity,token);
     }
 
     @OperLog(message = "获取收藏记录", operation = OperationType.QUERY)
@@ -285,12 +295,6 @@ public class MovieController {
             @RequestParam("pageSize")int pageSize
     ) {
         return movieService.getReplyCommentList(topId,pageNum,pageSize);
-    }
-
-    @ApiOperation("获取浏览记录，只取前50条")
-    @GetMapping("/movie-getway/getRecordList")
-    public ResultEntity getRecordList(@RequestHeader("Authorization") String token) {
-        return movieService.getRecordList(token);
     }
 
     @ApiOperation("获取电影详情")

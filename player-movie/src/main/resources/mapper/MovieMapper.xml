@@ -144,27 +144,27 @@
     </select>
 
     <select id="getMovieUrl" resultType="MovieUrlEntity">
-       SELECT * FROM movie_url WHERE movie_id = #{movie_id}
+       SELECT * FROM movie_url WHERE movie_id = #{movieId}
     </select>
 
     <insert id="saveViewRecord" parameterType="MovieEntity">
-        INSERT INTO movie_view_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
+        INSERT INTO movie_view_record(movie_id,user_id,create_time,update_time)VALUES (#{id},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
     </insert>
 
     <select id="getPlayRecord" resultType="MovieEntity">
-        SELECT m.* FROM movie m,movie_play_record r WHERE m.movie_id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
+        SELECT m.* FROM movie m,movie_play_record r WHERE m.id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
     </select>
 
     <insert id="savePlayRecord" parameterType="MovieEntity">
-        INSERT INTO movie_play_record(movie_id,user_id,create_time,update_time)VALUES (#{movieId},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{movieId}
+        INSERT INTO movie_play_record(movie_id,user_id,create_time,update_time)VALUES (#{id},#{userId},now(),now()) ON DUPLICATE KEY UPDATE movie_id= #{id}
     </insert>
 
     <select id="getFavoriteList" resultType="MovieEntity">
-        SELECT m.* FROM movie m,movie_favorite f WHERE m.movie_id = f.movie_id AND f.user_id = #{userId} ORDER BY r.create_time DESC LIMIT #{start},#{pageSize}
+        SELECT m.* FROM movie m,movie_favorite f WHERE m.id = f.movie_id AND f.user_id = #{userId} ORDER BY f.create_time DESC LIMIT #{start},#{pageSize}
     </select>
 
     <insert id="saveFavorite">
-        INSERT INTO movie_favorite(movie_id,user_id,create_time,update_time) SELECT #{movieId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE movie_id = #{movieId})
+        INSERT INTO movie_favorite(movie_id,user_id,create_time,update_time) SELECT #{id},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE movie_id = #{movieId})
     </insert>
 
     <delete id="deleteFavorite">
@@ -188,8 +188,8 @@
         SELECT * FROM movie WHERE classify = #{classify} ORDER BY create_time DESC LIMIT 0,20
     </select>
 
-    <select id="getRecordList" resultType="MovieEntity">
-        SELECT t.*,u.* FROM (SELECT m.* FROM movie m,video_record r WHERE m.id = r.video_id AND r.user_id = #{userId} ORDER BY r.create_time DESC) t LEFT JOIN toutiao_author u ON t.author_id = u.author_id or t.author_id = u.name
+    <select id="getViewRecord" resultType="MovieEntity">
+        SELECT m.* FROM movie m,movie_view_record f WHERE m.id = f.movie_id AND f.user_id = #{userId} ORDER BY f.create_time DESC LIMIT #{start},#{pageSize}
     </select>
 
     <select id="getMovieDetail" resultType="MovieEntity">

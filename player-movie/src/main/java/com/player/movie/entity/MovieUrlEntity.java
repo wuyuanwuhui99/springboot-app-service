@@ -32,6 +32,6 @@ public class MovieUrlEntity {
     private String url;
 
     @ApiModelProperty(value = "播放分组，1, 2")
-    private int playGroup;
+    private String playGroup;
 
 }

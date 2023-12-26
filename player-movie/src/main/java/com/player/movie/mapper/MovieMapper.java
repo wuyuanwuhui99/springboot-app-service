@@ -74,11 +74,13 @@ public interface MovieMapper {
 
     Long savePlayRecord(MovieEntity movieEntity);
 
+    List<MovieEntity> getViewRecord(String userId,int start,int pageSize);
+
     Long saveViewRecord(MovieEntity movieEntity);
 
     List<MovieEntity> getFavoriteList(String userId,int start,int pageSize);
 
-    Long saveFavorite(Long movieId, String userId);
+    Long saveFavorite(Long id, String userId);
 
     Long deleteFavorite(Long movieId,String userId);
 
@@ -87,8 +89,6 @@ public interface MovieMapper {
     List<MovieEntity> getYourLikes(@Param("labels") String[] labels,String classify);
 
     List<MovieEntity> getRecommend(String classify);
-
-    List<MovieEntity> getRecordList(String userId);
 
     MovieEntity getMovieDetail(int movieId);
 

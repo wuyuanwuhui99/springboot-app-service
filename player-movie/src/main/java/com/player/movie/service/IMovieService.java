@@ -42,11 +42,13 @@ public interface IMovieService {
 
     ResultEntity savePlayRecord(MovieEntity movieEntity,String token);
 
+    ResultEntity getViewRecord(String token,int pageNum,int pageSize);
+
     ResultEntity saveViewRecord(MovieEntity movieEntity,String token);
 
     ResultEntity getFavoriteList(String token,int pageNum,int pageSize);
 
-    ResultEntity saveFavorite(Long movieId,String token);
+    ResultEntity saveFavorite(Long id,String token);
 
     ResultEntity deleteFavorite(Long movieId,String token);
 
@@ -69,8 +71,6 @@ public interface IMovieService {
     ResultEntity deleteComment(int id,String token);
 
     ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize);
-
-    ResultEntity getRecordList(String token);
 
     ResultEntity getMovieDetail(int movieId);
 

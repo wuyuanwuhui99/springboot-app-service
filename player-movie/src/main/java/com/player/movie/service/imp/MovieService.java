@@ -255,7 +255,7 @@ public class MovieService implements IMovieService {
 
     /**
      * @author: wuwenqiang
-     * @description: 播放记录
+     * @description: 获取演员
      * @date: 2020-12-26 10:41
      */
     @Override
@@ -299,8 +299,7 @@ public class MovieService implements IMovieService {
     @Override
     public ResultEntity getPlayRecord(String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        ResultEntity resultEntity = ResultUtil.success(movieMapper.getPlayRecord(userEntity.getUserId()));
-        return resultEntity;
+        return ResultUtil.success(movieMapper.getPlayRecord(userEntity.getUserId()));
     }
 
     /**
@@ -316,8 +315,19 @@ public class MovieService implements IMovieService {
         movieEntity.setCreateTime(date);
         movieEntity.setUpdateTime(date);
         movieEntity.setUserId(userEntity.getUserId());
-        ResultEntity resultEntity = ResultUtil.success(movieMapper.savePlayRecord(movieEntity));
-        return resultEntity;
+        return ResultUtil.success(movieMapper.savePlayRecord(movieEntity));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取浏览记录
+     * @date: 2021-08-24 21:59
+     */
+    @Override
+    public ResultEntity getViewRecord(String token,int pageNum,int pageSize){
+        if(pageSize > 100) pageSize = 100;
+        int start = (pageNum - 1)*pageSize;
+        return ResultUtil.success(movieMapper.getViewRecord(JwtToken.getUserId(token),start,pageSize));
     }
 
     /**
@@ -355,8 +365,8 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity saveFavorite(Long movieId, String token) {
-        return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getUserId(token)));
+    public ResultEntity saveFavorite(Long id, String token) {
+        return ResultUtil.success(movieMapper.saveFavorite(id,JwtToken.getUserId(token)));
     }
 
     /**
@@ -474,16 +484,6 @@ public class MovieService implements IMovieService {
                 new HttpEntity<String>(new HttpHeaders()),
                 ResultEntity.class
         ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取历史记录
-     * @date: 2021-08-24 21:59
-     */
-    @Override
-    public ResultEntity getRecordList(String token){
-        return ResultUtil.success(movieMapper.getRecordList(JwtToken.getUserId(token)));
     }
 
     /**
