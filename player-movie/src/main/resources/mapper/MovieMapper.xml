@@ -164,7 +164,7 @@
     </select>
 
     <insert id="saveFavorite">
-        INSERT INTO movie_favorite(movie_id,user_id,create_time,update_time) SELECT #{id},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE movie_id = #{movieId})
+        INSERT INTO movie_favorite(movie_id,user_id,create_time,update_time) SELECT #{movieId},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE movie_id = #{movieId})
     </insert>
 
     <delete id="deleteFavorite">

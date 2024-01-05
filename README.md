@@ -41,13 +41,13 @@ VM options: -DPORT=4002 -DEUREKA_SERVER=http://localhost:4001/euraka/  -DEUREKA_
 ![app首页](https://raw.githubusercontent.com/wuyuanwuhui99/springboot-app-service/main/mysql.png)
 sql数据来自于python爬虫项目，自动爬取第三方电影网站，由于涉及到资源版权，爬虫项目暂未公开
 
-sql和数据下载地址
+接口和数据请在本地电脑中，暂时没有购买和部署服务器，仅限本地调试，如有需要调试请联系本人启动外网映射
 
-链接：https://pan.baidu.com/s/1YAntceqvj5OKiYKM2YXWAA
-提取码：s78d
+本站所有视频和图片均来自互联网收集而来，版权归原创者所有，本网站只提供web页面服务，并不提供资源存储，也不参与录制、上传 若本站收录的节目无意侵犯了贵司版权，请联系
+
+联系方式：（微信）wuwenqiang_99、（邮箱）275018723@qq.com
 
 ================================sql实例===============================
-
 
 
 

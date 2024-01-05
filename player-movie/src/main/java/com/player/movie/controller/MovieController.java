@@ -214,7 +214,7 @@ public class MovieController {
     @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
     @PostMapping("/movie-getway/saveFavorite")
     public ResultEntity saveFavorite(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
-        return movieService.saveFavorite(movieEntity.getMovieId(),token);
+        return movieService.saveFavorite(movieEntity.getId(),token);
     }
 
     @OperLog(message = "删除收藏", operation = OperationType.DELETE)

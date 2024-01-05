@@ -148,7 +148,7 @@ public class MyMusicService implements IMyMusicService {
     }
 
     @Override
-    public ResultEntity getMusicRecord(String path, String token, int pageNum, int pageSize){
+    public ResultEntity getMusicRecord(String token, int pageNum, int pageSize){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if (pageSize > 100) pageSize = 100;
         int start = (pageNum - 1) * pageSize;
@@ -170,5 +170,42 @@ public class MyMusicService implements IMyMusicService {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         Long musicId = myMusicEntity.getId();
         return ResultUtil.success(myMusicMapper.insertLog(userEntity.getUserId(),musicId));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: insertLog
+     * @description: 插入播放记录
+     * @return: ResultEntity
+     * @date: 2024-01-05 21:50
+     */
+    @Override
+    public ResultEntity insertMusicFavorite(String token, MyMusicEntity myMusicEntity){
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        return ResultUtil.success(myMusicMapper.insertMusicFavorite(userEntity.getUserId(), myMusicEntity.getId()));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: insertLog
+     * @description: 删除收藏
+     * @return: ResultEntity
+     * @date: 2024-01-05 21:50
+     */
+    @Override
+    public ResultEntity deleteMusicFavorite(String token, Long id){
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        return ResultUtil.success(myMusicMapper.deleteMusicFavorite(userEntity.getUserId(),id));
+    }
+
+    @Override
+    public ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize){
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        if (pageSize > 100) pageSize = 100;
+        int start = (pageNum - 1) * pageSize;
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicFavorite(userEntity.getUserId(),start,pageSize));
+        Long mySingerCount = myMusicMapper.queryMusicFavoriteCount(userEntity.getUserId());
+        resultEntity.setTotal(mySingerCount);
+        return resultEntity;
     }
 }

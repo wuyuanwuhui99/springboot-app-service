@@ -365,8 +365,8 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity saveFavorite(Long id, String token) {
-        return ResultUtil.success(movieMapper.saveFavorite(id,JwtToken.getUserId(token)));
+    public ResultEntity saveFavorite(Long movieId, String token) {
+        return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getUserId(token)));
     }
 
     /**

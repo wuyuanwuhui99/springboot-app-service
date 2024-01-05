@@ -48,7 +48,7 @@ public interface IMovieService {
 
     ResultEntity getFavoriteList(String token,int pageNum,int pageSize);
 
-    ResultEntity saveFavorite(Long id,String token);
+    ResultEntity saveFavorite(Long movieId,String token);
 
     ResultEntity deleteFavorite(Long movieId,String token);
 

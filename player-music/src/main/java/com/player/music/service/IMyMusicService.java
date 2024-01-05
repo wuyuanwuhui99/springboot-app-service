@@ -16,7 +16,14 @@ public interface IMyMusicService {
 
     ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize);
 
-    ResultEntity getMusicRecord(String path, String token, int pageNum, int pageSize);
+    ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 
     ResultEntity insertLog(String token,MyMusicEntity myMusicEntity);
+
+    ResultEntity insertMusicFavorite(String token,MyMusicEntity myMusicEntity);
+
+    ResultEntity deleteMusicFavorite(String token,Long id);
+
+    ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize);
+
 }
