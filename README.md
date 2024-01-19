@@ -90,41 +90,41 @@ vue3+ts明日头条项目：
 ================================手机UI项目================================   
 
 nginx配置如下   
-server{
-    listen       5001;
-    location /service/movie/ {
-        proxy_pass http://127.0.0.1:5000;
+server{   
+    listen       5001;   
+    location /service/movie/ {   
+        proxy_pass http://127.0.0.1:5000;   
+        client_max_body_size  1g;   
+    }   
+    location /service/movie-getway/ {   
+        proxy_pass http://127.0.0.1:5000;   
+        client_max_body_size  1g;   
+    }   
+    location /service/myMusic/ {   
+        proxy_pass http://127.0.0.1:4000;   
+        client_max_body_size  1g;   
+    }   
+    location /service/myMusic-getway/ {   
+        proxy_pass http://127.0.0.1:4000;   
         client_max_body_size  1g;
     }
-    location /service/movie-getway/ {
-        proxy_pass http://127.0.0.1:5000;
-        client_max_body_size  1g;
+    location /service/music/ {   
+        proxy_pass http://127.0.0.1:4000;   
+        client_max_body_size  1g;   
+    }   
+    location /service/social/ {   
+        proxy_pass http://127.0.0.1:8002;   
+        client_max_body_size  1g;   
+    }   
+    location /service/circle/ {   
+        proxy_pass http://127.0.0.1:8003;   
+        client_max_body_size  1g;   
+    }   
+    location /service/user/ {   
+        proxy_pass http://127.0.0.1:9000;   
+        client_max_body_size  1g;   
     }
-    location /service/myMusic/ {
-        proxy_pass http://127.0.0.1:4000;
-        client_max_body_size  1g;
-    }
-    location /service/myMusic-getway/ {
-        proxy_pass http://127.0.0.1:4000;
-        client_max_body_size  1g;
-    }
-    location /service/music/ {
-        proxy_pass http://127.0.0.1:4000;
-        client_max_body_size  1g;
-    }
-    location /service/social/ {
-        proxy_pass http://127.0.0.1:8002;
-        client_max_body_size  1g;
-    }
-    location /service/circle/ {
-        proxy_pass http://127.0.0.1:8003;
-        client_max_body_size  1g;
-    }
-    location /service/user/ {
-        proxy_pass http://127.0.0.1:9000;
-        client_max_body_size  1g;
-    }
-    location /static/ {
-        alias G:/static/;
-    }
-}
+    location /static/ {   
+        alias G:/static/;   
+    }   
+}   
