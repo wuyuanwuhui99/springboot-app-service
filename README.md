@@ -128,3 +128,4 @@ server{
         alias G:/static/;   
     }   
 }   
+
