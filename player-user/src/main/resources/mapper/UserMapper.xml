@@ -18,11 +18,11 @@
     </select>
 
     <insert id="register" parameterType="com.player.common.entity.UserEntity">
-       INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{userId},#{password},#{createDate},#{updateDate},#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
+       INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{userId},#{password},now(),now(),#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
     </insert>
 
     <select id="getUserById" resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE user_id = #{userId}  and disabled = 0
+        <include refid="userData"></include> WHERE user_id = #{userId}
     </select>
 
     <update id="updateUser" parameterType="com.player.common.entity.UserEntity">

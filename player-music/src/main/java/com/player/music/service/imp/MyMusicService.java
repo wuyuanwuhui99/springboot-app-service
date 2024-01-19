@@ -198,6 +198,13 @@ public class MyMusicService implements IMyMusicService {
         return ResultUtil.success(myMusicMapper.deleteMusicFavorite(userEntity.getUserId(),id));
     }
 
+    /**
+     * @author: wuwenqiang
+     * @methodsName: queryMusicFavorite
+     * @description: 查询收藏
+     * @return: ResultEntity
+     * @date: 2024-01-05 21:50
+     */
     @Override
     public ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
