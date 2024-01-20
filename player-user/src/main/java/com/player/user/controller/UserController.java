@@ -24,7 +24,7 @@ public class UserController {
     @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
     @ApiOperation("查询用户信息")
     @GetMapping("/user/getUserData")
-    public ResultEntity getUserData(@RequestHeader("Authorization") String token) {
+    public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
         return userService.getUserData(token);
     }
 

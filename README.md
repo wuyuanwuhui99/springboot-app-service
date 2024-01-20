@@ -90,6 +90,7 @@ vue3+ts明日头条项目：
 ================================手机UI项目================================   
 
 nginx配置如下   
+```
 server{   
     listen       5001;   
     location /service/movie/ {   
@@ -128,4 +129,4 @@ server{
         alias G:/static/;   
     }   
 }   
-
+```
