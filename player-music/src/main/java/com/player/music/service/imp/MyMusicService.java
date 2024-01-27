@@ -215,4 +215,21 @@ public class MyMusicService implements IMyMusicService {
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
     }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: queryMusicFavorite
+     * @description: 查询收藏
+     * @return: ResultEntity
+     * @date: 2024-01-27 16:57
+     */
+    @Override
+    public ResultEntity searchMusic(String keyword, int pageNum, int pageSize){
+        if (pageSize > 100) pageSize = 100;
+        int start = (pageNum - 1) * pageSize;
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.searchMusic(keyword,start,pageSize));
+        Long mySingerCount = myMusicMapper.searchMusicCount(keyword);
+        resultEntity.setTotal(mySingerCount);
+        return resultEntity;
+    }
 }

@@ -111,4 +111,14 @@ public class MyMusicController {
     ) {
         return myMusicService.queryMusicFavorite(token,pageNum,pageSize);
     }
+
+    @ApiOperation("查询音乐收藏")
+    @GetMapping("/myMusic/searchMusic")
+    public ResultEntity searchMusic(
+            @RequestParam(name = "keyword",required = true) String keyword,
+            @RequestParam(name = "pageNum",required = true) int pageNum,
+            @RequestParam(name = "pageSize",required = true) int pageSize
+    ) {
+        return myMusicService.searchMusic(keyword,pageNum,pageSize);
+    }
 }

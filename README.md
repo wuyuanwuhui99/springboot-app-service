@@ -52,7 +52,7 @@ sql数据来自于python爬虫项目，自动爬取第三方电影网站，由�
 
 
 ================================手机UI项目================================   
-flutter版本参见:
+flutter版本参见:   
 通用地址：https://github.com/wuyuanwuhui99/flutter-movie-app-ui   
 国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-movie-app-ui
 

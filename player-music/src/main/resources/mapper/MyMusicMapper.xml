@@ -151,5 +151,13 @@
     <select id="queryMusicFavoriteCount" resultType="Long">
         select count(*) as total from (SELECT DISTINCT id,music_id,user_id,create_time,update_time FROM music_favorite WHERE user_id = #{userId}) t1
     </select>
+
+    <select id="searchMusic" resultType="MyMusicEntity">
+        SELECT * FROM music where song_name like concat('%',#{keyword},'%') or author_name like concat('%',#{keyword},'%') or album_name like concat('%',#{keyword},'%') LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="searchMusicCount" resultType="Long">
+        SELECT count(*) FROM music where song_name like concat('%',#{keyword},'%') or author_name like concat('%',#{keyword},'%') or album_name like concat('%',#{keyword},'%')
+    </select>
 </mapper>
 

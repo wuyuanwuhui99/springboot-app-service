@@ -40,4 +40,8 @@ public interface MyMusicMapper {
     List<MyMusicEntity> queryMusicFavorite(String userId, int start, int pageSize);
 
     Long queryMusicFavoriteCount(String userId);
+
+    List<MyMusicEntity> searchMusic(String keyword, int start, int pageSize);
+
+    Long searchMusicCount(String keyword);
 }
