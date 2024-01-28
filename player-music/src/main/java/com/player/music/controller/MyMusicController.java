@@ -115,10 +115,11 @@ public class MyMusicController {
     @ApiOperation("查询音乐收藏")
     @GetMapping("/myMusic/searchMusic")
     public ResultEntity searchMusic(
+            @RequestHeader(name = "Authorization",required = false) String token,
             @RequestParam(name = "keyword",required = true) String keyword,
             @RequestParam(name = "pageNum",required = true) int pageNum,
             @RequestParam(name = "pageSize",required = true) int pageSize
     ) {
-        return myMusicService.searchMusic(keyword,pageNum,pageSize);
+        return myMusicService.searchMusic(token,keyword,pageNum,pageSize);
     }
 }

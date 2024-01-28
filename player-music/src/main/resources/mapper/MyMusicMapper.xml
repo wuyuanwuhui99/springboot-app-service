@@ -153,7 +153,8 @@
     </select>
 
     <select id="searchMusic" resultType="MyMusicEntity">
-        SELECT * FROM music where song_name like concat('%',#{keyword},'%') or author_name like concat('%',#{keyword},'%') or album_name like concat('%',#{keyword},'%') LIMIT #{start}, #{pageSize}
+        SELECT t1.*,(CASE WHEN t2.music_id IS NOT NULL THEN 1 ELSE 0 END) AS isFavorite FROM music t1 LEFT JOIN music_favorite t2 on t1.id = t2.music_id AND T2.user_id = #{userId}
+        where t1.song_name like concat('%',#{keyword},'%') or t1.author_name like concat('%',#{keyword},'%') or t1.album_name like concat('%',#{keyword},'%') LIMIT #{start}, #{pageSize}
     </select>
 
     <select id="searchMusicCount" resultType="Long">

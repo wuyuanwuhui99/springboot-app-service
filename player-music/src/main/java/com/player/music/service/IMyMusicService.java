@@ -26,5 +26,5 @@ public interface IMyMusicService {
 
     ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize);
 
-    ResultEntity searchMusic(String keyword, int pageNum, int pageSize);
+    ResultEntity searchMusic(String token,String keyword, int pageNum, int pageSize);
 }
