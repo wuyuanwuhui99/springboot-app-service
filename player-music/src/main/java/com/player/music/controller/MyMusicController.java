@@ -122,4 +122,12 @@ public class MyMusicController {
     ) {
         return myMusicService.searchMusic(token,keyword,pageNum,pageSize);
     }
+
+    @ApiOperation("查询音乐收藏")
+    @GetMapping("/myMusic/getSingerCategory")
+    public ResultEntity getSingerCategory(
+            HttpServletRequest request
+    ) {
+        return myMusicService.getSingerCategory(HttpUtils.getPath(request));
+    }
 }

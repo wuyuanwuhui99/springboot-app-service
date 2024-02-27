@@ -239,4 +239,23 @@ public class MyMusicService implements IMyMusicService {
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
     }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: queryMusicFavorite
+     * @description: 查询收藏
+     * @return: ResultEntity
+     * @date: 2024-01-27 16:57
+     */
+    @Override
+    public ResultEntity getSingerCategory(String redisKey){
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerCategory());
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
 }

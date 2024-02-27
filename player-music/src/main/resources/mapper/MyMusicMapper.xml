@@ -157,8 +157,9 @@
         where t1.song_name like concat('%',#{keyword},'%') or t1.author_name like concat('%',#{keyword},'%') or t1.album_name like concat('%',#{keyword},'%') LIMIT #{start}, #{pageSize}
     </select>
 
-    <select id="searchMusicCount" resultType="Long">
-        SELECT count(*) FROM music where song_name like concat('%',#{keyword},'%') or author_name like concat('%',#{keyword},'%') or album_name like concat('%',#{keyword},'%')
+    <select id="getSingerCategory" resultType="MyMusicSingerCategoryEntity">
+        select language as category from music_authors where language is not null and language != '' GROUP BY language
     </select>
+
 </mapper>
 

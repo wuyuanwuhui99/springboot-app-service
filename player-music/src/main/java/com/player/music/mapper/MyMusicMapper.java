@@ -44,4 +44,6 @@ public interface MyMusicMapper {
     List<MyMusicEntity> searchMusic(String userId,String keyword, int start, int pageSize);
 
     Long searchMusicCount(String keyword);
+
+    List<MyMusicEntity> getSingerCategory();
 }
