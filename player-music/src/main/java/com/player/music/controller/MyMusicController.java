@@ -44,8 +44,13 @@ public class MyMusicController {
 
     @ApiOperation("获取歌手")
     @GetMapping("/myMusic/getSingerList")
-    public ResultEntity getSingerList(HttpServletRequest request, int pageNum, int pageSize) {
-        return myMusicService.getSingerList(HttpUtils.getPath(request), pageNum, pageSize);
+    public ResultEntity getSingerList(
+            HttpServletRequest request,
+            @RequestParam(name = "pageNum",required = true) int pageNum,
+            @RequestParam(name = "pageSize",required = true) int pageSize,
+            @RequestParam(name = "category",required = false) String category
+    ) {
+        return myMusicService.getSingerList(HttpUtils.getPath(request), category, pageNum, pageSize);
     }
 
     @ApiOperation("查询歌单")

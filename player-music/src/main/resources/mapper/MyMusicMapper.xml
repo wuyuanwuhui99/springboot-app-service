@@ -65,7 +65,25 @@
     </select>
 
     <select id="getSingerList" resultType="MusicAuthorEntity">
-        select * from music_authors where avatar is not null order by `rank` desc limit  #{start},#{pageSize}
+        select t2.*,t3.total from music_authors t2
+        LEFT JOIN
+        (select count(*) as total,author_name from music where author_name in (
+            select author_name from music_authors where id in (
+                select t1.id from (select * from music_authors
+                <if test="category != '' and category != null">
+                    where language = #{category}
+                </if>
+                order by `rank` desc limit #{start},#{pageSize}
+            ) t1)
+        ) GROUP BY author_name) t3
+        on t2.author_name = t3.author_name
+         where  t2.id in (
+            select t1.id from (select * from music_authors
+            <if test="category != '' and category != null">
+                where language = #{category}
+            </if>
+            order by `rank` desc limit #{start},#{pageSize}
+         ) t1)
     </select>
 
     <select id="getSingerTotal" resultType="Long">

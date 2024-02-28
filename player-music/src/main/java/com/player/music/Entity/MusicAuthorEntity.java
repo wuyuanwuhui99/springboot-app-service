@@ -48,4 +48,7 @@ public class MusicAuthorEntity {
 
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+
+    @ApiModelProperty(value = "总数")
+    private int total;
 }
