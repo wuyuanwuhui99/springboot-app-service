@@ -54,7 +54,7 @@
                 FROM music_classify t1
                 LEFT JOIN music t2
                 ON t1.music_id = t2.id
-                WHERE t1.classify_id =1 ORDER BY t1.audio_rank DESC limit #{start},#{pageSize}
+                WHERE t1.classify_id =#{classifyId} ORDER BY t1.audio_rank DESC limit #{start},#{pageSize}
             ) t3
         LEFT JOIN music_favorite t4
         ON t3.id = t4.music_id AND t4.user_id = #{userId}
@@ -65,25 +65,30 @@
     </select>
 
     <select id="getSingerList" resultType="MusicAuthorEntity">
-        select t2.*,t3.total from music_authors t2
-        LEFT JOIN
-        (select count(*) as total,author_name from music where author_name in (
-            select author_name from music_authors where id in (
-                select t1.id from (select * from music_authors
-                <if test="category != '' and category != null">
-                    where language = #{category}
-                </if>
-                order by `rank` desc limit #{start},#{pageSize}
-            ) t1)
-        ) GROUP BY author_name) t3
-        on t2.author_name = t3.author_name
-         where  t2.id in (
-            select t1.id from (select * from music_authors
-            <if test="category != '' and category != null">
+        select
+            t1.id,
+            t1.author_id,
+            t1.author_name,
+            t1.language,
+            t1.is_publish,
+            t1.avatar,
+            t1.type,
+            t1.country,
+            t1.birthday,
+            t1.identity,
+            t1.rank,
+            t1.create_time,
+            t1.update_time,
+            COUNT(t2.author_name) as total
+         from
+         (select * from music_authors
+          <if test="category != '' and category != null">
                 where language = #{category}
             </if>
-            order by `rank` desc limit #{start},#{pageSize}
-         ) t1)
+             order by `rank` desc limit #{start},#{pageSize}
+          )t1
+        LEFT JOIN music t2 on t1.author_name = t2.author_name
+        GROUP BY t2.author_name,t1.id
     </select>
 
     <select id="getSingerTotal" resultType="Long">
