@@ -40,7 +40,6 @@
     </properties>
 
     <modules>
-        <module>../eureka-center</module>
         <module>../player-music</module>
         <module>../player-movie</module>
         <module>../player-common</module>

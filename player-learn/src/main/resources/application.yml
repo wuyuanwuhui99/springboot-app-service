@@ -34,17 +34,6 @@ spring:
       timeBetweenEvictionRunsMillis: 60000 #配置间隔检测连接是否有效的时间（单位是毫秒）
       minEvictableIdleTimeMillis: 300000  #连接在连接池的最小生存时间（毫秒）
 
-eureka:
-  client:
-    registerWithEureka: true #服务注册开关
-    fetchRegistry: true #服务发现开关
-    serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone:  ${EUREKA_SERVER:http://localhost:4001/eureka/,http://localhost:4002/eureka/}
-  instance:
-    prefer-ip-address:  true #将自己的ip地址注册到Eureka服务中
-    ip-address: ${IP_ADDRESS:127.0.0.1}
-    instance-id: ${spring.application.name}:${server.port}
-
 ribbon:
   MaxAutoRetries: 2 #最大重试次数，当Eureka中可以找到服务，但是服务连不上时将会重试
   MaxAutoRetriesNextServer: 3 #切换实例的重试次数

@@ -39,17 +39,6 @@ spring:
       timeBetweenEvictionRunsMillis: 60000
       minEvictableIdleTimeMillis: 300000
 
-eureka:
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone:  ${EUREKA_SERVER:http://localhost:4001/eureka/,http://localhost:4002/eureka/}
-  instance:
-    prefer-ip-address:  true
-    ip-address: ${IP_ADDRESS:127.0.0.1}
-    instance-id: ${spring.application.name}:${server.port}
-
 ribbon:
   MaxAutoRetries: 2
   MaxAutoRetriesNextServer: 3

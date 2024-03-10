@@ -10,32 +10,6 @@
 ![电影圈](./电影圈.jpg)
 ================================APP界面预览================================   
 
-
-==========================Eureka高可用配置配置==========================   
-
-![Eureka高可用配置1](./Eureka高可用配置1.png)
-![Eureka高可用配置2](./Eureka高可用配置2.png)
-配置参数1：  
-name: EurekaCenterApplication2   
-main class: com.player.eurekacenter.EurekaCenterApplication   
-VM options: -DPORT=4001 -DEUREKA_SERVER=http://localhost:4002/euraka/  -DEUREKA_DOMAIN=euraka01   
-
-配置参数2：  
-name: EurekaCenterApplication2   
-main class: com.player.eurekacenter.EurekaCenterApplication   
-VM options: -DPORT=4002 -DEUREKA_SERVER=http://localhost:4001/euraka/  -DEUREKA_DOMAIN=euraka01   
-
-==========================Eureka高可用配置配置==========================   
-
-=============================项目启动顺序=============================   
-
-![启动顺序](./启动顺序.jpg)   
-
-先按顺序启动前面三个，其他按需启动   
-
-=============================项目启动顺序=============================   
-
-
 ================================sql实例===============================   
 
 ![app首页](https://raw.githubusercontent.com/wuyuanwuhui99/springboot-app-service/main/mysql.png)

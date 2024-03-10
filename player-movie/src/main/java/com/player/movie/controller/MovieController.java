@@ -24,19 +24,6 @@ public class MovieController {
     @Autowired
     private IMovieService movieService;
 
-    @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
-    @ApiOperation("更新用户信息")
-    @PutMapping("/movie-getway/updateUser")
-    public ResultEntity updateUser(@RequestBody UserEntity userEntity,@RequestHeader("Authorization") String token) {
-        return movieService.updateUser(userEntity,token);
-    }
-
-    @ApiOperation("修改密码")
-    @PutMapping("/movie-getway/updatePassword")
-    public ResultEntity updatePassword(@RequestBody PasswordEntity passwordEntity, @RequestHeader("Authorization") String token) {
-        return movieService.updatePassword(passwordEntity,token);
-    }
-
     @OperLog(message = "获取分类信息", operation = OperationType.QUERY)
     @ApiOperation("获取分类信息")
     @GetMapping("/movie/findClassify")
@@ -53,20 +40,6 @@ public class MovieController {
             HttpServletRequest request
     ) {
         return movieService.getKeyWord(classify, HttpUtils.getPath(request));
-    }
-
-    @OperLog(message = "登录校验", operation = OperationType.LOGIN)
-    @ApiOperation("登录校验")
-    @PostMapping("/movie/login")
-    public ResultEntity login(@RequestBody UserEntity userEntity) {
-        return movieService.login(userEntity);
-    }
-
-    @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
-    @ApiOperation("查询用户信息")
-    @GetMapping("/movie/getUserData")
-    public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
-        return movieService.getUserData(token);
     }
 
     @OperLog(message = "查询当前用户的使用天数，关注数，观看记录数，浏览记录数", operation = OperationType.QUERY)
@@ -133,20 +106,6 @@ public class MovieController {
             HttpServletRequest request
     ) {
         return movieService.search(classify, category, label,star,director,keyword,pageNum,pageSize,HttpUtils.getPath(request));
-    }
-
-    @OperLog(message = "注册", operation = OperationType.QUERY)
-    @ApiOperation("注册,请求地地址：/service/movie/register")
-    @PutMapping("/movie/register")
-    public ResultEntity register(@RequestBody UserEntity userEntity) {
-        return movieService.register(userEntity);
-    }
-
-    @OperLog(message = "查询用户是否存在", operation = OperationType.QUERY)
-    @ApiOperation("查询用户是否存在,请求地地址：/service/movie/getUserById")
-    @GetMapping("/movie/getUserById")
-    public ResultEntity getUserById(@RequestParam("userId")String userId) {
-        return movieService.getUserById(userId);
     }
 
     @OperLog(message = "获取演员列表", operation = OperationType.QUERY)
@@ -249,54 +208,6 @@ public class MovieController {
         return movieService.getRecommend(classify, HttpUtils.getPath(request));
     }
 
-    @ApiOperation("获取总评论数量")
-    @GetMapping("/movie/getCommentCount")
-    public ResultEntity getCommentCount(
-            @RequestParam("relationId") int relationId,
-            @RequestParam("type") String type
-    ) {
-        return movieService.getCommentCount(relationId,type);
-    }
-
-    @ApiOperation("获取一级评论列表")
-    @GetMapping("/movie/getTopCommentList")
-    public ResultEntity getTopCommentList(
-            @RequestParam("relationId") int relationId,
-            @RequestParam("type") String type,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize")int pageSize
-    ) {
-        return movieService.getTopCommentList(relationId,type,pageNum,pageSize);
-    }
-
-    @ApiOperation("新增评论")
-    @PostMapping("/movie-getway/insertComment")
-    public ResultEntity insertComment(
-            @RequestHeader("Authorization") String token,
-            @RequestBody CommentEntity commentEntity
-    ) {
-        return movieService.insertComment(token,commentEntity);
-    }
-
-    @ApiOperation("删除评论")
-    @DeleteMapping("/movie-getway/deleteComment/{id}")
-    public ResultEntity deleteComment(
-            @RequestHeader("Authorization") String token,
-            @PathVariable("id") int id
-    ) {
-        return movieService.deleteComment(id,token);
-    }
-
-    @ApiOperation("获取回复列表")
-    @GetMapping("/movie/getReplyCommentList")
-    public ResultEntity getReplyCommentList(
-            @RequestParam("topId") int topId,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize")int pageSize
-    ) {
-        return movieService.getReplyCommentList(topId,pageNum,pageSize);
-    }
-
     @ApiOperation("获取电影详情")
     @GetMapping("/movie/getMovieDetail/{movieId}")
     public ResultEntity getMovieDetail(@PathVariable("movieId") int movieId) {
@@ -312,11 +223,5 @@ public class MovieController {
             HttpServletRequest request
     ) {
         return movieService.getMovieListByType(types,classify,HttpUtils.getPath(request));
-    }
-
-    @ApiOperation("头像上传")
-    @PutMapping("/movie-getway/updateAvater")
-    public ResultEntity upload(@RequestHeader("Authorization") String token,@RequestBody Map imgMap) {
-        return movieService.updateAvater(token,imgMap);
     }
 }

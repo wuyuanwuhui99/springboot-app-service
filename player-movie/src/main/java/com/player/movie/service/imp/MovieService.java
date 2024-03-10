@@ -28,35 +28,6 @@ public class MovieService implements IMovieService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    /**
-     * @author: wuwenqiang
-     * @description: 更新用户信息
-     * @date: 2020-12-24 22:40
-     */
-    @Override
-    public ResultEntity updateUser(UserEntity userEntity,String token) {
-        return restTemplate.exchange(
-                Common.putRequestEntity("http://player-user/service/user-getway/updateUser",token,userEntity),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 修改密码
-     * @date: 2020-12-24 22:40
-     */
-    @Override
-    public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
-        return restTemplate.exchange(
-                Common.postRequestEntity("http://player-user/service/user-getway/updatePassword",token,passwordEntity),
-                ResultEntity.class
-        ).getBody();
-    }
-
     /**
      * @author: wuwenqiang
      * @description: 查询电影分类
@@ -91,60 +62,6 @@ public class MovieService implements IMovieService {
             redisTemplate.opsForValue().set(url, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 登录校验
-     * @date: 2020-12-26 10:53
-     */
-    @Override
-    public ResultEntity login(UserEntity userEntity) {
-        return restTemplate.exchange(
-                Common.postRequestEntity("http://player-user/service/user/login",null,userEntity),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 注册
-     * @date: 2021-01-01 23:39
-     */
-    @Override
-    public ResultEntity register(UserEntity userEntity) {
-        return restTemplate.exchange(Common.postRequestEntity("http://player-user/service/user/register",null,userEntity),ResultEntity.class).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 查询单个用户，用于校验用户是否存在
-     * @date: 2021-01-01 23:39
-     */
-    @Override
-    public ResultEntity getUserById(String userId) {
-        return restTemplate.exchange(
-                "http://player-user/service/user/getUserById?userId="+userId,
-                HttpMethod.GET,
-                new HttpEntity<String>(new HttpHeaders()),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取用户数据
-     * @date: 2020-12-25 00:04
-     */
-    @Override
-    public ResultEntity getUserData(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        return restTemplate.exchange(
-                "http://player-user/service/user/getUserData",
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),ResultEntity.class
-        ).getBody();
     }
 
     /**
@@ -417,77 +334,6 @@ public class MovieService implements IMovieService {
 
     /**
      * @author: wuwenqiang
-     * @description: 获取总评论数量
-     * @date: 2021-08-21 23:15
-     */
-    @Override
-    public ResultEntity getCommentCount(int relationId,String type){
-        return restTemplate.exchange(
-                "http://player-social/service/social/getCommentCount?relationId="+relationId+"&type="+type,
-                HttpMethod.GET,
-                new HttpEntity<String>(new HttpHeaders()),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取一级评论列表
-     * @date: 2021-08-21 23:15
-     */
-    @Override
-    public ResultEntity getTopCommentList(int relationId,String type,int pageNum, int pageSize){
-        return restTemplate.exchange(
-                "http://player-social/service/social/getTopCommentList?relationId="+relationId+"&type="+type+"&pageNum="+pageNum + "&pageSize="+pageSize,
-                HttpMethod.GET,
-                new HttpEntity<String>(new HttpHeaders()),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 新增评论
-     * @date: 2021-08-21 23:15
-     */
-    @Override
-    public ResultEntity insertComment(String token, CommentEntity commentEntity){
-        return restTemplate.exchange(
-                Common.postRequestEntity("http://player-social/service/social-getway/insertComment",token,commentEntity),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 删除评论
-     * @date: 2021-08-21 23:15
-     */
-    @Override
-    public ResultEntity deleteComment(int id,String token){
-        return restTemplate.exchange(
-                Common.deleteRequestEntity("http://player-social/service/social-getway/delete/"+id,token),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 获取回复列表
-     * @date: 2021-08-21 23:15
-     */
-    @Override
-    public ResultEntity getReplyCommentList(int topId,int pageNum,int pageSize){
-        return restTemplate.exchange(
-                "http://player-social/service/social/getReplyCommentList?topId="+topId+"&pageNum="+pageNum+"&pageSize="+pageNum + "&pageSize="+pageSize,
-                HttpMethod.GET,
-                new HttpEntity<String>(new HttpHeaders()),
-                ResultEntity.class
-        ).getBody();
-    }
-
-    /**
-     * @author: wuwenqiang
      * @description: 获取电影详情
      * @date: 2021-08-25 22:22
      */
@@ -515,20 +361,5 @@ public class MovieService implements IMovieService {
             redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(resultEntity),1, TimeUnit.DAYS);
             return resultEntity;
         }
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @methodsName: updatePassword
-     * @description: 修改头像
-     * @return: ResultEntity
-     * @date: 2020-08-11 23:54
-     */
-    @Override
-    public ResultEntity updateAvater(String token, Map imgMap){
-        return restTemplate.exchange(
-                Common.putRequestEntity("http://player-user/service/user-getway/updateAvater",token,imgMap),
-                ResultEntity.class
-        ).getBody();
     }
 }

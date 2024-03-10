@@ -55,14 +55,3 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-eureka:
-  client:
-    registerWithEureka: true #服务注册开关
-    fetchRegistry: true #服务发现开关
-    serviceUrl: #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
-      defaultZone: http://localhost:4001/eureka/,http://localhost:4002/eureka/
-  instance:
-    prefer-ip-address:  true  #将自己的ip地址注册到Eureka服务中
-    ip-address: 127.0.0.1
-    instance-id: ${spring.application.name}:${server.port} #指定实例id
