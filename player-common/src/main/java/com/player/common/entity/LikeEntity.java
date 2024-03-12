@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 public class LikeEntity {
     @ApiModelProperty(value = "主键")
-    private Long id;//主键
+    private int id;//主键
 
     @ApiModelProperty(value = "类型，movie，aiqiyi，article")
     private String type;
@@ -24,4 +24,7 @@ public class LikeEntity {
 
     @ApiModelProperty(value = "创建时间")
     private String createTime;
+
+    @ApiModelProperty(value = "更新时间")
+    private String updateTime;
 }

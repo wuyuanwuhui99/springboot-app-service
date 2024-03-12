@@ -21,18 +21,6 @@ public class BookController {
 
     /**
      * @author: wuwenqiang
-     * @description: 查询用户数据
-     * @date: 2021-01-31 12:33
-     */
-    @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
-    @ApiOperation("查询用户信息")
-    @GetMapping("/getUserData")
-    public ResultEntity getUserData(@RequestHeader(value="Authorization",required = false) String token) {
-        return bookService.getUserData(token);
-    }
-
-    /**
-     * @author: wuwenqiang
      * @description: 查询所有分类信息
      * @date: 2021-02-1 21:27
      */

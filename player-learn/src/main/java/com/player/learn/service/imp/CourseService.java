@@ -21,7 +21,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +34,6 @@ public class CourseService implements ICourseService {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     private CourseDao courseDao;
@@ -111,44 +107,6 @@ public class CourseService implements ICourseService {
         }
     }
 
-    /**
-     * @param :userId用户账号
-     * @param :password密码
-     * @author: wuwenqiang
-     * @methodsName: getUserData
-     * @description: 登录
-     * @return: ResultEntity
-     * @date: 2021-01-09 11:36
-     */
-    @Override
-    public ResultEntity login(String userId, String password) {
-        Map<String,String> map =new HashMap<>();
-        map.put("userId",userId);
-        map.put("password",password);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.postForEntity("http://player-movie/service/movie/login", map, ResultEntity.class);
-        return  responseEntity.getBody();
-    }
-
-    /**
-     * @param :token用户token
-     * @author: wuwenqiang
-     * @methodsName: getUserData
-     * @description: 获取用户信息
-     * @return: ResultEntity
-     * @date: 2021-01-09 11:36
-     */
-    @Override
-    public ResultEntity getUserData(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", token);
-        ResponseEntity<ResultEntity> responseEntity = restTemplate.exchange(
-                "http://player-movie/service/movie/getUserData",
-                HttpMethod.GET,
-                new HttpEntity<String>(headers),
-                ResultEntity.class
-        );
-        return  responseEntity.getBody();
-    }
 
     /**
      * @param :courseLogEntity课程实体类

@@ -12,8 +12,6 @@ public interface IBookService {
             String path
     );
 
-    ResultEntity getUserData(String token);
-
     ResultEntity findAllByClassifyGroup(String token);
 
     ResultEntity getBanner(String token);

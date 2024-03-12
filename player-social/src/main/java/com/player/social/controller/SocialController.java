@@ -81,7 +81,7 @@ public class SocialController {
     @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
     @DeleteMapping("/social-getway/deleteLike")
     public ResultEntity deleteLike(
-            @RequestParam("movieId") Long relationId,
+            @RequestParam("relationId") Long relationId,
             @RequestParam("type") String type,
             @RequestHeader("Authorization") String token
     ) {

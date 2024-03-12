@@ -23,17 +23,9 @@ public class CircleController {
     public ResultEntity getCircleArticleList(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum,
-            @RequestParam("type") String type,
-            @RequestParam(value = "keyword",required = false) String keyword,
-            @RequestHeader(value = "Authorization",required = false) String token
+            @RequestParam("type") String type
     ) {
-        return circleService.getCircleArticleList(pageNum, pageSize, type, keyword, token);
-    }
-
-    @ApiOperation("获取用户登录信息")
-    @GetMapping("/circle/getUserData")
-    public ResultEntity getUserData(@RequestHeader(required = false, value = "Authorization") String token) {
-        return circleService.getUserData(token);
+        return circleService.getCircleArticleList(pageNum, pageSize, type);
     }
 
     @ApiOperation("获取文章的评论数量，浏览数量，收藏数量")

@@ -88,37 +88,6 @@ public class LearnController {
     }
 
     /**
-     * @param :userId用户账号
-     * @param :password密码
-     * @author: wuwenqiang
-     * @methodsName: getUserData
-     * @description: 登录
-     * @return: ResultEntity
-     * @date: 2021-01-09 11:36
-     */
-    @ApiOperation("登录校验")
-    @PostMapping("/login")
-    @OperLog(message = "登录校验", operation = OperationType.LOGIN)
-    public ResultEntity login(@RequestBody UserEntity userEntity) {
-        String userId = userEntity.getUserId();
-        String password = userEntity.getPassword();
-        return courseService.login(userId, password);
-    }
-
-    /**
-     * @author: wuwenqiang
-     * @description: 查询用户数据
-     * @date: 2021-01-09 11:21
-     */
-    @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
-    @ApiOperation("查询用户信息")
-    @GetMapping("/getUserData")
-    public ResultEntity getUserData(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return courseService.getUserData(token);
-    }
-
-    /**
      * @param :courseLogEntity用户账号
      * @author: wuwenqiang
      * @methodsName: saveCourseLog

@@ -77,7 +77,9 @@ public class SocialService implements ISocialService {
     @Override
     public ResultEntity saveLike(LikeEntity likeEntity, String token) {
         likeEntity.setUserId(JwtToken.getUserId(token));
-        return ResultUtil.success(socialMapper.saveLike(likeEntity));
+        socialMapper.saveLike(likeEntity);
+        LikeEntity likeById = socialMapper.getLikeById(likeEntity.getId());
+        return ResultUtil.success(likeById);
     }
 
     /**

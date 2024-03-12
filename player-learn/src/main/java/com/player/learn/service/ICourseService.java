@@ -12,10 +12,6 @@ public interface ICourseService {
 
     ResultEntity findAllByClassifyGroup();
 
-    ResultEntity login(String userId, String password);
-
-    ResultEntity getUserData(String token);
-
     ResultEntity saveCourseLog(CourseLogEntity courseLogEntity, String token);
 
 }

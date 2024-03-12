@@ -34,9 +34,16 @@
         SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM social_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
     </select>
 
-    <insert id="saveLike" parameterType="com.player.common.entity.LikeEntity">
-        INSERT INTO social_like(relation_id,`type`,user_id,create_time,update_time) SELECT #{relationId},#{type},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM movie_favorite WHERE relation_id = #{movieId})
+    <insert id="saveLike" parameterType="com.player.common.entity.LikeEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO social_like(relation_id,`type`,user_id,create_time,update_time) SELECT #{relationId},#{type},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM social_like WHERE relation_id = #{relationId} and `type` = #{type} and user_id = #{userId})
     </insert>
+
+    <select id="getLikeById" resultType="com.player.common.entity.LikeEntity">
+        SELECT t1.*,t2.username FROM social_like t1 LEFT JOIN user t2 ON t1.user_id = t2.user_id WHERE id = #{id}
+    </select>
 
     <delete id="deleteLike">
         DELETE FROM social_like WHERE user_id =#{userId} AND relation_id=#{relationId} and `type` = #{type}
