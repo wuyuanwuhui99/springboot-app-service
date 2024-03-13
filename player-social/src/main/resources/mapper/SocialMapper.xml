@@ -16,7 +16,7 @@
     </select>
 
     <insert id="insertComment" parameterType="com.player.common.entity.CommentEntity"  keyProperty="id"  useGeneratedKeys="true">
-        INSERT INTO social_comment(content,parent_id,top_id,relation_id,`type`,user_id,reply_user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{relationId},#{type},#{userId},#{replyUserId},NOW(),NOW())
+        INSERT INTO social_comment(content,parent_id,top_id,relation_id,`type`,user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{relationId},#{type},#{userId},NOW(),NOW())
     </insert>
 
     <delete id="deleteComment">
@@ -31,7 +31,17 @@
     </select>
 
     <select id="getCommentItem" resultType="com.player.common.entity.CommentEntity">
-        SELECT tu.*,ru.username as reply_user_name FROM (SELECT t.*,u.username,u.avater FROM social_comment t,`user` u WHERE t.user_id = u.user_id AND t.id = #{id}) tu LEFT JOIN `user` ru ON tu.reply_user_id = ru.user_id
+        SELECT t.*,us.username as reply_user_name FROM (
+            SELECT c.*,
+                u.username,
+                u.avater,
+                s.user_id as reply_user_id
+                 FROM social_comment c
+                 LEFT JOIN user u on c.user_id = u.user_id
+                 LEFT JOIN social_comment s on c.parent_id = s.id
+                 WHERE c.id =  #{id} and c.type = #{type}
+        ) t
+        LEFT JOIN user us on t.reply_user_id = us.user_id
     </select>
 
     <insert id="saveLike" parameterType="com.player.common.entity.LikeEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">

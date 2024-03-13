@@ -43,8 +43,7 @@ public class SocialService implements ISocialService {
     public ResultEntity insertComment(String token, CommentEntity commentEntity){
         commentEntity.setUserId(JwtToken.getUserId(token));
         socialMapper.insertComment(commentEntity);
-        socialMapper.getCommentItem(commentEntity.getId());
-        return ResultUtil.success(socialMapper.getCommentItem(commentEntity.getId()));
+        return ResultUtil.success(socialMapper.getCommentItem(commentEntity.getId(),commentEntity.getType()));
     }
 
     /**

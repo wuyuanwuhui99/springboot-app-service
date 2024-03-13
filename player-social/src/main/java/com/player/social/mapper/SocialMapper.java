@@ -19,7 +19,7 @@ public interface SocialMapper {
 
     Long deleteComment(int id, String userId);
 
-    CommentEntity getCommentItem(Long id);
+    CommentEntity getCommentItem(Long id,String type);
 
     void saveLike(LikeEntity likeEntity);
 
