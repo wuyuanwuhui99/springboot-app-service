@@ -103,26 +103,12 @@
     </select>
 
     <select id="getMySinger" resultType="MySingerEntity">
-        SELECT t5.*, t4.author_name, t4.total, t4.avatar
-        FROM (
-            SELECT t1.*, t2.author_name, t2.avatar
-            FROM (
-                SELECT count(audio_id) AS total, author_id
-                FROM music
-                WHERE author_id IN (
-                    SELECT t3.author_id
-                    FROM (
-                        SELECT *
-                        FROM music_my_singer
-                        WHERE user_id = #{userId}
-                        LIMIT #{start}, #{pageSize}
-                    ) t3
-                )
-                GROUP BY author_id
-            ) t1
-                LEFT JOIN music_authors t2 ON t1.author_id = t2.author_id
-        ) t4
-            LEFT JOIN music_my_singer t5 ON t4.author_id = t5.author_id
+        select t4.*,COUNT(t5.author_id) as total from
+            (select t3.* from
+                (select t1.* from music_my_singer t1 WHERE user_id = #{userId}  LIMIT #{start},#{pageSize}) t2
+                    LEFT JOIN music_authors t3 on t2.author_id = t3.author_id) t4
+        LEFT JOIN music t5 on t5.author_id = t4.author_id
+        GROUP BY t5.author_id,t4.id
     </select>
 
     <select id="getMySingerCount" resultType="Long">
