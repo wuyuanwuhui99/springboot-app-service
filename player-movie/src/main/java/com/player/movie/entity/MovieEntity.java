@@ -92,4 +92,10 @@ public class MovieEntity {
 
     @ApiModelProperty(value = "豆瓣网的url',")
     private String doubanUrl;
+
+    @ApiModelProperty(value = "播放时长")
+    private int duration;
+
+    @ApiModelProperty(value = "观看权限")
+    private int privilegeId;
 }
