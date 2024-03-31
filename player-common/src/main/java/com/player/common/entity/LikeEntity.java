@@ -4,11 +4,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @ToString
 public class LikeEntity {
     @ApiModelProperty(value = "主键")
-    private int id;//主键
+    private Long id;//主键
 
     @ApiModelProperty(value = "类型，movie，aiqiyi，article")
     private String type;
@@ -23,8 +25,8 @@ public class LikeEntity {
     private Long relationId;
 
     @ApiModelProperty(value = "创建时间")
-    private String createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "更新时间")
-    private String updateTime;
+    private Date updateTime;
 }

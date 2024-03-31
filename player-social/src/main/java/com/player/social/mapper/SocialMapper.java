@@ -23,7 +23,7 @@ public interface SocialMapper {
 
     void saveLike(LikeEntity likeEntity);
 
-    LikeEntity getLikeById(int id);
+    LikeEntity getLikeById(Long id);
 
     Long deleteLike(Long relationId,String type,String userId);
 

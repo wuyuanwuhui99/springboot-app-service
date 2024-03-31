@@ -16,7 +16,24 @@
     </select>
 
     <insert id="insertComment" parameterType="com.player.common.entity.CommentEntity"  keyProperty="id"  useGeneratedKeys="true">
-        INSERT INTO social_comment(content,parent_id,top_id,relation_id,`type`,user_id,create_time,udate_time) VALUES (#{content},#{parentId},#{topId},#{relationId},#{type},#{userId},NOW(),NOW())
+        INSERT INTO social_comment(content,parent_id,top_id,relation_id,`type`,user_id,create_time,udate_time) VALUES (#{content},
+        <choose>
+            <when test="parentId == 0">
+                null
+            </when>
+            <otherwise>
+                #{parentId}
+            </otherwise>
+        </choose>,
+        <choose>
+            <when test="topId == 0">
+                null
+            </when>
+            <otherwise>
+                #{topId}
+            </otherwise>
+        </choose>,
+        #{relationId},#{type},#{userId},NOW(),NOW())
     </insert>
 
     <delete id="deleteComment">

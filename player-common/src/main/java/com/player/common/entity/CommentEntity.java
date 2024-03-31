@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @ToString
 public class CommentEntity {
@@ -26,10 +29,10 @@ public class CommentEntity {
     private String type;
 
     @ApiModelProperty(value = "创建时间")
-    private String createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "更新时间")
-    private String updateTime;
+    private Date updateTime;
 
     @ApiModelProperty(value = "回复数量")
     private int replyCount;
@@ -48,4 +51,7 @@ public class CommentEntity {
 
     @ApiModelProperty(value = "被回复者名称")
     private String replyUserName;
+
+    @ApiModelProperty(value = "回复者列表")
+    private List<CommentEntity> replyList;
 }

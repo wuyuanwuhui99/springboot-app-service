@@ -15,10 +15,10 @@ public class CircleEntity {
     @ApiModelProperty(value = "主键")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ApiModelProperty(value = "关联音乐audio_id或者电影movie_id")
-    private int relationId;
+    private Long relationId;
 
     @ApiModelProperty(value = "朋友圈内容")
     private String content;

@@ -7,8 +7,8 @@
     </select>
 
     <resultMap id="getCircleListAssociation" type="CircleEntity">
-        <id property="id" column="id" javaType="int" />
-        <result property="relationId" column="relation_id" javaType="int"/>
+        <id property="id" column="id" javaType="Long" />
+        <result property="relationId" column="relation_id" javaType="Long"/>
         <result property="content" column="content" javaType="String"/>
         <result property="imgs" column="imgs" javaType="String"/>
         <result property="type" column="type" javaType="String"/>
@@ -124,22 +124,86 @@
         INSERT INTO circle(content,imgs,`type`,user_id,create_time,update_time) VALUE (#{content},#{imgs},#{type},#{userId},now(),now())
     </insert>
 
-    <select id="getCircleLikeByCircleId" resultType="com.player.common.entity.LikeEntity" parameterType="int">
+    <select id="getCircleLikeByCircleId" resultMap="getCircleLikeMap">
         SELECT c.*,u.username FROM social_like c LEFT JOIN user u on c.user_id = u.user_id where c.relation_id = #{id} and c.type = 'music_circle'
     </select>
-    
-    <select id="getSocialCommentByCircleId" resultType="com.player.common.entity.CommentEntity">
-        SELECT t.*,us.username as reply_user_name FROM (
-            SELECT c.*,
-                u.username,
-                u.avater,
-                s.user_id as reply_user_id
-                 FROM social_comment c
-                 LEFT JOIN user u on c.user_id = u.user_id
-                 LEFT JOIN social_comment s on c.parent_id = s.id
-                 WHERE c.relation_id =  #{id} and c.type = 'music_circle'
-        ) t
-        LEFT JOIN user us on t.reply_user_id = us.user_id
+
+    <resultMap id="getCircleLikeMap" type="com.player.common.entity.LikeEntity">
+        <id property="id" column="id" javaType="Long" />
+        <result property="type" column="type" javaType="String"/>
+        <result property="userId" column="user_id" javaType="String"/>
+        <result property="username" column="username" javaType="String"/>
+        <result property="relationId" column="relation_id" javaType="Long"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="updateTime" column="update_time" javaType="Date"/>
+    </resultMap>
+
+    <select id="getSocialCommentByCircleId" resultMap="getCommentListAssociation">
+        SELECT
+            t4.*,
+            t5.username AS reply_user_name,
+            count( t6.id ) AS reply_count
+        FROM
+            (
+            SELECT
+                t1.*,
+                t2.username,
+                t2.avater,
+                t3.user_id AS reply_user_id
+            FROM
+                social_comment t1
+                LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
+            WHERE
+                t1.relation_id = #{id}
+                AND t1.top_id IS NULL
+                AND t1.type = 'music_circle'
+            ) t4
+            LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id
+            LEFT JOIN social_comment t6 ON t4.id = t6.parent_id
+        GROUP BY
+            t4.id
+    </select>
+
+    <resultMap id="getCommentListAssociation" type="com.player.common.entity.CommentEntity">
+        <id property="id" column="id" javaType="Long" />
+        <result property="content" column="content" javaType="String"/>
+        <result property="parentId" column="parent_id" javaType="Long"/>
+        <result property="topId" column="top_id" javaType="Long"/>
+        <result property="relationId" column="relation_id" javaType="Long"/>
+        <result property="type" column="type" javaType="String"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="updateTime" column="update_time" javaType="Date"/>
+        <result property="replyCount" column="reply_count" javaType="int"/>
+        <result property="userId" column="user_id" javaType="String"/>
+        <result property="username" column="username" javaType="String"/>
+        <result property="avater" column="avater" javaType="String"/>
+        <result property="replyUserId" column="reply_user_id" javaType="String"/>
+        <result property="replyUserName" column="reply_username" javaType="String"/>
+        <association property="replyList"  column="id" select="getSocialReplyParentId"/>
+    </resultMap>
+
+    <select id="getSocialReplyParentId" resultType="com.player.common.entity.CommentEntity">
+        SELECT t6.* from
+            (SELECT
+                t4.*,
+                t5.username AS reply_user_name
+            FROM
+                (
+                SELECT
+                    t1.*,
+                    t2.username,
+                    t2.avater,
+                    t3.user_id AS reply_user_id
+                FROM
+                    social_comment t1
+                    LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                    LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
+                WHERE
+                    t1.parent_id = #{id}
+                ) t4
+                LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id)t6
+            ORDER BY t6.create_time DESC limit 0 ,5
     </select>
 </mapper>
 
