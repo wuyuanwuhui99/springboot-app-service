@@ -105,7 +105,7 @@
     <select id="getMySinger" resultType="MySingerEntity">
         select t4.*,COUNT(t5.author_id) as total from
             (select t3.* from
-                (select t1.* from music_my_singer t1 WHERE user_id = #{userId}  LIMIT #{start},#{pageSize}) t2
+                (select t1.* from music_my_singer t1  LIMIT #{start},#{pageSize}) t2
                     LEFT JOIN music_authors t3 on t2.author_id = t3.author_id) t4
         LEFT JOIN music t5 on t5.author_id = t4.author_id
         GROUP BY t5.author_id,t4.id
@@ -116,25 +116,30 @@
     </select>
 
     <select id="getMusicRecord" resultType="MyMusicEntity">
-        SELECT t4.*, t3.times
-        FROM (
-            SELECT t1.*, t2.times
-            FROM (
-                SELECT DISTINCT music_id, id, user_id, create_time, update_time
-                FROM music_record
-                WHERE user_id = #{userId}
-                ORDER BY create_time DESC
-                LIMIT #{start}, #{pageSize}
-            ) t1
-                LEFT JOIN (
-                    SELECT COUNT(music_id) AS times, music_id
-                    FROM music_record
-                    WHERE user_id = #{userId}
-                    GROUP BY music_id
-                ) t2
-                ON t1.music_id = t2.music_id
-        ) t3
-            LEFT JOIN music t4 ON t3.music_id = t4.id
+        SELECT
+            *
+        FROM
+            (
+            SELECT
+                t5.*,
+                t6.times
+            FROM
+                (
+                SELECT
+                    t1.*
+                FROM
+                    ( SELECT * FROM music_record WHERE user_id = #{userId} ) t1
+                    INNER JOIN ( SELECT music_id, MAX( create_time ) AS max_date FROM ( SELECT * FROM music_record WHERE user_id = #{userId} ) t2 GROUP BY music_id ) t3 ON t1.music_id = t3.music_id
+                    AND t1.create_time = t3.max_date
+                ORDER BY
+                    t1.create_time DESC
+                ) t4
+                INNER JOIN music t5 ON t4.music_id = t5.id
+                INNER JOIN ( SELECT COUNT( music_id ) AS times, music_id FROM music_record GROUP BY music_id ) t6 ON t6.music_id = t4.music_id
+            ORDER BY
+                t4.create_time DESC
+            ) t7
+            LIMIT #{start},#{pageSize}
     </select>
 
     <select id="getMusicRecordCount" resultType="Long">
