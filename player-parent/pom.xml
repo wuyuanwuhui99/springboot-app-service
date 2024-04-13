@@ -25,8 +25,6 @@
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
         <spring-cloud-dependencies.version>Finchley.SR1</spring-cloud-dependencies.version>
-        <spring-cloud-starter-netflix-eureka-server.version>2.2.3.RELEASE
-        </spring-cloud-starter-netflix-eureka-server.version>
         <commons-io.version>2.6</commons-io.version>
         <org.apache.httpcomponents.version>4.5.2</org.apache.httpcomponents.version>
         <redis.clients.version>2.9.0</redis.clients.version>
