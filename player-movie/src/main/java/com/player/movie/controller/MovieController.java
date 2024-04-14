@@ -1,9 +1,6 @@
 package com.player.movie.controller;
 
-import com.player.common.entity.CommentEntity;
-import com.player.common.entity.PasswordEntity;
 import com.player.common.entity.ResultEntity;
-import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.HttpUtils;
 import com.player.common.utils.OperationType;
@@ -15,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @RequestMapping("/service")
 @Api(value = "抖音查询和记录的接口", description = "查询抖音列表、播放记录接口")

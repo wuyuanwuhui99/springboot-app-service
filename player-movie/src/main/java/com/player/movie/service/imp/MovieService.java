@@ -2,21 +2,17 @@ package com.player.movie.service.imp;
 
 import com.alibaba.fastjson.JSON;
 import com.player.common.entity.*;
-import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
