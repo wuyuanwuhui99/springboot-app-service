@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 16/04/2024 23:06:53
+ Date: 16/04/2024 23:42:45
 */
 
 SET NAMES utf8mb4;
@@ -612,7 +612,9 @@ DROP TABLE IF EXISTS `movie_recommend`;
 CREATE TABLE `movie_recommend`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `movie_id` int(0) NULL DEFAULT NULL COMMENT 'movie表的主键id',
-  `category_id` int(0) NOT NULL,
+  `classify` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `page_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   `update_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
