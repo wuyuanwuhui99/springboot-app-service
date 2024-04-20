@@ -67,7 +67,7 @@ public class UserService implements IUserService {
             redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(resultUserEntity, "登录成功", token);
         } else {
-            return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.FAIIL);
+            return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.FAIL);
         }
     }
 

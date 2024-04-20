@@ -74,7 +74,7 @@ public class ResultUtil {
     public static ResultEntity fail(Object object) {
         ResultEntity resultEntity = new ResultEntity();
         resultEntity.setData(object);
-        resultEntity.setStatus(ResultCode.FAIIL);
+        resultEntity.setStatus(ResultCode.FAIL);
         return resultEntity;
     }
 
@@ -88,7 +88,7 @@ public class ResultUtil {
     public static ResultEntity fail(Object object, String msg) {
         ResultEntity resultEntity = new ResultEntity();
         resultEntity.setData(object);
-        resultEntity.setStatus(ResultCode.FAIIL);
+        resultEntity.setStatus(ResultCode.FAIL);
         resultEntity.setMsg(msg);
         return resultEntity;
     }
