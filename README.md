@@ -67,6 +67,7 @@ vue3+ts明日头条项目：
 nginx(nginx.conf文件)配置如下   
 ```
 
+
 #user  nobody;
 worker_processes  1;
 
@@ -162,50 +163,7 @@ http {
             proxy_pass http://127.0.0.1:9000;
             client_max_body_size  1g;
         }
-        location /static/ {
-            alias G:/static/;
-        }
-    }
-
-    server{
-        listen       5173;
-        location /service/movie/ {
-            proxy_pass http://127.0.0.1:5000;
-            client_max_body_size  1g;
-        }
-        location /service/movie-getway/ {
-            proxy_pass http://127.0.0.1:5000;
-            client_max_body_size  1g;
-        }
-        location /service/myMusic/ {
-            proxy_pass http://127.0.0.1:4000;
-            client_max_body_size  1g;
-        }
-        location /service/myMusic-getway/ {
-            proxy_pass http://127.0.0.1:4000;
-            client_max_body_size  1g;
-        }
-        location /service/music/ {
-            proxy_pass http://127.0.0.1:4000;
-            client_max_body_size  1g;
-        }
-        location /service/social/ {
-            proxy_pass http://127.0.0.1:8002;
-            client_max_body_size  1g;
-        }
-        location /service/social-getway/ {
-            proxy_pass http://127.0.0.1:8002;
-            client_max_body_size  1g;
-        }
-        location /service/circle/ {
-            proxy_pass http://127.0.0.1:8003;
-            client_max_body_size  1g;
-        }
-        location /service/circle-getway/ {
-            proxy_pass http://127.0.0.1:8003;
-            client_max_body_size  1g;
-        }
-        location /service/user/ {
+        location /service/user-getway/ {
             proxy_pass http://127.0.0.1:9000;
             client_max_body_size  1g;
         }
@@ -214,15 +172,6 @@ http {
         }
     }
 
-    server{
-        listen       7001;
-        location /service/ {
-            proxy_pass http://127.0.0.1:7000;
-        }
-        location /static/ {
-            alias G:/static/;
-        }
-    }
 
     server{
         listen       3002;
@@ -295,5 +244,6 @@ http {
     #}
 
 }
+
    
 ```
