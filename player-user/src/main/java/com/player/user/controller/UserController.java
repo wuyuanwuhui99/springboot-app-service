@@ -45,7 +45,7 @@ public class UserController {
 
     @OperLog(message = "注册", operation = OperationType.QUERY)
     @ApiOperation("注册,请求地地址：/service/user/register")
-    @PutMapping("/user/register")
+    @PostMapping("/user/register")
     public ResultEntity register(@RequestBody UserEntity userEntity) {
         return userService.register(userEntity);
     }
