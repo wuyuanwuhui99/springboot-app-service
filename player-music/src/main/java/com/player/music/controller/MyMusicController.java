@@ -90,19 +90,19 @@ public class MyMusicController {
     }
 
     @ApiOperation("插入音乐收藏")
-    @PostMapping("/myMusic-getway/insertMusicFavorite")
+    @PostMapping("/myMusic-getway/insertMusicFavorite/{id}")
     public ResultEntity insertMusicFavorite(
             @RequestHeader("Authorization") String token,
-            @RequestBody MyMusicEntity myMusicEntity
+            @PathVariable("id") int id
     ) {
-        return myMusicService.insertMusicFavorite(token,myMusicEntity);
+        return myMusicService.insertMusicFavorite(token,id);
     }
 
     @ApiOperation("删除音乐收藏")
     @DeleteMapping("/myMusic-getway/deleteMusicFavorite/{id}")
     public ResultEntity deleteMusicFavorite(
             @RequestHeader("Authorization") String token,
-            @PathVariable("id") Long id
+            @PathVariable("id") int id
     ) {
         return myMusicService.deleteMusicFavorite(token,id);
     }

@@ -20,9 +20,9 @@ public interface IMyMusicService {
 
     ResultEntity insertLog(String token,MyMusicEntity myMusicEntity);
 
-    ResultEntity insertMusicFavorite(String token,MyMusicEntity myMusicEntity);
+    ResultEntity insertMusicFavorite(String token,int musicId);
 
-    ResultEntity deleteMusicFavorite(String token,Long id);
+    ResultEntity deleteMusicFavorite(String token,int id);
 
     ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize);
 

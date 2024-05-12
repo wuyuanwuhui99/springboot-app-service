@@ -180,9 +180,9 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2024-01-05 21:50
      */
     @Override
-    public ResultEntity insertMusicFavorite(String token, MyMusicEntity myMusicEntity){
+    public ResultEntity insertMusicFavorite(String token, int musicId){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(myMusicMapper.insertMusicFavorite(userEntity.getUserId(), myMusicEntity.getId()));
+        return ResultUtil.success(myMusicMapper.insertMusicFavorite(userEntity.getUserId(), musicId));
     }
 
     /**
@@ -193,7 +193,7 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2024-01-05 21:50
      */
     @Override
-    public ResultEntity deleteMusicFavorite(String token, Long id){
+    public ResultEntity deleteMusicFavorite(String token, int id){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(myMusicMapper.deleteMusicFavorite(userEntity.getUserId(),id));
     }
