@@ -10,7 +10,7 @@ import java.util.Date;
 @ToString
 public class LikeEntity {
     @ApiModelProperty(value = "主键")
-    private Long id;//主键
+    private int id;//主键
 
     @ApiModelProperty(value = "类型，movie，aiqiyi，article")
     private String type;

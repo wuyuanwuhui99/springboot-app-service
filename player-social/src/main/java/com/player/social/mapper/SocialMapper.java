@@ -21,9 +21,9 @@ public interface SocialMapper {
 
     CommentEntity getCommentItem(Long id,String type);
 
-    void saveLike(LikeEntity likeEntity);
+    Long saveLike(LikeEntity likeEntity);
 
-    LikeEntity getLikeById(Long id);
+    LikeEntity getLikeById(int id);
 
     Long deleteLike(Long relationId,String type,String userId);
 
