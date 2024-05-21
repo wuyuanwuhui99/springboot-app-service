@@ -6,8 +6,6 @@ import com.player.common.entity.CommentEntity;
 
 public interface ISocialService {
 
-    ResultEntity getCommentCount(int relaitionId, String type);
-
     ResultEntity getTopCommentList(int movieId, String type, int pageNum, int pageSize);
 
     ResultEntity insertComment(String token, CommentEntity commentEntity);
@@ -21,4 +19,6 @@ public interface ISocialService {
     ResultEntity deleteLike(Long relationId,String type,String token);
 
     ResultEntity isLike(Long relationId,String type,String token);
+
+    ResultEntity getCommentCount(int relationId, String type);
 }

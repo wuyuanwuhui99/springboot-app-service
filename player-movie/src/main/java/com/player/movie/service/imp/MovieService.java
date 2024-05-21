@@ -210,9 +210,10 @@ public class MovieService implements IMovieService {
      * @date: 2021-02-28 12:08
      */
     @Override
-    public ResultEntity getPlayRecord(String token) {
+    public ResultEntity getPlayRecord(String token,int pageNum,int pageSize) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.getPlayRecord(userEntity.getUserId()));
+        int start = (pageNum - 1) * pageSize;
+        return ResultUtil.success(movieMapper.getPlayRecord(userEntity.getUserId(),start,pageSize));
     }
 
     /**

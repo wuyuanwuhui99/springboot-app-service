@@ -152,7 +152,7 @@
     </insert>
 
     <select id="getPlayRecord" resultType="MovieEntity">
-        SELECT m.* FROM movie m,movie_play_record r WHERE m.id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT 0,50
+        SELECT m.* FROM movie m,movie_play_record r WHERE m.id = r.movie_id AND r.user_id = #{userId} ORDER BY r.create_time DESC LIMIT ${start},${pageSize}
     </select>
 
     <insert id="savePlayRecord" parameterType="MovieEntity">

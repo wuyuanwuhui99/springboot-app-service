@@ -70,7 +70,7 @@ public interface MovieMapper {
 
     List<MovieUrlEntity> getMovieUrl(Long movieId);
 
-    List<MovieEntity> getPlayRecord(String userId);
+    List<MovieEntity> getPlayRecord(String userId,int start,int pageSize);
 
     Long savePlayRecord(MovieEntity movieEntity);
 

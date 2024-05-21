@@ -6,13 +6,59 @@
         SELECT COUNT(*) FROM social_comment WHERE relation_id = #{relationId} and `type` = #{type}
     </select>
 
-    <select id="getTopCommentList" resultType="com.player.common.entity.CommentEntity">
+    <resultMap id="getTopCommentListAssociation" type="com.player.common.entity.CommentEntity">
+        <id property="id" column="id" javaType="Long" />
+        <result property="content" column="content" javaType="String"/>
+        <result property="parentId" column="parent_id" javaType="Long"/>
+        <result property="topId" column="top_id" javaType="Long"/>
+        <result property="relationId" column="relation_id" javaType="Long"/>
+        <result property="type" column="type" javaType="String"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="updateTime" column="update_time" javaType="Date"/>
+        <result property="replyCount" column="reply_count" javaType="int"/>
+        <result property="userId" column="user_id" javaType="String"/>
+        <result property="username" column="username" javaType="String"/>
+        <result property="avater" column="avater" javaType="String"/>
+        <result property="replyUserId" column="reply_user_id" javaType="String"/>
+        <result property="replyUserName" column="reply_username" javaType="String"/>
+        <association property="replyList"  column="id" select="getSocialReplyParentId"/>
+        <association property="replyCount"  column="id" select="getSocialReplyCountParentId"/>
+    </resultMap>
+
+    <select id="getTopCommentList" resultMap="getTopCommentListAssociation">
         SELECT tc.*,u.username,u.avater FROM (
 	        SELECT tu.* FROM (
 		        (SELECT c.*,COUNT(t.id) AS replyCount FROM social_comment c  LEFT JOIN social_comment t ON  c.id = t.top_id  WHERE c.relation_id = #{relationId} AND c.type = #{type} AND c.top_id is null GROUP BY c.id)
 	        ) tu
         ) tc
         LEFT JOIN `user` u ON u.user_id = tc.user_id LIMIT #{start},#{pageSize}
+    </select>
+
+    <select id="getSocialReplyParentId" resultType="com.player.common.entity.CommentEntity">
+        SELECT t6.* from
+            (SELECT
+                t4.*,
+                t5.username AS reply_user_name
+            FROM
+                (
+                SELECT
+                    t1.*,
+                    t2.username,
+                    t2.avater,
+                    t3.user_id AS reply_user_id
+                FROM
+                    social_comment t1
+                    LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                    LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
+                WHERE
+                    t1.parent_id = #{id}
+                ) t4
+                LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id)t6
+            ORDER BY t6.create_time DESC limit 0 ,5
+    </select>
+
+    <select id="getSocialReplyCountParentId" resultType="int">
+        SELECT COUNT(id) FROM social_comment WHERE parent_id = #{id}
     </select>
 
     <insert id="insertComment" parameterType="com.player.common.entity.CommentEntity"  keyProperty="id"  useGeneratedKeys="true">
@@ -62,7 +108,7 @@
     </select>
 
     <insert id="saveLike" parameterType="com.player.common.entity.LikeEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        <selectKey keyProperty="id" resultType="int" order="AFTER">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO social_like(relation_id,`type`,user_id,create_time,update_time) SELECT #{relationId},#{type},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM social_like WHERE relation_id = #{relationId} and `type` = #{type} and user_id = #{userId})

@@ -25,7 +25,7 @@ public interface IMovieService {
 
     ResultEntity getMovieUrl(Long movieId,String redisKey);
 
-    ResultEntity getPlayRecord(String token);
+    ResultEntity getPlayRecord(String token,int pageNum,int pageSize);
 
     ResultEntity savePlayRecord(MovieEntity movieEntity,String token);
 

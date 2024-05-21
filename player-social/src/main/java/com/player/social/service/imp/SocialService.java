@@ -13,16 +13,6 @@ public class SocialService implements ISocialService {
     
     @Autowired
     private SocialMapper socialMapper;
-    
-    /**
-     * @author: wuwenqiang
-     * @description: 获取总评论数量
-     * @date: 2021-08-21 23:15
-     */
-    @Override
-    public ResultEntity getCommentCount(int relationId,String type){
-        return ResultUtil.success(socialMapper.getCommentCount(relationId,type));
-    }
 
     /**
      * @author: wuwenqiang
@@ -32,8 +22,10 @@ public class SocialService implements ISocialService {
     @Override
     public ResultEntity getTopCommentList(int relationId, String type,int pageNum, int pageSize){
         if(pageSize > 100)pageSize = 100;
-        int start = (pageNum - 1)*pageSize;
-        return ResultUtil.success(socialMapper.getTopCommentList(relationId,type,start,pageSize));
+        int start = (pageNum - 1) * pageSize;
+        ResultEntity resultEntity = ResultUtil.success(socialMapper.getTopCommentList(relationId,type,start,pageSize));
+        resultEntity.setTotal(socialMapper.getCommentCount(relationId,type));
+        return resultEntity;
     }
 
     /**
@@ -98,5 +90,15 @@ public class SocialService implements ISocialService {
     public ResultEntity isLike(Long relationId,String type,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         return ResultUtil.success(socialMapper.isLike(relationId,type,userEntity.getUserId()));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 获取评论总数
+     * @date: 2021-03-07 16:10
+     */
+    @Override
+    public ResultEntity getCommentCount(int relationId, String type) {
+        return ResultUtil.success(socialMapper.getCommentCount(relationId,type));
     }
 }

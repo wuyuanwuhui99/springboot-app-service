@@ -127,8 +127,11 @@ public class MovieController {
     @OperLog(message = "获取观看记录", operation = OperationType.QUERY)
     @ApiOperation("获取观看记录,请求地地址：/service/movie/getPlayRecord")
     @GetMapping("/movie-getway/getPlayRecord")
-    public ResultEntity getPlayRecord(@RequestHeader("Authorization") String token) {
-        return movieService.getPlayRecord(token);
+    public ResultEntity getPlayRecord(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("pageNum")int pageNum,
+            @RequestParam("pageSize")int pageSize) {
+        return movieService.getPlayRecord(token,pageNum,pageSize);
     }
 
     @OperLog(message = "保存观看记录", operation = OperationType.ADD)
@@ -138,7 +141,7 @@ public class MovieController {
         return movieService.savePlayRecord(movieEntity,token);
     }
 
-    @OperLog(message = "获取观看记录", operation = OperationType.ADD)
+    @OperLog(message = "获取观看记录", operation = OperationType.QUERY)
     @ApiOperation("获取观看记录,请求地地址：/service/movie-getway/getViewRecord")
     @GetMapping("/movie-getway/getViewRecord")
     public ResultEntity getViewRecord(
