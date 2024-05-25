@@ -67,8 +67,8 @@ public class SocialController {
         return socialService.getReplyCommentList(topId,pageNum,pageSize);
     }
 
-    @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
-    @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
+    @OperLog(message = "添加点赞", operation = OperationType.ADD)
+    @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveLike")
     @PostMapping("/social-getway/saveLike")
     public ResultEntity saveLike(
             @RequestBody LikeEntity likeEntity,
@@ -77,7 +77,7 @@ public class SocialController {
         return socialService.saveLike(likeEntity,token);
     }
 
-    @OperLog(message = "删除收藏", operation = OperationType.DELETE)
+    @OperLog(message = "删除点赞", operation = OperationType.DELETE)
     @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
     @DeleteMapping("/social-getway/deleteLike")
     public ResultEntity deleteLike(

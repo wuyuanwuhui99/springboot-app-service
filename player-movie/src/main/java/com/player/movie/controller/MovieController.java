@@ -170,15 +170,15 @@ public class MovieController {
 
     @OperLog(message = "保存收藏记录", operation = OperationType.ADD)
     @ApiOperation("保存收藏记录,请求地地址：/service/movie-getway/saveFavorite")
-    @PostMapping("/movie-getway/saveFavorite")
-    public ResultEntity saveFavorite(@RequestBody MovieEntity movieEntity,@RequestHeader("Authorization") String token) {
-        return movieService.saveFavorite(movieEntity.getId(),token);
+    @PostMapping("/movie-getway/saveFavorite/{movieId}")
+    public ResultEntity saveFavorite(@PathVariable("movieId") int movieId,@RequestHeader("Authorization") String token) {
+        return movieService.saveFavorite(movieId,token);
     }
 
     @OperLog(message = "删除收藏", operation = OperationType.DELETE)
     @ApiOperation("删除收藏,请求地地址：/service/movie-getway/deleteFavorite")
-    @DeleteMapping("/movie-getway/deleteFavorite")
-    public ResultEntity deleteFavorite(@RequestParam("movieId") Long movieId,@RequestHeader("Authorization") String token) {
+    @DeleteMapping("/movie-getway/deleteFavorite/{movieId}")
+    public ResultEntity deleteFavorite(@PathVariable("movieId") int movieId,@RequestHeader("Authorization") String token) {
         return movieService.deleteFavorite(movieId,token);
     }
 

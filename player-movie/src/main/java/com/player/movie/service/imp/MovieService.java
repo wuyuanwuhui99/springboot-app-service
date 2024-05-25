@@ -279,7 +279,7 @@ public class MovieService implements IMovieService {
      * @date: 2020-12-25 22:29
      */
     @Override
-    public ResultEntity saveFavorite(Long movieId, String token) {
+    public ResultEntity saveFavorite(int movieId, String token) {
         return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getUserId(token)));
     }
 
@@ -289,7 +289,7 @@ public class MovieService implements IMovieService {
      * @date: 2021-03-07 16:10
      */
     @Override
-    public ResultEntity deleteFavorite(Long movieId,String token) {
+    public ResultEntity deleteFavorite(int movieId,String token) {
         return ResultUtil.success(movieMapper.deleteFavorite(movieId,JwtToken.getUserId(token)));
     }
 

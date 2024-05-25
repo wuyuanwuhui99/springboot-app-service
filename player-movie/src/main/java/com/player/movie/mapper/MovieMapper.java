@@ -80,9 +80,9 @@ public interface MovieMapper {
 
     List<MovieEntity> getFavoriteList(String userId,int start,int pageSize);
 
-    Long saveFavorite(Long movieId, String userId);
+    Long saveFavorite(int movieId, String userId);
 
-    Long deleteFavorite(Long movieId,String userId);
+    Long deleteFavorite(int movieId,String userId);
 
     Long isFavorite(Long movieId, String userId);
 
