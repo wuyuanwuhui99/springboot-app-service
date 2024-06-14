@@ -167,9 +167,8 @@ public class MyMusicService implements IMyMusicService {
      */
     @Override
     public ResultEntity insertLog(String token, MyMusicEntity myMusicEntity){
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         Long musicId = myMusicEntity.getId();
-        return ResultUtil.success(myMusicMapper.insertLog(userEntity.getUserId(),musicId));
+        return ResultUtil.success(myMusicMapper.insertLog(JwtToken.parserToken(token, UserEntity.class).getUserId(),musicId));
     }
 
     /**
@@ -181,8 +180,7 @@ public class MyMusicService implements IMyMusicService {
      */
     @Override
     public ResultEntity insertMusicFavorite(String token, int musicId){
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(myMusicMapper.insertMusicFavorite(userEntity.getUserId(), musicId));
+        return ResultUtil.success(myMusicMapper.insertMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(), musicId));
     }
 
     /**
@@ -194,8 +192,19 @@ public class MyMusicService implements IMyMusicService {
      */
     @Override
     public ResultEntity deleteMusicFavorite(String token, int id){
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(myMusicMapper.deleteMusicFavorite(userEntity.getUserId(),id));
+        return ResultUtil.success(myMusicMapper.deleteMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),id));
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: insertLog
+     * @description: 查询是否关注
+     * @return: ResultEntity
+     * @date: 2024-06-15 00:08
+     */
+    @Override
+    public ResultEntity isMusicFavorite(String token, int musicId){
+        return ResultUtil.success(myMusicMapper.isMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),musicId));
     }
 
     /**
@@ -207,11 +216,10 @@ public class MyMusicService implements IMyMusicService {
      */
     @Override
     public ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize){
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         if (pageSize > 100) pageSize = 100;
         int start = (pageNum - 1) * pageSize;
-        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicFavorite(userEntity.getUserId(),start,pageSize));
-        Long mySingerCount = myMusicMapper.queryMusicFavoriteCount(userEntity.getUserId());
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),start,pageSize));
+        Long mySingerCount = myMusicMapper.queryMusicFavoriteCount(JwtToken.parserToken(token, UserEntity.class).getUserId());
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
     }
@@ -258,6 +266,4 @@ public class MyMusicService implements IMyMusicService {
             return resultEntity;
         }
     }
-
-
 }

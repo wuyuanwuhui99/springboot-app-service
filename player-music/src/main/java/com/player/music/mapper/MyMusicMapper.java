@@ -35,6 +35,8 @@ public interface MyMusicMapper {
 
     Long insertMusicFavorite(String userId,int musicId);
 
+    Long isMusicFavorite(String userId,int musicId);
+
     Long deleteMusicFavorite(String userId,int musicId);
 
     List<MyMusicEntity> queryMusicFavorite(String userId, int start, int pageSize);

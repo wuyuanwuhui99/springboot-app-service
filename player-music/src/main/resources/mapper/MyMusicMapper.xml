@@ -64,6 +64,10 @@
         select count(*) as total from music_classify where classify_id = #{classifyId}
     </select>
 
+    <select id="isMusicFavorite" resultType="Long">
+        select count(id) from music_favorite where music_id = #{musicId} and user_id = #{userId}
+    </select>
+
     <select id="getSingerList" resultType="MusicAuthorEntity">
         select
             t1.id,
