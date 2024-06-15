@@ -196,18 +196,6 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: isMusicFavorite
-     * @description: 查询是否关注
-     * @return: ResultEntity
-     * @date: 2024-06-15 00:08
-     */
-    @Override
-    public ResultEntity isMusicFavorite(String token, int musicId){
-        return ResultUtil.success(myMusicMapper.isMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),musicId));
-    }
-
-    /**
-     * @author: wuwenqiang
      * @methodsName: queryMusicFavorite
      * @description: 查询收藏
      * @return: ResultEntity

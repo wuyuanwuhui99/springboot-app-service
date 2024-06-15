@@ -98,15 +98,6 @@ public class MyMusicController {
         return myMusicService.insertMusicFavorite(token,id);
     }
 
-    @ApiOperation("查询是否收藏")
-    @GetMapping("/myMusic-getway/isMusicFavorite/{musicId}")
-    public ResultEntity isMusicFavorite(
-            @RequestHeader("Authorization") String token,
-            @PathVariable("musicId") int musicId
-    ) {
-        return myMusicService.isMusicFavorite(token,musicId);
-    }
-
     @ApiOperation("删除音乐收藏")
     @DeleteMapping("/myMusic-getway/deleteMusicFavorite/{id}")
     public ResultEntity deleteMusicFavorite(

@@ -22,8 +22,6 @@ public interface IMyMusicService {
 
     ResultEntity insertMusicFavorite(String token,int musicId);
 
-    ResultEntity isMusicFavorite(String token,int musicId);
-
     ResultEntity deleteMusicFavorite(String token,int id);
 
     ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize);
