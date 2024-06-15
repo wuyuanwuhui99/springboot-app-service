@@ -99,7 +99,7 @@ public class MyMusicController {
     }
 
     @ApiOperation("查询是否收藏")
-    @PostMapping("/myMusic-getway/isMusicFavorite/{musicId}")
+    @GetMapping("/myMusic-getway/isMusicFavorite/{musicId}")
     public ResultEntity isMusicFavorite(
             @RequestHeader("Authorization") String token,
             @PathVariable("musicId") int musicId

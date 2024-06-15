@@ -196,7 +196,7 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: insertLog
+     * @methodsName: isMusicFavorite
      * @description: 查询是否关注
      * @return: ResultEntity
      * @date: 2024-06-15 00:08

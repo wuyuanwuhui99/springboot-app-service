@@ -45,8 +45,7 @@
 
     <select id="getMusicListByClassifyId" resultType="MyMusicEntity">
         SELECT
-            t3.*,
-            (CASE WHEN t4.music_id IS NOT NULL THEN 1 ELSE 0 END) AS is_favorite
+            t3.*
         FROM
             (
                 SELECT
@@ -56,16 +55,10 @@
                 ON t1.music_id = t2.id
                 WHERE t1.classify_id =#{classifyId} ORDER BY t1.audio_rank DESC limit #{start},#{pageSize}
             ) t3
-        LEFT JOIN music_favorite t4
-        ON t3.id = t4.music_id AND t4.user_id = #{userId}
     </select>
 
     <select id="getMusicTotalByClassifyId" resultType="Long">
         select count(*) as total from music_classify where classify_id = #{classifyId}
-    </select>
-
-    <select id="isMusicFavorite" resultType="Long">
-        select count(id) from music_favorite where music_id = #{musicId} and user_id = #{userId}
     </select>
 
     <select id="getSingerList" resultType="MusicAuthorEntity">
@@ -166,13 +159,16 @@
         SELECT t2.* FROM music_favorite t1 LEFT JOIN music t2 on t1.music_id = t2.id where t1.user_id = #{userId}  LIMIT #{start}, #{pageSize}
     </select>
 
+    <select id="isMusicFavorite" resultType="Long">
+        SELECT count(id) FROM music_favorite where user_id = #{userId}  and music_id = #{musicId}
+    </select>
+
     <select id="queryMusicFavoriteCount" resultType="Long">
         select count(*) as total from (SELECT DISTINCT id,music_id,user_id,create_time,update_time FROM music_favorite WHERE user_id = #{userId}) t1
     </select>
 
     <select id="searchMusic" resultType="MyMusicEntity">
-        SELECT t1.*,(CASE WHEN t2.music_id IS NOT NULL THEN 1 ELSE 0 END) AS isFavorite FROM music t1 LEFT JOIN music_favorite t2 on t1.id = t2.music_id AND T2.user_id = #{userId}
-        where t1.song_name like concat('%',#{keyword},'%') or t1.author_name like concat('%',#{keyword},'%') or t1.album_name like concat('%',#{keyword},'%') LIMIT #{start}, #{pageSize}
+        SELECT * from music where song_name like concat('%',#{keyword},'%') or author_name like concat('%',#{keyword},'%') or album_name like concat('%',#{keyword},'%') LIMIT #{start}, #{pageSize}
     </select>
 
     <select id="getSingerCategory" resultType="MyMusicSingerCategoryEntity">
