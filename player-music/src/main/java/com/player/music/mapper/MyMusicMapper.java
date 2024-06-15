@@ -31,7 +31,7 @@ public interface MyMusicMapper {
 
     Long getMusicRecordCount(String userId);
 
-    Long insertLog(String userId,Long musicId);
+    Long insertMusicRecord(String userId,Long musicId);
 
     Long insertMusicFavorite(String userId,int musicId);
 

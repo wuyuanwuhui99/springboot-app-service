@@ -18,7 +18,7 @@ public interface IMyMusicService {
 
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 
-    ResultEntity insertLog(String token,MyMusicEntity myMusicEntity);
+    ResultEntity insertMusicRecord(String token,MyMusicEntity myMusicEntity);
 
     ResultEntity insertMusicFavorite(String token,int musicId);
 

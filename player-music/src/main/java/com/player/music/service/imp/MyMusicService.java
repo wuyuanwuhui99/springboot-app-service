@@ -160,20 +160,19 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: insertLog
+     * @methodsName: insertMusicRecord
      * @description: 插入播放记录
      * @return: ResultEntity
      * @date: 2023-11-20 21:52
      */
     @Override
-    public ResultEntity insertLog(String token, MyMusicEntity myMusicEntity){
-        Long musicId = myMusicEntity.getId();
-        return ResultUtil.success(myMusicMapper.insertLog(JwtToken.parserToken(token, UserEntity.class).getUserId(),musicId));
+    public ResultEntity insertMusicRecord(String token, MyMusicEntity myMusicEntity){
+        return ResultUtil.success(myMusicMapper.insertMusicRecord(JwtToken.parserToken(token, UserEntity.class).getUserId(),myMusicEntity.getId()));
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: insertLog
+     * @methodsName: insertMusicFavorite
      * @description: 插入播放记录
      * @return: ResultEntity
      * @date: 2024-01-05 21:50
@@ -185,7 +184,7 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: insertLog
+     * @methodsName: deleteMusicFavorite
      * @description: 删除收藏
      * @return: ResultEntity
      * @date: 2024-01-05 21:50

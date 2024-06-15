@@ -150,8 +150,8 @@
         select count(*) as total from (SELECT DISTINCT id,music_id,user_id,create_time,update_time FROM music_record WHERE user_id = #{userId}) t1
     </select>
 
-    <insert id="insertLog">
-        insert into music_record (music_id,user_id,create_time,update_time) VALUES (#{id},#{userId},now(),now())
+    <insert id="insertMusicRecord">
+        insert into music_record (music_id,user_id,create_time,update_time) VALUES (#{musicId},#{userId},now(),now())
     </insert>
 
     <insert id="insertMusicFavorite">

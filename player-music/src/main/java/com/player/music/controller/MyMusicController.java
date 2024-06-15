@@ -81,12 +81,12 @@ public class MyMusicController {
     }
 
     @ApiOperation("插入播放记录")
-    @PostMapping("/myMusic-getway/insertLog")
-    public ResultEntity insertLog(
+    @PostMapping("/myMusic-getway/insertMusicRecord")
+    public ResultEntity insertMusicRecord(
             @RequestHeader("Authorization") String token,
             @RequestBody MyMusicEntity myMusicEntity
     ) {
-        return myMusicService.insertLog(token,myMusicEntity);
+        return myMusicService.insertMusicRecord(token,myMusicEntity);
     }
 
     @ApiOperation("插入音乐收藏")
@@ -140,6 +140,14 @@ public class MyMusicController {
     @ApiOperation("查询音乐收藏")
     @GetMapping("/myMusic/getSingerCategory")
     public ResultEntity getSingerCategory(
+            HttpServletRequest request
+    ) {
+        return myMusicService.getSingerCategory(HttpUtils.getPath(request));
+    }
+
+    @ApiOperation("查询音乐收藏")
+    @GetMapping("/myMusic-getway/insertMusicRecord")
+    public ResultEntity insertMusicRecord(
             HttpServletRequest request
     ) {
         return myMusicService.getSingerCategory(HttpUtils.getPath(request));
