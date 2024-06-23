@@ -16,6 +16,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -257,17 +260,8 @@ public class MyMusicService implements IMyMusicService {
     }
 
     @Override
-    public ResultEntity getFavoriteDirectory(String token,String redisKey) {
-        String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
-        redisKey += "?userId=" + userId;
-        String result = (String) redisTemplate.opsForValue().get(redisKey);
-        if (!StringUtils.isEmpty(result)) {
-            return JSON.parseObject(result, ResultEntity.class);
-        } else {
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getFavoriteDirectory(userId));
-            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
-            return resultEntity;
-        }
+    public ResultEntity getFavoriteDirectory(String token) {
+        return ResultUtil.success(myMusicMapper.getFavoriteDirectory(JwtToken.parserToken(token, UserEntity.class).getUserId()));
     }
 
     @Override
@@ -279,7 +273,8 @@ public class MyMusicService implements IMyMusicService {
 
     @Override
     public ResultEntity insertFavoriteDirectory(String token, MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity) {
-        favoriteDirectoryEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
+        favoriteDirectoryEntity.setUserId(userId);
         return ResultUtil.success(myMusicMapper.insertFavoriteDirectory(favoriteDirectoryEntity));
     }
 

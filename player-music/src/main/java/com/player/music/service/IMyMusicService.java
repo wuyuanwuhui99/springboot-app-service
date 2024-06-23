@@ -32,7 +32,7 @@ public interface IMyMusicService {
 
     ResultEntity getSingerCategory(String redisKey);
 
-    ResultEntity getFavoriteDirectory(String token,String redisKey);
+    ResultEntity getFavoriteDirectory(String token);
 
     ResultEntity getMusicListByFavoriteId(String token,Long favoriteId,int pageNum,int pageSize);
 
