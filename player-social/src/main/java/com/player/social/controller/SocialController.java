@@ -89,7 +89,7 @@ public class SocialController {
     }
 
     @OperLog(message = "查询是否已经收藏", operation = OperationType.QUERY)
-    @ApiOperation("查询是否已经收藏,请求地地址：/service/movie-getway/isFavorite")
+    @ApiOperation("查询是否已经收藏,请求地地址：/service/movie-getway/isLike")
     @GetMapping("/social-getway/isLike")
     public ResultEntity isLike(
             @RequestParam("relationId") Long relationId,

@@ -7,6 +7,8 @@ import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.music.Entity.MyMusicEntity;
+import com.player.music.Entity.MyMusicFavoriteDirectoryEntity;
+import com.player.music.Entity.MyMusicFavoriteEntity;
 import com.player.music.mapper.MyMusicMapper;
 import com.player.music.service.IMyMusicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,48 +174,48 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: insertMusicFavorite
+     * @methodsName: insertMusicLike
      * @description: 插入播放记录
      * @return: ResultEntity
      * @date: 2024-01-05 21:50
      */
     @Override
-    public ResultEntity insertMusicFavorite(String token, int musicId){
-        return ResultUtil.success(myMusicMapper.insertMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(), musicId));
+    public ResultEntity insertMusicLike(String token, int musicId){
+        return ResultUtil.success(myMusicMapper.insertMusicLike(JwtToken.parserToken(token, UserEntity.class).getUserId(), musicId));
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: deleteMusicFavorite
+     * @methodsName: deleteMusicLike
      * @description: 删除收藏
      * @return: ResultEntity
      * @date: 2024-01-05 21:50
      */
     @Override
-    public ResultEntity deleteMusicFavorite(String token, int id){
-        return ResultUtil.success(myMusicMapper.deleteMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),id));
+    public ResultEntity deleteMusicLike(String token, int id){
+        return ResultUtil.success(myMusicMapper.deleteMusicLike(JwtToken.parserToken(token, UserEntity.class).getUserId(),id));
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: queryMusicFavorite
+     * @methodsName: queryMusicLike
      * @description: 查询收藏
      * @return: ResultEntity
      * @date: 2024-01-05 21:50
      */
     @Override
-    public ResultEntity queryMusicFavorite(String token, int pageNum, int pageSize){
+    public ResultEntity queryMusicLike(String token, int pageNum, int pageSize){
         if (pageSize > 100) pageSize = 100;
         int start = (pageNum - 1) * pageSize;
-        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),start,pageSize));
-        Long mySingerCount = myMusicMapper.queryMusicFavoriteCount(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicLike(JwtToken.parserToken(token, UserEntity.class).getUserId(),start,pageSize));
+        Long mySingerCount = myMusicMapper.queryMusicLikeCount(JwtToken.parserToken(token, UserEntity.class).getUserId());
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: queryMusicFavorite
+     * @methodsName: queryMusicLike
      * @description: 查询收藏
      * @return: ResultEntity
      * @date: 2024-01-27 16:57
@@ -237,7 +239,7 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: queryMusicFavorite
+     * @methodsName: queryMusicLike
      * @description: 查询收藏
      * @return: ResultEntity
      * @date: 2024-01-27 16:57
@@ -252,5 +254,60 @@ public class MyMusicService implements IMyMusicService {
             redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
             return resultEntity;
         }
+    }
+
+    @Override
+    public ResultEntity getFavoriteDirectory(String token,String redisKey) {
+        String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
+        redisKey += "?userId=" + userId;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getFavoriteDirectory(userId));
+            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
+            return resultEntity;
+        }
+    }
+
+    @Override
+    public ResultEntity getMusicListByFavoriteId(String token,Long favoriteId,int pageNum,int pageSize) {
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByFavoriteId(JwtToken.parserToken(token, UserEntity.class).getUserId(),favoriteId,(pageNum - 1) * pageSize,pageSize));
+        resultEntity.setTotal(myMusicMapper.getMusicCountByFavoriteId(favoriteId));
+        return resultEntity;
+    }
+
+    @Override
+    public ResultEntity insertFavoriteDirectory(String token, MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity) {
+        favoriteDirectoryEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        return ResultUtil.success(myMusicMapper.insertFavoriteDirectory(favoriteDirectoryEntity));
+    }
+
+    @Override
+    public ResultEntity deleteFavoriteDirectory(String token, Long favoriteId) { ;
+        return ResultUtil.success(myMusicMapper.deleteFavoriteDirectory(JwtToken.parserToken(token, UserEntity.class).getUserId(),favoriteId));
+    }
+
+    @Override
+    public ResultEntity updateFavoriteDirectory(String token, Long favoriteId,String name) {
+        return ResultUtil.success(myMusicMapper.updateFavoriteDirectory(JwtToken.parserToken(token, UserEntity.class).getUserId(),favoriteId,name));
+    }
+
+    @Override
+    public ResultEntity insertMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity) {
+        myMusicFavoriteEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        return ResultUtil.success(myMusicMapper.insertMusicFavorite(myMusicFavoriteEntity));
+    }
+
+    @Override
+    public ResultEntity updateMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity) {
+        myMusicFavoriteEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        return ResultUtil.success(myMusicMapper.updateMusicFavorite(myMusicFavoriteEntity));
+    }
+
+    @Override
+    public ResultEntity deleteMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity) {
+        myMusicFavoriteEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        return ResultUtil.success(myMusicMapper.deleteMusicFavorite(myMusicFavoriteEntity));
     }
 }

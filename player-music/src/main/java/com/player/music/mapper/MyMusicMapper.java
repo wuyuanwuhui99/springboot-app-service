@@ -1,8 +1,7 @@
 package com.player.music.mapper;
 
-import com.player.music.Entity.MyMusiPlayMenuEntity;
-import com.player.music.Entity.MyMusicEntity;
-import com.player.music.Entity.MySingerEntity;
+import com.player.common.entity.ResultEntity;
+import com.player.music.Entity.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,19 +32,37 @@ public interface MyMusicMapper {
 
     Long insertMusicRecord(String userId,Long musicId);
 
-    Long insertMusicFavorite(String userId,int musicId);
+    Long insertMusicLike(String userId,int musicId);
 
     Long isMusicFavorite(String userId,int musicId);
 
-    Long deleteMusicFavorite(String userId,int musicId);
+    Long deleteMusicLike(String userId,int musicId);
 
-    List<MyMusicEntity> queryMusicFavorite(String userId, int start, int pageSize);
+    List<MyMusicEntity> queryMusicLike(String userId, int start, int pageSize);
 
-    Long queryMusicFavoriteCount(String userId);
+    Long queryMusicLikeCount(String userId);
 
     List<MyMusicEntity> searchMusic(String userId,String keyword, int start, int pageSize);
 
     Long searchMusicCount(String keyword);
 
     List<MyMusicEntity> getSingerCategory();
+
+    List<MyMusicFavoriteDirectoryEntity> getFavoriteDirectory(String userId);
+
+    List<MyMusicEntity> getMusicListByFavoriteId(String userId,Long favoriteId,int start,int pageSize);
+
+    Long getMusicCountByFavoriteId(Long favoriteId);
+
+    Long deleteFavoriteDirectory(String userId, Long favoriteId);
+
+    Long updateFavoriteDirectory(String userId, Long favoriteId, String name);
+
+    MyMusicFavoriteDirectoryEntity insertFavoriteDirectory(MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity);
+
+    Long insertMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
+
+    Long updateMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
+
+    Long deleteMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
 }
