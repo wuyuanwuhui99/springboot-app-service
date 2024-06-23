@@ -180,7 +180,7 @@
     </select>
 
     <select id="getFavoriteDirectory" resultType="MyMusicFavoriteDirectoryEntity">
-        select * from music_favorite_directory where user_id = #{userId}
+        select t1.*,COUNT(t2.favorite_id) as total from music_favorite_directory t1 LEFT JOIN music_favorite_list t2 on t1.id = t2.favorite_id where t1.user_id = #{userId} GROUP BY t2.favorite_id,t1.id
     </select>
 
     <select id="getMusicListByFavoriteId" resultType="MyMusicEntity">

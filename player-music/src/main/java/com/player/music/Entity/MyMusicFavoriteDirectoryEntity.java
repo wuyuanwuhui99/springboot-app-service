@@ -19,6 +19,9 @@ public class MyMusicFavoriteDirectoryEntity {
     @ApiModelProperty(value = "收藏夹名称")
     private String name;
 
+    @ApiModelProperty(value = "收藏夹总歌曲数据")
+    private int total;
+
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
