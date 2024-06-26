@@ -149,9 +149,10 @@ public class MyMusicController {
     @ApiOperation("查询收藏夹列表")
     @GetMapping("/myMusic-getway/getFavoriteDirectory")
     public ResultEntity getFavoriteDirectory(
+            @RequestParam(name = "musicId",required = true) Long musicId,
             @RequestHeader(name = "Authorization",required = false) String token
     ) {
-        return myMusicService.getFavoriteDirectory(token);
+        return myMusicService.getFavoriteDirectory(token,musicId);
     }
 
     @ApiOperation("查询收藏夹音乐")

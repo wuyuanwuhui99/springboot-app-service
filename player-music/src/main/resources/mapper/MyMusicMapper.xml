@@ -176,7 +176,20 @@
     </select>
 
     <select id="getFavoriteDirectory" resultType="MyMusicFavoriteDirectoryEntity">
-        select t1.*,COUNT(t2.favorite_id) as total from music_favorite_directory t1 LEFT JOIN music_favorite_list t2 on t1.id = t2.favorite_id where t1.user_id = #{userId} GROUP BY t2.favorite_id,t1.id
+        SELECT
+            t1.*,
+            COUNT( t2.favorite_id ) AS total,
+            ( CASE WHEN t3.music_id IS NOT NULL THEN 1 ELSE 0 END ) AS active
+        FROM
+            music_favorite_directory t1
+            LEFT JOIN music_favorite_list t2 ON t1.id = t2.favorite_id
+            LEFT JOIN music_favorite_list t3 ON t1.id = t3.favorite_id
+            AND t3.music_id = #{musicId}
+        WHERE
+            t1.user_id = #{userId}
+        GROUP BY
+            t2.favorite_id,
+            t1.id
     </select>
 
     <select id="getMusicListByFavoriteId" resultType="MyMusicEntity">

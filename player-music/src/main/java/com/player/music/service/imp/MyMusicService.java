@@ -260,8 +260,9 @@ public class MyMusicService implements IMyMusicService {
     }
 
     @Override
-    public ResultEntity getFavoriteDirectory(String token) {
-        return ResultUtil.success(myMusicMapper.getFavoriteDirectory(JwtToken.parserToken(token, UserEntity.class).getUserId()));
+    public ResultEntity getFavoriteDirectory(String token,Long musicId) {
+        List<MyMusicFavoriteDirectoryEntity> favoriteDirectory = myMusicMapper.getFavoriteDirectory(JwtToken.parserToken(token, UserEntity.class).getUserId(), musicId);
+        return ResultUtil.success(favoriteDirectory);
     }
 
     @Override

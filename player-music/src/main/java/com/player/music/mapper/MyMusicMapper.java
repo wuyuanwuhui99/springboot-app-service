@@ -46,7 +46,7 @@ public interface MyMusicMapper {
 
     List<MyMusicEntity> getSingerCategory();
 
-    List<MyMusicFavoriteDirectoryEntity> getFavoriteDirectory(String userId);
+    List<MyMusicFavoriteDirectoryEntity> getFavoriteDirectory(String userId,Long musicId);
 
     List<MyMusicEntity> getMusicListByFavoriteId(String userId,Long favoriteId,int start,int pageSize);
 
