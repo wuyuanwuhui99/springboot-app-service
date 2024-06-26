@@ -305,4 +305,9 @@ public class MyMusicService implements IMyMusicService {
         myMusicFavoriteEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
         return ResultUtil.success(myMusicMapper.deleteMusicFavorite(myMusicFavoriteEntity));
     }
+
+    @Override
+    public ResultEntity isMusicFavorite(String token,Long musicId) {
+        return ResultUtil.success(myMusicMapper.isMusicFavorite(JwtToken.parserToken(token, UserEntity.class).getUserId(),musicId));
+    }
 }

@@ -64,10 +64,6 @@
         select count(*) as total from music_classify where classify_id = #{classifyId}
     </select>
 
-    <select id="isMusicFavorite" resultType="Long">
-        select count(id) from music_like where music_id = #{musicId} and user_id = #{userId}
-    </select>
-
     <select id="getSingerList" resultType="MusicAuthorEntity">
         select
         t1.id,
@@ -227,5 +223,8 @@
         INSERT INTO music_favorite_list(`name`,user_id,create_time,update_time) SELECT #{name},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM music_favorite_directory WHERE `name` = #{name} and `user_id`= #{userId})
     </insert>
 
+    <select id="isMusicFavorite" resultType="Long">
+        SELECT COUNT(id) FROM music_favorite_list where music_id = #{musicId} and favorite_id in (SELECT favorite_id FROM music_favorite_directory WHERE user_id = #{userId})
+    </select>
 </mapper>
 

@@ -218,4 +218,13 @@ public class MyMusicController {
     ) {
         return myMusicService.deleteMusicFavorite(token,myMusicFavoriteEntity);
     }
+
+    @ApiOperation("查询音乐收藏")
+    @GetMapping("/myMusic-getway/isMusicFavorite/{musicId}")
+    public ResultEntity isMusicFavorite(
+            @PathVariable("musicId") Long musicId,
+            @RequestHeader(name = "Authorization",required = false) String token
+    ) {
+        return myMusicService.isMusicFavorite(token,musicId);
+    }
 }

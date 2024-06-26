@@ -47,4 +47,6 @@ public interface IMyMusicService {
     ResultEntity updateMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity);
 
     ResultEntity deleteMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity);
+
+    ResultEntity isMusicFavorite(String token, Long musicId);
 }

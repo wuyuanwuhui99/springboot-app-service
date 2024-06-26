@@ -34,8 +34,6 @@ public interface MyMusicMapper {
 
     Long insertMusicLike(String userId,int musicId);
 
-    Long isMusicFavorite(String userId,int musicId);
-
     Long deleteMusicLike(String userId,int musicId);
 
     List<MyMusicEntity> queryMusicLike(String userId, int start, int pageSize);
@@ -65,4 +63,6 @@ public interface MyMusicMapper {
     Long updateMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
 
     Long deleteMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
+
+    Long isMusicFavorite(String userId,Long musicId);
 }
