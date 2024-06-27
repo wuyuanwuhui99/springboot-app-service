@@ -23,7 +23,10 @@ public class MyMusicFavoriteDirectoryEntity {
     private int total;
 
     @ApiModelProperty(value = "当前这首歌曲是否在这个收藏夹内")
-    private int active;
+    private int checked;
+
+    @ApiModelProperty(value = "封面")
+    private String cover;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;

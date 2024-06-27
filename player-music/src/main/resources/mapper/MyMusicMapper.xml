@@ -177,19 +177,44 @@
 
     <select id="getFavoriteDirectory" resultType="MyMusicFavoriteDirectoryEntity">
         SELECT
-            t1.*,
-            COUNT( t2.favorite_id ) AS total,
-            ( CASE WHEN t3.music_id IS NOT NULL THEN 1 ELSE 0 END ) AS active
+            t8.*,
+            t10.cover
         FROM
-            music_favorite_directory t1
-            LEFT JOIN music_favorite_list t2 ON t1.id = t2.favorite_id
-            LEFT JOIN music_favorite_list t3 ON t1.id = t3.favorite_id
-            AND t3.music_id = #{musicId}
-        WHERE
-            t1.user_id = #{userId}
-        GROUP BY
-            t2.favorite_id,
-            t1.id
+            (
+            SELECT
+                t1.*,
+                COUNT( t2.favorite_id ) AS total,
+                ( CASE WHEN t3.music_id IS NOT NULL THEN 1 ELSE 0 END ) AS checked
+            FROM
+                music_favorite_directory t1
+                LEFT JOIN music_favorite_list t2 ON t1.id = t2.favorite_id
+                LEFT JOIN music_favorite_list t3 ON t1.id = t3.favorite_id
+                AND t3.music_id = #{musicId}
+            WHERE
+                t1.user_id = #{userId}
+            GROUP BY
+                t2.favorite_id,
+                t1.id
+            ) t8
+            LEFT JOIN (
+            SELECT
+                t6.*,
+                t7.music_id
+            FROM
+                (
+                SELECT
+                    MAX( id ) AS id,
+                    favorite_id
+                FROM
+                    music_favorite_list
+                WHERE
+                    favorite_id IN ( SELECT id FROM music_favorite_directory WHERE user_id = #{userId} )
+                GROUP BY
+                    favorite_id
+                ) t6
+                LEFT JOIN music_favorite_list t7 ON t6.id = t7.id
+            ) t9 ON t8.id = t9.favorite_id
+            LEFT JOIN music t10 ON t9.music_id = t10.id
     </select>
 
     <select id="getMusicListByFavoriteId" resultType="MyMusicEntity">
