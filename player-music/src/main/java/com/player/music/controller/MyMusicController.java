@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 
@@ -193,33 +194,6 @@ public class MyMusicController {
         return myMusicService.updateFavoriteDirectory(token,favoriteDirectoryEntity.getId(),favoriteDirectoryEntity.getName());
     }
 
-    @ApiOperation("插入收藏夹")
-    @PostMapping("/myMusic-getway/insertMusicFavorite")
-    public ResultEntity insertMusicFavorite(
-            @RequestBody MyMusicFavoriteEntity myMusicFavoriteEntity,
-            @RequestHeader(name = "Authorization",required = false) String token
-    ) {
-        return myMusicService.insertMusicFavorite(token,myMusicFavoriteEntity);
-    }
-
-    @ApiOperation("更新音乐收藏夹目录")
-    @PostMapping("/myMusic-getway/updateMusicFavorite")
-    public ResultEntity updateMusicFavorite(
-            @RequestBody MyMusicFavoriteEntity myMusicFavoriteEntity,
-            @RequestHeader(name = "Authorization",required = false) String token
-    ) {
-        return myMusicService.updateMusicFavorite(token,myMusicFavoriteEntity);
-    }
-
-    @ApiOperation("查询音乐收藏")
-    @DeleteMapping("/myMusic-getway/deleteMusicFavorite")
-    public ResultEntity deleteMusicFavorite(
-            @RequestBody MyMusicFavoriteEntity myMusicFavoriteEntity,
-            @RequestHeader(name = "Authorization",required = false) String token
-    ) {
-        return myMusicService.deleteMusicFavorite(token,myMusicFavoriteEntity);
-    }
-
     @ApiOperation("查询音乐收藏")
     @GetMapping("/myMusic-getway/isMusicFavorite/{musicId}")
     public ResultEntity isMusicFavorite(
@@ -227,5 +201,15 @@ public class MyMusicController {
             @RequestHeader(name = "Authorization",required = false) String token
     ) {
         return myMusicService.isMusicFavorite(token,musicId);
+    }
+
+    @ApiOperation("添加音乐收藏夹")
+    @PostMapping("/myMusic-getway/insertMusicFavorite/{musicId}")
+    public ResultEntity insertMusicFavorite(
+            @PathVariable("musicId") Long musicId,
+            @RequestBody List<MyMusicFavoriteEntity> musicFavoriteEntityList,
+            @RequestHeader(name = "Authorization",required = false) String token
+    ) {
+        return myMusicService.insertMusicFavorite(token,musicId,musicFavoriteEntityList);
     }
 }

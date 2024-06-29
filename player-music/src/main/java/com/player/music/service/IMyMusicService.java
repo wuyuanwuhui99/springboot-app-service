@@ -4,6 +4,9 @@ import com.player.common.entity.ResultEntity;
 import com.player.music.Entity.MyMusicEntity;
 import com.player.music.Entity.MyMusicFavoriteDirectoryEntity;
 import com.player.music.Entity.MyMusicFavoriteEntity;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface IMyMusicService {
     ResultEntity getKeywordMusic(String redisKey);
@@ -20,10 +23,13 @@ public interface IMyMusicService {
 
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 
+    @Transactional
     ResultEntity insertMusicRecord(String token,MyMusicEntity myMusicEntity);
 
+    @Transactional
     ResultEntity insertMusicLike(String token,int musicId);
 
+    @Transactional
     ResultEntity deleteMusicLike(String token,int id);
 
     ResultEntity queryMusicLike(String token, int pageNum, int pageSize);
@@ -36,17 +42,18 @@ public interface IMyMusicService {
 
     ResultEntity getMusicListByFavoriteId(String token,Long favoriteId,int pageNum,int pageSize);
 
+    @Transactional
     ResultEntity insertFavoriteDirectory(String token, MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity);
 
+    @Transactional
     ResultEntity deleteFavoriteDirectory(String token, Long favoriteId);
 
+    @Transactional
     ResultEntity updateFavoriteDirectory(String token, Long favoriteId,String name);
 
-    ResultEntity insertMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity);
-
-    ResultEntity updateMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity);
-
-    ResultEntity deleteMusicFavorite(String token, MyMusicFavoriteEntity myMusicFavoriteEntity);
+    @Transactional
+    ResultEntity insertMusicFavorite(String token,Long musicId, List<MyMusicFavoriteEntity> myMusicFavoriteEntityList);
 
     ResultEntity isMusicFavorite(String token, Long musicId);
+
 }

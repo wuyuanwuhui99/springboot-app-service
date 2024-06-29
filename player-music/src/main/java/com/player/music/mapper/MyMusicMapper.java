@@ -58,11 +58,10 @@ public interface MyMusicMapper {
 
     MyMusicFavoriteDirectoryEntity insertFavoriteDirectory(MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity);
 
-    Long insertMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
+    Long insertMusicFavorite(List<MyMusicFavoriteEntity> myMusicFavoriteEntityList);
 
-    Long updateMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
-
-    Long deleteMusicFavorite(MyMusicFavoriteEntity myMusicFavoriteEntity);
+    Long deleteMusicFavorite(String userId,Long musicId);
 
     Long isMusicFavorite(String userId,Long musicId);
+
 }

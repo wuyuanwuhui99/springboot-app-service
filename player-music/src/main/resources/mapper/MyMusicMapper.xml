@@ -257,12 +257,19 @@
         delete from music_favorite_directory where id = #{favoriteId}
     </update>
 
-    <insert id="insertMusicFavorite">
-        INSERT INTO music_favorite_list(`name`,user_id,create_time,update_time) SELECT #{name},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM music_favorite_directory WHERE `name` = #{name} and `user_id`= #{userId})
-    </insert>
-
     <select id="isMusicFavorite" resultType="Long">
         SELECT COUNT(id) FROM music_favorite_list where music_id = #{musicId} and favorite_id in (SELECT favorite_id FROM music_favorite_directory WHERE user_id = #{userId})
     </select>
+
+    <delete id="deleteMusicFavorite">
+        DELETE FROM music_favorite_list WHERE favorite_id IN (SELECT id FROM music_favorite_directory WHERE user_id = #{userId}) and music_id = #{musicId}
+    </delete>
+
+    <insert id="insertMusicFavorite">
+        INSERT INTO music_favorite_list(music_id,favorite_id,create_time,update_time)
+        <foreach collection="list" separator="union all" item="item">
+            select #{item.musicId},#{item.favoriteId},now(),now() FROM dual WHERE EXISTS (SELECT * FROM music_favorite_directory WHERE user_id = #{item.userId} and id = #{item.favoriteId})
+        </foreach>
+    </insert>
 </mapper>
 
