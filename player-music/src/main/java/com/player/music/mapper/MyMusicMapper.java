@@ -56,7 +56,9 @@ public interface MyMusicMapper {
 
     Long updateFavoriteDirectory(String userId, Long favoriteId, String name);
 
-    MyMusicFavoriteDirectoryEntity insertFavoriteDirectory(MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity);
+    Long insertFavoriteDirectory(MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity);
+
+    MyMusicFavoriteDirectoryEntity getFavoriteDirectoryById(Long id);
 
     Long insertMusicFavorite(List<MyMusicFavoriteEntity> myMusicFavoriteEntityList);
 

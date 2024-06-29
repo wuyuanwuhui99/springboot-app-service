@@ -195,6 +195,7 @@
             GROUP BY
                 t2.favorite_id,
                 t1.id
+            ORDER BY t1.create_time desc
             ) t8
             LEFT JOIN (
             SELECT
@@ -248,6 +249,10 @@
         </selectKey>
         INSERT INTO music_favorite_directory(`name`,user_id,create_time,update_time) SELECT #{name},#{userId},NOW(),NOW() FROM DUAL WHERE NOT EXISTS (SELECT * FROM music_favorite_directory WHERE `name` = #{name} and `user_id`= #{userId})
     </insert>
+
+    <select id="getFavoriteDirectoryById" resultType="MyMusicFavoriteDirectoryEntity">
+        SELECT * FROM music_favorite_directory WHERE id = #{id}
+    </select>
 
     <update id="updateFavoriteDirectory">
         update music_favorite_directory set `name` = #{name} where user_id = #{userId}

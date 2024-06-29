@@ -297,7 +297,8 @@ public class MyMusicService implements IMyMusicService {
     public ResultEntity insertFavoriteDirectory(String token, MyMusicFavoriteDirectoryEntity favoriteDirectoryEntity) {
         String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
         favoriteDirectoryEntity.setUserId(userId);
-        return ResultUtil.success(myMusicMapper.insertFavoriteDirectory(favoriteDirectoryEntity));
+        myMusicMapper.insertFavoriteDirectory(favoriteDirectoryEntity);
+        return ResultUtil.success(myMusicMapper.getFavoriteDirectoryById(favoriteDirectoryEntity.getId()));
     }
 
     /**
