@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 22/11/2022 22:17:00
+ Date: 03/07/2024 23:46:37
 */
 
 SET NAMES utf8mb4;
@@ -35,33 +35,40 @@ CREATE TABLE `user`  (
   `role` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色',
   `sign` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '个性签名',
   `region` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地区',
-  `disabled` int(10) UNSIGNED ZEROFILL NULL DEFAULT 0000000000 COMMENT '是否禁用，0表示不不禁用，1表示禁用',
+  `disabled` int(0) NULL DEFAULT 0 COMMENT '是否禁用，0表示不不禁用，1表示禁用',
+  `permission` int(0) NULL DEFAULT 0 COMMENT '权限大小',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('且听风铃', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:54:22', '2021-06-17 23:31:54', '且听风铃', '15302686947', '275018723@qq.com', '/static/user/avater/且听风铃.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('初晓微芒', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:47:01', '2020-01-11 18:47:03', '初晓微芒', '15302686947', '275018723@qq.com', '/static/user/avater/初晓微芒.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('半夏时光', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:46:09', '2020-01-11 18:46:12', '半夏时光', '15302686947', '275018723@qq.com', '/static/user/avater/半夏时光.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('半岛弥音', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-18 18:41:52', '2020-01-11 18:41:57', '半岛弥音', '15302686947', '275018723@qq.com', '/static/user/avater/半岛弥音.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('吴尽吴穷', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-19 00:59:28', '2019-08-19 00:59:32', '吴尽吴穷', '15302686947', '275018723@qq.com', '/static/user/avater/吴怨吴悔.jpg', '1990-10-8', '男', 'public', '无穷无尽的爱', NULL, 0000000000);
-INSERT INTO `user` VALUES ('吴忧吴虑', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-13 21:01:56', '2019-08-13 21:02:02', '吴忧吴虑', '15302686947', '275018723@qq.com', '/static/user/avater/吴怨吴悔.jpg', '1990-10-8', '男', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('吴怨吴悔', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-13 00:00:00', '2019-08-13 00:00:00', '吴怨吴悔', '15302686947', '275018723@qq.com', '/static/user/avater/吴怨吴悔.jpg', '1990-10-8', '男', 'admin', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('吴时吴刻', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-12 00:00:00', '2019-08-13 00:00:00', '吴时吴刻', '15302686947', '275018723@qq.com', '/static/user/avater/吴时吴刻.jpg', '1990-10-8', '男', 'public', '无时无刻不想你', NULL, 0000000000);
-INSERT INTO `user` VALUES ('夕颜泪痕', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:55:53', '2020-01-11 18:55:56', '夕颜泪痕', '15302686947', '275018723@qq.com', '/static/user/avater/夕颜泪痕.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('孤影倾城', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:49:08', '2020-01-11 18:49:11', '孤影倾城', '15302686947', '275018723@qq.com', '/static/user/avater/孤影倾城.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('归去如风', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:49:43', '2020-01-11 18:49:47', '归去如风', '15302686947', '275018723@qq.com', '/static/user/avater/归去如风.jpg', '1990-10-8', '男', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('灯火阑珊', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:47:39', '2020-01-11 18:47:42', '灯火阑珊', '15302686947', '275018723@qq.com', '/static/user/avater/灯火阑珊.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('离殇荡情', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:50:58', '2020-01-11 18:51:01', '离殇荡情', '15302686947', '275018723@qq.com', '/static/user/avater/离殇荡情.jpeg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('秋水天长', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:55:00', '2020-01-11 18:55:03', '秋水天长', '15302686947', '275018723@qq.com', '/static/user/avater/秋水天长.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('空城旧梦', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:50:23', '2020-01-11 18:50:26', '空城旧梦', '15302686947', '275018723@qq.com', '/static/user/avater/空城旧梦.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('落寞雨季', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:53:02', '2020-01-11 18:53:06', '落寞雨季', '15302686947', '275018723@qq.com', '/static/user/avater/落寞雨季.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('落落清欢', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:52:15', '2020-01-11 18:52:18', '落落清欢', '15302686947', '275018723@qq.com', '/static/user/avater/落落清欢.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('逆夏光年', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:53:40', '2020-01-11 18:53:42', '逆夏光年', '15302686947', '275018723@qq.com', '/static/user/avater/逆夏光年.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('離別的抽泣', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:51:33', '2020-01-11 18:51:35', '離別的抽泣', '15302686947', '275018723@qq.com', '/static/user/avater/離別的抽泣.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('雨晨清风', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:57:53', '2020-01-11 18:57:56', '雨晨清风', '15302686947', '275018723@qq.com', '/static/user/avater/雨晨清风.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
-INSERT INTO `user` VALUES ('飞颜尘雪', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:48:28', '2020-01-11 18:48:31', '飞颜尘雪', '15302686947', '275018723@qq.com', '/static/user/avater/飞颜尘雪.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0000000000);
+INSERT INTO `user` VALUES ('123', 'e10adc3949ba59abbe56e057f20f883e', '2024-01-20 00:44:24', '2024-01-20 00:44:24', '123', '123', '123', NULL, '2024-01-02', '男', NULL, '123', '123', 0, 0);
+INSERT INTO `user` VALUES ('12345', 'e10adc3949ba59abbe56e057f20f883e', '2024-01-20 12:50:45', '2024-01-20 12:50:45', '123456', '123456', '123456', NULL, NULL, '男', NULL, '123456', '123456', 0, 0);
+INSERT INTO `user` VALUES ('123456', 'e10adc3949ba59abbe56e057f20f883e', '2024-01-20 00:39:56', '2024-01-20 00:39:56', '123456', '123456', '', NULL, '2024-01-08', '男', NULL, '123456', '123456', 0, 0);
+INSERT INTO `user` VALUES ('1234567', 'e10adc3949ba59abbe56e057f20f883e', '2024-01-21 14:14:45', '2024-01-21 14:14:45', '1234567', '1234567', '1234567', '', '1990-03-01', '男', NULL, '1234567', '1234567', 0, 0);
+INSERT INTO `user` VALUES ('qqqqqq', '343B1C4A3EA721B2D640FC8700DB0F36', '2024-04-24 01:13:18', '2024-04-24 01:13:18', 'qqqqqq', '123456', '123456', NULL, '1990-02-01', '男', NULL, NULL, '123456', 0, 0);
+INSERT INTO `user` VALUES ('wuyuanwuhui', 'e10adc3949ba59abbe56e057f20f883e', '2024-02-25 23:13:59', '2024-02-25 23:13:59', '123456', '', '', NULL, '', '', NULL, '', '', 0, 0);
+INSERT INTO `user` VALUES ('且听风铃', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:54:22', '2024-01-21 10:56:13', '且听风铃2', '15302686947', '275018723@qq.com', '/static/user/avater/且听风铃.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('初晓微芒', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:47:01', '2020-01-11 18:47:03', '初晓微芒', '15302686947', '275018723@qq.com', '/static/user/avater/初晓微芒.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('半夏时光', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:46:09', '2020-01-11 18:46:12', '半夏时光', '15302686947', '275018723@qq.com', '/static/user/avater/半夏时光.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('半岛弥音', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-18 18:41:52', '2020-01-11 18:41:57', '半岛弥音', '15302686947', '275018723@qq.com', '/static/user/avater/半岛弥音.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('吴尽吴穷', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-19 00:59:28', '2019-08-19 00:59:32', '吴尽吴穷', '15302686947', '275018723@qq.com', '/static/user/avater/吴怨吴悔.jpg', '1990-10-8', '男', 'public', '无穷无尽的爱', NULL, 0, 0);
+INSERT INTO `user` VALUES ('吴忧吴虑', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-13 21:01:56', '2019-08-13 21:02:02', '吴忧吴虑', '15302686947', '275018723@qq.com', '/static/user/avater/吴怨吴悔.jpg', '1990-10-8', '男', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('吴怨吴悔', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-13 00:00:00', '2024-04-22 23:00:33', '吴怨吴悔', '15302686947', '275018723@qq.com', '/static/user/avater/吴怨吴悔.jpg', '1990-10-8', '女', 'admin', '无怨，有悔', NULL, 0, 1);
+INSERT INTO `user` VALUES ('吴时吴刻', 'e10adc3949ba59abbe56e057f20f883e', '2019-08-12 00:00:00', '2024-01-19 23:17:29', '吴时吴刻', '15302686947', '275018723@qq.com', '/static/user/avater/吴时吴刻.jpg', '1990-10-8', '男', 'public', '无时无刻不想你', NULL, 0, 0);
+INSERT INTO `user` VALUES ('夕颜泪痕', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:55:53', '2020-01-11 18:55:56', '夕颜泪痕', '15302686947', '275018723@qq.com', '/static/user/avater/夕颜泪痕.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('孤影倾城', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:49:08', '2024-02-25 23:27:01', '孤影倾城', '15302686947', '275018723@qq.com', '/static/user/avater/孤影倾城.jpg', '1990-10-8', '女', 'public', '无怨，有悔', '深圳', 0, 0);
+INSERT INTO `user` VALUES ('归去如风', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:49:43', '2020-01-11 18:49:47', '归去如风', '15302686947', '275018723@qq.com', '/static/user/avater/归去如风.jpg', '1990-10-8', '男', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('灯火阑珊', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:47:39', '2024-02-25 15:42:22', '灯火阑珊2', '15302686947', '275018723@qq.com', '/static/user/avater/灯火阑珊.jpg', '1989-10-08', '女', 'public', '无怨，有悔', '深圳', 0, 0);
+INSERT INTO `user` VALUES ('离殇荡情', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:50:58', '2020-01-11 18:51:01', '离殇荡情', '15302686947', '275018723@qq.com', '/static/user/avater/离殇荡情.jpeg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('秋水天长', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:55:00', '2024-04-21 17:29:57', '秋水天长2', '15302686947', '275018723@qq.com', '/static/user/avater/秋水天长.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('空城旧梦', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:50:23', '2023-04-21 23:52:38', '空城旧梦', '15302686947', '275018723@qq.com', '/static/user/avater/空城旧梦.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('落寞雨季', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:53:02', '2022-12-18 00:11:04', '落寞雨季', '15302686947', '275018723@qq.com', '/static/user/avater/落寞雨季.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('落落清欢', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:52:15', '2024-04-25 22:40:20', '落落清欢', '15302686947', '275018723@qq.com', '/static/user/avater/落落清欢.jpg', '1990-10-8', '男', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('逆夏光年', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:53:40', '2020-01-11 18:53:42', '逆夏光年', '15302686947', '275018723@qq.com', '/static/user/avater/逆夏光年.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('離別的抽泣', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:51:33', '2024-02-23 21:27:02', '離別的抽泣3', '15302686947', '275018723@qq.com', '/static/user/avater/離別的抽泣.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('雨晨清风', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:57:53', '2024-01-10 23:16:14', '雨晨清风', '15302686947', '275018723@qq.com', '/static/user/avater/雨晨清风.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
+INSERT INTO `user` VALUES ('飞颜尘雪', 'e10adc3949ba59abbe56e057f20f883e', '2020-01-11 18:48:28', '2020-01-11 18:48:31', '飞颜尘雪', '15302686947', '275018723@qq.com', '/static/user/avater/飞颜尘雪.jpg', '1990-10-8', '女', 'public', '无怨，有悔', NULL, 0, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
