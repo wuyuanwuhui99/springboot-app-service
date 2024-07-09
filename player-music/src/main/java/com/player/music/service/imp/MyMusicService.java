@@ -51,7 +51,7 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: getKeywordMusic
+     * @methodsName: getMusicClassify
      * @description: 获取推荐音乐列表
      * @return: String
      * @date: 2023-05-25 21:00
@@ -70,7 +70,7 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: getKeywordMusic
+     * @methodsName: getMusicListByClassifyId
      * @description: 获取推荐音乐列表
      * @return: String
      * @date: 2023-05-25 21:00
