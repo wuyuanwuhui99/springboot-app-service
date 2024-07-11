@@ -2,7 +2,7 @@ package com.player.music.service.imp;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
-import com.player.music.Entity.RecordEntity;
+import com.player.music.entity.RecordEntity;
 import com.player.music.dao.RecordDao;
 import com.player.music.service.IRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

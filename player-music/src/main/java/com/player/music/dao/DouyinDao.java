@@ -1,6 +1,6 @@
 package com.player.music.dao;
 
-import com.player.music.Entity.DouyinEntity;
+import com.player.music.entity.DouyinEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,9 +1,9 @@
 package com.player.music.service;
 
 import com.player.common.entity.ResultEntity;
-import com.player.music.Entity.MyMusicEntity;
-import com.player.music.Entity.MyMusicFavoriteDirectoryEntity;
-import com.player.music.Entity.MyMusicFavoriteEntity;
+import com.player.music.entity.MyMusicEntity;
+import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
+import com.player.music.entity.MyMusicFavoriteEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

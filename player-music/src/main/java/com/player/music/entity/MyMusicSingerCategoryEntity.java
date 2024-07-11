@@ -1,4 +1,4 @@
-package com.player.music.Entity;
+package com.player.music.entity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
-import com.player.music.Entity.LogEntity;
+import com.player.music.entity.LogEntity;
 import com.player.music.dao.LogDao;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;

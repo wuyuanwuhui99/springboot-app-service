@@ -1,6 +1,6 @@
 package com.player.music.dao;
 
-import com.player.music.Entity.FavoriteMusicEntity;
+import com.player.music.entity.FavoriteMusicEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

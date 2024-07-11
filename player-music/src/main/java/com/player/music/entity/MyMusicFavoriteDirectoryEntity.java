@@ -1,4 +1,4 @@
-package com.player.music.Entity;
+package com.player.music.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,19 +8,25 @@ import java.util.Date;
 
 @Data
 @ToString
-public class MyMusicFavoriteEntity {
+public class MyMusicFavoriteDirectoryEntity {
 
     @ApiModelProperty(value = "主键")
     private Long id;//主键
 
-    @ApiModelProperty(value = "收藏夹id")
-    private Long favoriteId;
-
     @ApiModelProperty(value = "用户id")
     private String userId;
 
-    @ApiModelProperty(value = "音乐")
-    private Long musicId;
+    @ApiModelProperty(value = "收藏夹名称")
+    private String name;
+
+    @ApiModelProperty(value = "收藏夹总歌曲数据")
+    private int total;
+
+    @ApiModelProperty(value = "当前这首歌曲是否在这个收藏夹内")
+    private int checked;
+
+    @ApiModelProperty(value = "封面")
+    private String cover;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;

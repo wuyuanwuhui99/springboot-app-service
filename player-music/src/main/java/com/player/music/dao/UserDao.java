@@ -1,6 +1,6 @@
 package com.player.music.dao;
 
-import com.player.music.Entity.UserEntity;
+import com.player.music.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

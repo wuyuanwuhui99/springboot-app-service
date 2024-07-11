@@ -2,9 +2,9 @@ package com.player.music.controller;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
-import com.player.music.Entity.MyMusicEntity;
-import com.player.music.Entity.MyMusicFavoriteDirectoryEntity;
-import com.player.music.Entity.MyMusicFavoriteEntity;
+import com.player.music.entity.MyMusicEntity;
+import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
+import com.player.music.entity.MyMusicFavoriteEntity;
 import com.player.music.service.IMyMusicService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.player.music.service;
 
 import com.player.common.entity.ResultEntity;
-import com.player.music.Entity.FavoriteMusicEntity;
+import com.player.music.entity.FavoriteMusicEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface IFavoriteMusicService {

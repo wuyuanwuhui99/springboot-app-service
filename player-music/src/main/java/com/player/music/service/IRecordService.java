@@ -1,7 +1,7 @@
 package com.player.music.service;
 
 import com.player.common.entity.ResultEntity;
-import com.player.music.Entity.RecordEntity;
+import com.player.music.entity.RecordEntity;
 
 public interface IRecordService {
     /**

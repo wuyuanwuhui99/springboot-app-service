@@ -2,7 +2,7 @@ package com.player.music.controller;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.JwtToken;
-import com.player.music.Entity.FavoriteMusicEntity;
+import com.player.music.entity.FavoriteMusicEntity;
 import com.player.music.service.IFavoriteMusicService;
 import feign.Param;
 import io.swagger.annotations.Api;

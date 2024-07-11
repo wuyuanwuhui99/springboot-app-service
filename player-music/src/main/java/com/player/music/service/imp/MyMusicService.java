@@ -6,9 +6,9 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
-import com.player.music.Entity.MyMusicEntity;
-import com.player.music.Entity.MyMusicFavoriteDirectoryEntity;
-import com.player.music.Entity.MyMusicFavoriteEntity;
+import com.player.music.entity.MyMusicEntity;
+import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
+import com.player.music.entity.MyMusicFavoriteEntity;
 import com.player.music.mapper.MyMusicMapper;
 import com.player.music.service.IMyMusicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
