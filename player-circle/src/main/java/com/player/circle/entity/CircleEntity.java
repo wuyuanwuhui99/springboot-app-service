@@ -38,6 +38,9 @@ public class CircleEntity {
     @ApiModelProperty(value = "用户头像")
     private String useravater;
 
+    @ApiModelProperty(value = "权限，0不公开，1公开")
+    private int permission;
+
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 

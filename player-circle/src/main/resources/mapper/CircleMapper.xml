@@ -42,7 +42,7 @@
         <association property="circleComments"  column="id" select="getSocialCommentByCircleId"/>
     </resultMap>
 
-    <select id="getCircleList"  resultMap="getCircleListAssociation">
+    <select id="getCircleListByType"  resultMap="getCircleListAssociation">
         SELECT
         c.id,
         c.relation_id,
@@ -87,7 +87,7 @@
         <if test="type=='movie'">
             LEFT JOIN movie o on c.relation_id = o.movie_id
         </if>
-        where c.type = #{type} ORDER BY c.create_time DESC limit #{start}, #{pageSize}
+        where c.type = #{type} and c.permission = 1 ORDER BY c.create_time DESC limit #{start}, #{pageSize}
     </select>
 
     <select id="getCircleArticleCount" resultType="Map">

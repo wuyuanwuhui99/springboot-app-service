@@ -2,7 +2,6 @@ package com.player.circle.service.imp;
 
 import com.alibaba.fastjson.JSON;
 import com.player.circle.entity.CircleEntity;
-import com.player.circle.entity.SayEntity;
 import com.player.circle.mapper.CircleMapper;
 import com.player.circle.service.ICircleService;
 import com.player.common.entity.ResultEntity;
@@ -37,9 +36,9 @@ public class CircleService implements ICircleService {
      * @date: 2022-11-17 23:15
      */
     @Override
-    public ResultEntity getCircleArticleList(int pageNum, int pageSize, String type) {
+    public ResultEntity getCircleListByType(int pageNum, int pageSize, String type) {
         int start = (pageNum - 1) * pageSize;
-        List<CircleEntity>circleArticleList = circleMapper.getCircleList(start, pageSize, type);
+        List<CircleEntity>circleArticleList = circleMapper.getCircleListByType(start, pageSize, type);
         Long total = circleMapper.getCircleCount(type);
         ResultEntity resultEntity = ResultUtil.success(circleArticleList);
         resultEntity.setTotal(total);
@@ -98,24 +97,8 @@ public class CircleService implements ICircleService {
      * @date: 2022-12-03 16:02
      */
     @Override
-    public ResultEntity saveSay(SayEntity sayEntity, String token){
-        String imgs = "";
-        for(int i = 0; i < sayEntity.getImgs().length; i++){
-            String base64 = sayEntity.getImgs()[i];
-            String ext = base64.replaceAll(";base64,.+","").replaceAll("data:image/","");
-            base64 = base64.replaceAll("data:image/.+base64,","");
-            String imgName = UUID.randomUUID().toString().replace("-", "") + "." + ext;
-            String newImgName = Common.generateImage(base64, uploadPath+imgName);
-            if(newImgName != null){
-                imgs += newImgName + (i == sayEntity.getImgs().length - 1 ? "" : ";");
-            }
-        }
-        CircleEntity circleEntity = new CircleEntity();
-        circleEntity.setContent(sayEntity.getContent());
-        circleEntity.setImgs(imgs);
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        circleEntity.setUserId(userEntity.getUserId());
-        circleEntity.setType("movie");
-        return ResultUtil.success(circleMapper.saveSay(circleEntity));
+    public ResultEntity saveCircle(CircleEntity circleEntity, String token){
+        circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        return ResultUtil.success(circleMapper.saveCircle(circleEntity));
     }
 }

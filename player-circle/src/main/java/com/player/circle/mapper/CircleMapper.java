@@ -10,7 +10,7 @@ import java.util.Map;
 @Repository
 public interface CircleMapper {
 
-    List<CircleEntity> getCircleList(int start, int pageSize,String type);
+    List<CircleEntity> getCircleListByType(int start, int pageSize,String type);
 
     Map<String,Integer> getCircleArticleCount(int id);
 
@@ -20,5 +20,5 @@ public interface CircleMapper {
 
     List<HotCommentMovieEntity>getLastModifyMovie();
 
-    Integer saveSay(CircleEntity circleEntity);
+    Integer saveCircle(CircleEntity circleEntity);
 }

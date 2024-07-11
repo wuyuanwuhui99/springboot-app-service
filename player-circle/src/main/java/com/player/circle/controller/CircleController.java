@@ -1,6 +1,5 @@
 package com.player.circle.controller;
 
-import com.player.circle.entity.SayEntity;
 import com.player.circle.service.ICircleService;
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
@@ -20,12 +19,12 @@ public class CircleController {
 
     @ApiOperation("获取朋友圈列表")
     @GetMapping("/circle/getCircleListByType")
-    public ResultEntity getCircleArticleList(
+    public ResultEntity getCircleListByType(
             @RequestParam("pageSize") int pageSize,
             @RequestParam("pageNum") int pageNum,
             @RequestParam("type") String type
     ) {
-        return circleService.getCircleArticleList(pageNum, pageSize, type);
+        return circleService.getCircleListByType(pageNum, pageSize, type);
     }
 
     @ApiOperation("获取文章的评论数量，浏览数量，收藏数量")
