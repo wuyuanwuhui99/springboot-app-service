@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.player.social.mapper.CircleMapper">
+<mapper namespace="com.player.circle.mapper.CircleMapper">
 
     <select id="getCircleCount" resultType="Long">
         SELECT COUNT(id) FROM circle WHERE `type` = #{type}

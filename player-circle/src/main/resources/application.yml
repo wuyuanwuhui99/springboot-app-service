@@ -1,5 +1,5 @@
 static:
-  upload-path: F:/static/social/
+  upload-path: F:/static/circle/
 server:
   port: 8003
   tomcat:
@@ -8,7 +8,7 @@ token:
   expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
   secret: wuwenqiang #token秘钥
 app:
-  appId: com.player.social
+  appId: com.player.circle
   appName: 电影圈
 spring:
   jackson:
@@ -32,7 +32,7 @@ spring:
         max-idle: 8 # 连接池中的最大空闲连接
         min-idle: 0 # 连接池中的最小空闲连接
   application:
-    name: player-social
+    name: player-circle
   datasource:
     druid:
       url: jdbc:mysql://localhost:3306/play?characterEncoding=utf-8
@@ -52,7 +52,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.player.social.entity
+  type-aliases-package: com.player.circle.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
