@@ -52,7 +52,7 @@
         c.user_id,
         c.create_time,
         c.update_time,
-        <if test="type == 'music'">
+        <if test="type == 'MUSIC'">
             m.song_name as music_song_name,
             m.audio_id as music_audio_id,
             m.author_name as music_author_name,
@@ -63,7 +63,7 @@
             case when 0 >= m.permission then m.lyrics else null end as music_lyrics,
         </if>
 
-        <if test="type == 'movie'">
+        <if test="type == 'MOVIE'">
             o.movie_id,
             o.movie_name,
             o.director as movie_director,
@@ -81,11 +81,11 @@
         u.avater as useravater
         FROM circle c
         LEFT JOIN user u on c.user_id = u.user_id
-        <if test="type=='music'">
-            LEFT JOIN music m on c.relation_id = m.audio_id
+        <if test="type=='MUSIC'">
+            LEFT JOIN music m on c.relation_id = m.id
         </if>
-        <if test="type=='movie'">
-            LEFT JOIN movie o on c.relation_id = o.movie_id
+        <if test="type=='MOVIE'">
+            LEFT JOIN movie o on c.relation_id = o.id
         </if>
         where c.type = #{type} and c.permission = 1 ORDER BY c.create_time DESC limit #{start}, #{pageSize}
     </select>
@@ -120,12 +120,12 @@
         SELECT * FROM (SELECT * FROM movie_recommend WHERE classify = '最新动漫'  ORDER BY `rank` asc limit 0,20) t4
     </select>
 
-    <insert id="saveSay">
-        INSERT INTO circle(content,imgs,`type`,user_id,create_time,update_time) VALUE (#{content},#{imgs},#{type},#{userId},now(),now())
+    <insert id="insertCircle">
+        INSERT INTO circle(content,imgs,relation_id,`type`,user_id,permission,create_time,update_time) VALUE (#{content},#{imgs},#{relationId},#{type},#{userId},#{permission},now(),now())
     </insert>
 
     <select id="getCircleLikeByCircleId" resultMap="getCircleLikeMap">
-        SELECT c.*,u.username FROM social_like c LEFT JOIN user u on c.user_id = u.user_id where c.relation_id = #{id} and c.type = 'music_circle'
+        SELECT c.*,u.username FROM social_like c LEFT JOIN user u on c.user_id = u.user_id where c.relation_id = #{id} and c.type = 'MUSIC_CIRCLE'
     </select>
 
     <resultMap id="getCircleLikeMap" type="com.player.common.entity.LikeEntity">
@@ -157,7 +157,7 @@
             WHERE
                 t1.relation_id = #{id}
                 AND t1.top_id IS NULL
-                AND t1.type = 'music_circle'
+                AND t1.type = 'MUSIC_CIRCLE'
             ) t4
             LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id
             LEFT JOIN social_comment t6 ON t4.id = t6.parent_id

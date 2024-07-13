@@ -97,8 +97,8 @@ public class CircleService implements ICircleService {
      * @date: 2022-12-03 16:02
      */
     @Override
-    public ResultEntity saveCircle(CircleEntity circleEntity, String token){
-        if(StringUtils.isEmpty(circleEntity.getImgs())){
+    public ResultEntity insertCircle(CircleEntity circleEntity, String token){
+        if(!StringUtils.isEmpty(circleEntity.getImgs())){
             String[] base64Imgs = circleEntity.getImgs().split(",");
             String imgs = "";
             for(int i = 0; i < base64Imgs.length; i++){
@@ -115,6 +115,6 @@ public class CircleService implements ICircleService {
         }
 
         circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
-        return ResultUtil.success(circleMapper.saveCircle(circleEntity));
+        return ResultUtil.success(circleMapper.insertCircle(circleEntity));
     }
 }

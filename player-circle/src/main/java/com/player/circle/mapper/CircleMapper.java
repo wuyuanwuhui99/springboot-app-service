@@ -20,5 +20,5 @@ public interface CircleMapper {
 
     List<HotCommentMovieEntity>getLastModifyMovie();
 
-    Integer saveCircle(CircleEntity circleEntity);
+    Integer insertCircle(CircleEntity circleEntity);
 }

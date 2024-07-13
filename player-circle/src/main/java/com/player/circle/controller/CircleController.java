@@ -47,8 +47,8 @@ public class CircleController {
     }
 
     @ApiOperation("保存图片和文字")
-    @PostMapping("/circle-getway/saveSay")
+    @PostMapping("/circle-getway/insertCircle")
     public ResultEntity saveSay(@RequestBody CircleEntity circleEntity, @RequestHeader("Authorization") String token) {
-        return circleService.saveCircle(circleEntity,token);
+        return circleService.insertCircle(circleEntity,token);
     }
 }
