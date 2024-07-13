@@ -98,6 +98,22 @@ public class CircleService implements ICircleService {
      */
     @Override
     public ResultEntity saveCircle(CircleEntity circleEntity, String token){
+        if(StringUtils.isEmpty(circleEntity.getImgs())){
+            String[] base64Imgs = circleEntity.getImgs().split(",");
+            String imgs = "";
+            for(int i = 0; i < base64Imgs.length; i++){
+                String base64 = base64Imgs[i];
+                String ext = base64.replaceAll(";base64,.+","").replaceAll("data:image/","");
+                base64 = base64.replaceAll("data:image/.+base64,","");
+                String imgName = UUID.randomUUID().toString().replace("-", "") + "." + ext;
+                String newImgName = Common.generateImage(base64, uploadPath+imgName);
+                if(newImgName != null){
+                    imgs += newImgName + (i == base64Imgs.length - 1 ? "" : ",");
+                }
+            }
+            circleEntity.setImgs(imgs);
+        }
+
         circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
         return ResultUtil.success(circleMapper.saveCircle(circleEntity));
     }
