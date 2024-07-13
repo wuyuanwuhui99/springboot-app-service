@@ -19,8 +19,6 @@ public interface MyMusicMapper {
 
     Long getSingerTotal();
 
-    List<MyMusiPlayMenuEntity> getMusiPlayMenu(String userId);
-
     List<MySingerEntity> getMySinger(String userId,int start, int pageSize);
 
     Long getMySingerCount(String userId);

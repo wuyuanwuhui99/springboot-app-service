@@ -56,12 +56,6 @@ public class MyMusicController {
         return myMusicService.getSingerList(HttpUtils.getPath(request), category, pageNum, pageSize);
     }
 
-    @ApiOperation("查询歌单")
-    @GetMapping("/myMusic-getway/getMusicPlayMenu")
-    public ResultEntity getMusiPlayList(HttpServletRequest request,@RequestHeader("Authorization") String token) {
-        return myMusicService.getMusiPlayMenu(HttpUtils.getPath(request),token);
-    }
-
     @ApiOperation("获取我关注的歌手")
     @GetMapping("/myMusic-getway/getMySinger")
     public ResultEntity getMySinger(

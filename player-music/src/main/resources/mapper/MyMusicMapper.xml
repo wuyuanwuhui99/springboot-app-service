@@ -95,13 +95,6 @@
         select count(*) as total from music_authors where avatar is not null
     </select>
 
-
-    <select id="getMusiPlayMenu" resultType="MyMusiPlayMenuEntity">
-        select t2.*,t1.total from
-	        (select count(id) as total ,menu_id from music_play_list where menu_id in (SELECT id from music_play_menu where user_id = #{userId}) group by menu_id) t1
-        LEFT JOIN music_play_menu t2 on t1.menu_id = t2.id
-    </select>
-
     <select id="getMySinger" resultType="MySingerEntity">
         select t4.*,COUNT(t5.author_id) as total from
             (select t3.* from

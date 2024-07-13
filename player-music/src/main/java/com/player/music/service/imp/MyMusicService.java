@@ -118,19 +118,6 @@ public class MyMusicService implements IMyMusicService {
             return resultEntity;
         }
     }
-    @Override
-    public ResultEntity getMusiPlayMenu(String redisKey,String token){
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        redisKey += "?userId=" + userEntity.getUserId();
-        String result = (String) redisTemplate.opsForValue().get(redisKey);
-        if (!StringUtils.isEmpty(result)) {
-            return JSON.parseObject(result, ResultEntity.class);
-        } else {
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusiPlayMenu(userEntity.getUserId()));
-            redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
-            return resultEntity;
-        }
-    }
 
     @Override
     public ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize){
