@@ -233,11 +233,11 @@
                 LIMIT #{start},#{pageSize}
             ) t1
             LEFT JOIN music t2 ON t1.music_id = t2.id
-            LEFT JOIN music_like t3 ON t1.music_id = t3.music_id
+            LEFT JOIN music_like t3 ON t1.music_id = t3.music_id and t3.user_id = #{userId}
     </select>
 
     <select id="getMusicCountByFavoriteId" resultType="Long">
-       SELECT count(id) FROM music_favorite_list WHERE favorite_id = #{favoriteId} AND user_id = #{userId}
+       SELECT count(id) FROM music_favorite_list WHERE favorite_id = #{favoriteId}
     </select>
 
     <insert id="insertFavoriteDirectory" parameterType="MyMusicFavoriteDirectoryEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">

@@ -145,7 +145,7 @@ public class MyMusicController {
     @GetMapping("/myMusic-getway/getFavoriteDirectory")
     public ResultEntity getFavoriteDirectory(
             @RequestParam(name = "musicId",required = true) Long musicId,
-            @RequestHeader(name = "Authorization",required = false) String token
+            @RequestHeader(name = "Authorization",required = true) String token
     ) {
         return myMusicService.getFavoriteDirectory(token,musicId);
     }
@@ -156,7 +156,7 @@ public class MyMusicController {
             @RequestParam(name = "favoriteId",required = true) Long favoriteId,
             @RequestParam(name = "pageNum",required = true) int pageNum,
             @RequestParam(name = "pageSize",required = true) int pageSize,
-            @RequestHeader(name = "Authorization",required = false) String token
+            @RequestHeader(name = "Authorization",required = true) String token
     ) {
         return myMusicService.getMusicListByFavoriteId(token,favoriteId,pageNum,pageSize);
     }
