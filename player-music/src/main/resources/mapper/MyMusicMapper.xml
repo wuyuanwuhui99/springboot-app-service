@@ -57,11 +57,11 @@
                 WHERE t1.classify_id =#{classifyId} ORDER BY t1.audio_rank DESC limit #{start},#{pageSize}
             ) t3
         LEFT JOIN music_like t4
-        ON t3.id = t4.music_id AND t4.user_id = #{userId}
+        ON t3.id = t4.music_id AND t4.user_id = #{userId} WHERE t3.id is not null
     </select>
 
     <select id="getMusicTotalByClassifyId" resultType="Long">
-        select count(*) as total from music_classify where classify_id = #{classifyId}
+        select count(*) as total from (select t2.id from music_classify t1 LEFT JOIN music t2 ON t1.music_id = t2.id WHERE classify_id = #{classifyId}) t3 WHERE t3.id IS NOT NULL
     </select>
 
     <select id="getSingerList" resultType="MusicAuthorEntity">
@@ -260,7 +260,7 @@
     </update>
 
     <select id="isMusicFavorite" resultType="Long">
-        SELECT COUNT(id) FROM music_favorite_list where music_id = #{musicId} and favorite_id in (SELECT favorite_id FROM music_favorite_directory WHERE user_id = #{userId})
+        SELECT COUNT(id) FROM music_favorite_list where music_id = #{musicId} and favorite_id in (SELECT id FROM music_favorite_directory WHERE user_id = #{userId})
     </select>
 
     <delete id="deleteMusicFavorite">

@@ -80,15 +80,15 @@ public class MyMusicService implements IMyMusicService {
             userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
         }
         if(isRedis){
-            redisKey += "?classifyId=" + classifyId + "&pageNum=" + pageNum + "&pageSize=" + pageNum + "&userId=" + userId;
-            String result = (String) redisTemplate.opsForValue().get(redisKey);
-            if (!StringUtils.isEmpty(result)) {// 如果缓存中有数据
-                return JSON.parseObject(result, ResultEntity.class);
-            } else {// 如果缓存中没有数据，从数据库中查询，并将查询结果写入缓存
+//            redisKey += "?classifyId=" + classifyId + "&pageNum=" + pageNum + "&pageSize=" + pageNum + "&userId=" + userId;
+//            String result = (String) redisTemplate.opsForValue().get(redisKey);
+//            if (!StringUtils.isEmpty(result)) {// 如果缓存中有数据
+//                return JSON.parseObject(result, ResultEntity.class);
+//            } else {// 如果缓存中没有数据，从数据库中查询，并将查询结果写入缓存
                 ResultEntity resultEntity = findMusicListByClassifyId(classifyId, pageNum, pageSize, userId);
                 redisTemplate.opsForValue().set(redisKey, JSON.toJSONStringWithDateFormat(resultEntity, "yyyy-MM-dd hh:mm:ss", SerializerFeature.WriteDateUseDateFormat), 1, TimeUnit.DAYS);
                 return resultEntity;
-            }
+//            }
         }else{
             return findMusicListByClassifyId(classifyId, pageNum, pageSize,userId);
         }
