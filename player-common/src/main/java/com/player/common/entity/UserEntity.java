@@ -33,7 +33,7 @@ public class UserEntity {
     private String birthday;
 
     @ApiModelProperty(value = "性别")
-    private String sex;
+    private int sex;
 
     @ApiModelProperty(value = "角色")
     private String role;

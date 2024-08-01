@@ -27,31 +27,15 @@
 
     <update id="updateUser" parameterType="com.player.common.entity.UserEntity">
         UPDATE user SET
-            update_date = now()
-            <if test="username != '' and username != null">
-                ,username = #{username}
-            </if>
-            <if test="telephone != '' and telephone != null">
-                ,telephone = #{telephone}
-            </if>
-            <if test="email != '' and email != null">
-                ,email = #{email}
-            </if>
-            <if test="avater != '' and avater != null">
-                ,avater = #{avater}
-            </if>
-            <if test="birthday != '' and birthday != null">
-                ,birthday = #{birthday}
-            </if>
-            <if test="sex != '' and sex != null">
-                ,sex = #{sex}
-            </if>
-            <if test="sign != '' and sign != null">
-                ,sign = #{sign}
-            </if>
-            <if test="region != '' and region != null">
-                ,region = #{region}
-            </if>
+            update_date = now(),
+            username = #{username},
+            telephone = #{telephone},
+            email = #{email},
+            avater = #{avater},
+            birthday = #{birthday},
+            sex = #{sex},
+            sign = #{sign},
+            region = #{region}
         WHERE user_id = #{userId}  and disabled = 0
     </update>
 
