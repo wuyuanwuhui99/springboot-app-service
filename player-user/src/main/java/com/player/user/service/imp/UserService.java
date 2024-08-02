@@ -89,11 +89,11 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity register(UserEntity userEntity) {
-        Long rows = userMapper.register(userEntity);
-        if (rows >= 1) {
+        UserEntity myUserEntity = userMapper.register(userEntity);
+        if (myUserEntity != null) {
             String newToken = JwtToken.createToken(userEntity);
             redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
-            return ResultUtil.success(userEntity, null, newToken);
+            return ResultUtil.success(myUserEntity, null, newToken);
         }
         return ResultUtil.fail(null, "注册失败");
     }

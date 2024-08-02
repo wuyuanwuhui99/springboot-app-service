@@ -23,7 +23,7 @@ public interface UserMapper {
 
     UserEntity login(UserEntity userEntity);
 
-    Long register(UserEntity userEntity);
+    UserEntity register(UserEntity userEntity);
 
     UserEntity getUserById(String userId);
 
