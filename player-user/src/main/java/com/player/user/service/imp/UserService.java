@@ -91,7 +91,7 @@ public class UserService implements IUserService {
     public ResultEntity register(UserEntity userEntity) {
         UserEntity myUserEntity = userMapper.register(userEntity);
         if (myUserEntity != null) {
-            String newToken = JwtToken.createToken(userEntity);
+            String newToken = JwtToken.createToken(myUserEntity);
             redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(myUserEntity, null, newToken);
         }

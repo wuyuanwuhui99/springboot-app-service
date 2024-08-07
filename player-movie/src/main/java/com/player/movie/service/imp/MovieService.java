@@ -155,7 +155,7 @@ public class MovieService implements IMovieService {
             ResultEntity resultEntity= JSON.parseObject(result,ResultEntity.class);
             return resultEntity;
         }else{
-            if(pageSize > 100)pageSize = 100;
+            if(pageSize > 500)pageSize = 500;
             int start = (pageNum - 1) * pageSize;
             ResultEntity resultEntity =  ResultUtil.success(movieMapper.search(classify, category, label,star,director,keyword,start,pageSize));
             Long total = movieMapper.searchTotal(classify, category, label,star,director,keyword);
@@ -239,7 +239,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getViewRecord(String token,int pageNum,int pageSize){
-        if(pageSize > 100) pageSize = 100;
+        if(pageSize > 500) pageSize = 500;
         int start = (pageNum - 1)*pageSize;
         return ResultUtil.success(movieMapper.getViewRecord(JwtToken.getUserId(token),start,pageSize));
     }
@@ -268,7 +268,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getFavoriteList(String token,int pageNum,int pageSize) {
-        if(pageSize > 100) pageSize = 100;
+        if(pageSize > 500) pageSize = 500;
         int start = (pageNum - 1)*pageSize;
         return ResultUtil.success(movieMapper.getFavoriteList(JwtToken.getUserId(token),start,pageSize));
     }

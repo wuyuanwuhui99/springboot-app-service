@@ -95,7 +95,7 @@ public class MyMusicService implements IMyMusicService {
     }
 
     private ResultEntity findMusicListByClassifyId(int classifyId, int pageNum, int pageSize,String userId){
-        if (pageSize > 100) pageSize = 100;
+        if (pageSize > 500) pageSize = 500;
         int start = (pageNum - 1) * pageSize;
         ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByClassifyId(classifyId, start, pageSize, userId));
         Long musicTotalByClassifyId = myMusicMapper.getMusicTotalByClassifyId(classifyId);
@@ -110,7 +110,7 @@ public class MyMusicService implements IMyMusicService {
         if (!StringUtils.isEmpty(result)) {
             return JSON.parseObject(result, ResultEntity.class);
         } else {
-            if (pageSize > 100) pageSize = 100;
+            if (pageSize > 500) pageSize = 500;
             int start = (pageNum - 1) * pageSize;
             ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerList(category, start, pageSize));
             Long singerTotal = myMusicMapper.getSingerTotal();
@@ -127,7 +127,7 @@ public class MyMusicService implements IMyMusicService {
         if (!StringUtils.isEmpty(result)) {
             return JSON.parseObject(result, ResultEntity.class);
         } else {
-            if (pageSize > 100) pageSize = 100;
+            if (pageSize > 500) pageSize = 500;
             int start = (pageNum - 1) * pageSize;
             ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMySinger(userEntity.getUserId(),start,pageSize));
             Long mySingerCount = myMusicMapper.getMySingerCount(userEntity.getUserId());
@@ -140,7 +140,7 @@ public class MyMusicService implements IMyMusicService {
     @Override
     public ResultEntity getMusicRecord(String token, int pageNum, int pageSize){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        if (pageSize > 100) pageSize = 100;
+        if (pageSize > 500) pageSize = 500;
         int start = (pageNum - 1) * pageSize;
         ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicRecord(userEntity.getUserId(),start,pageSize));
         Long mySingerCount = myMusicMapper.getMusicRecordCount(userEntity.getUserId());
@@ -193,7 +193,7 @@ public class MyMusicService implements IMyMusicService {
      */
     @Override
     public ResultEntity queryMusicLike(String token, int pageNum, int pageSize){
-        if (pageSize > 100) pageSize = 100;
+        if (pageSize > 500) pageSize = 500;
         int start = (pageNum - 1) * pageSize;
         ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicLike(JwtToken.parserToken(token, UserEntity.class).getUserId(),start,pageSize));
         Long mySingerCount = myMusicMapper.queryMusicLikeCount(JwtToken.parserToken(token, UserEntity.class).getUserId());
@@ -217,7 +217,7 @@ public class MyMusicService implements IMyMusicService {
                 userId = userEntity.getUserId();
             }
         }
-        if (pageSize > 100) pageSize = 100;
+        if (pageSize > 500) pageSize = 500;
         int start = (pageNum - 1) * pageSize;
         ResultEntity resultEntity = ResultUtil.success(myMusicMapper.searchMusic(userId,keyword,start,pageSize));
         Long mySingerCount = myMusicMapper.searchMusicCount(keyword);
