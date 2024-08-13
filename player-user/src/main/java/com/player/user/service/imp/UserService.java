@@ -63,7 +63,7 @@ public class UserService implements IUserService {
     public ResultEntity login(UserEntity userEntity) {
         UserEntity resultUserEntity = userMapper.login(userEntity);
         if (resultUserEntity != null) {
-            String token = JwtToken.createToken(resultUserEntity);//token有效期一天
+            String token = JwtToken.createToken(resultUserEntity);//token有效期30天
             redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(resultUserEntity, "登录成功", token);
         } else {
