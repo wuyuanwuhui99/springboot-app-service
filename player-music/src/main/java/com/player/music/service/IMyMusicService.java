@@ -15,7 +15,7 @@ public interface IMyMusicService {
 
     ResultEntity getMusicListByClassifyId(String redisKey, int classifyId, int pageNum, int pageSize, boolean isRedis, String token);
 
-    ResultEntity getSingerList(String redisKey, String category, int pageNum, int pageSize);
+    ResultEntity getSingerList(String redisKey, int categoryId, int pageNum, int pageSize);
 
     ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize);
 

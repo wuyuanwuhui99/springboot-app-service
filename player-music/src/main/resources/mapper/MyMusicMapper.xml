@@ -69,7 +69,7 @@
         t1.id,
         t1.author_id,
         t1.author_name,
-        t1.language,
+        t1.category_id,
         t1.is_publish,
         t1.avatar,
         t1.type,
@@ -82,8 +82,8 @@
         COUNT(t2.author_name) as total
         from
         (select * from music_authors
-        <if test="category != '' and category != null">
-            where language = #{category}
+        <if test="categoryId != '' and categoryId != null and categoryId != 0">
+            where category_id = #{categoryId}
         </if>
         order by `rank` desc limit #{start},#{pageSize}
         )t1
@@ -92,7 +92,10 @@
     </select>
 
     <select id="getSingerTotal" resultType="Long">
-        select count(*) as total from music_authors where avatar is not null
+        select count(*) as total from music_authors
+        <if test="categoryId != '' and categoryId != null">
+            where category_id = #{categoryId}
+        </if>
     </select>
 
     <select id="getMySinger" resultType="MySingerEntity">

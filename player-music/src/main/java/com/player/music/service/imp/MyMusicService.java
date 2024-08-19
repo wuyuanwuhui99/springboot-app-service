@@ -104,16 +104,16 @@ public class MyMusicService implements IMyMusicService {
     }
 
     @Override
-    public ResultEntity getSingerList(String redisKey,String category, int pageNum, int pageSize) {
-        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageSize + (!StringUtils.isEmpty(category) ? "&category=" + category : "");
+    public ResultEntity getSingerList(String redisKey,int categoryId, int pageNum, int pageSize) {
+        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageSize + "&categoryId=" + categoryId;
         String result = (String) redisTemplate.opsForValue().get(redisKey);
         if (!StringUtils.isEmpty(result)) {
             return JSON.parseObject(result, ResultEntity.class);
         } else {
             if (pageSize > 500) pageSize = 500;
             int start = (pageNum - 1) * pageSize;
-            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerList(category, start, pageSize));
-            Long singerTotal = myMusicMapper.getSingerTotal();
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getSingerList(categoryId, start, pageSize));
+            Long singerTotal = myMusicMapper.getSingerTotal(categoryId);
             resultEntity.setTotal(singerTotal);
             return resultEntity;
         }

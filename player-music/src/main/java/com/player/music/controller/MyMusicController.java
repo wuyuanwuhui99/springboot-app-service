@@ -51,9 +51,9 @@ public class MyMusicController {
             HttpServletRequest request,
             @RequestParam(name = "pageNum",required = true) int pageNum,
             @RequestParam(name = "pageSize",required = true) int pageSize,
-            @RequestParam(name = "category",required = false) String category
+            @RequestParam(name = "categoryId",required = true) int categoryId
     ) {
-        return myMusicService.getSingerList(HttpUtils.getPath(request), category, pageNum, pageSize);
+        return myMusicService.getSingerList(HttpUtils.getPath(request), categoryId, pageNum, pageSize);
     }
 
     @ApiOperation("获取我关注的歌手")
