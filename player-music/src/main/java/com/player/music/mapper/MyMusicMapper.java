@@ -41,7 +41,7 @@ public interface MyMusicMapper {
 
     Long searchMusicCount(String keyword);
 
-    List<MyMusicEntity> getSingerCategory();
+    List<MyMusicSingerCategoryEntity> getSingerCategory();
 
     List<MyMusicFavoriteDirectoryEntity> getFavoriteDirectory(String userId,Long musicId);
 

@@ -227,8 +227,8 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: queryMusicLike
-     * @description: 查询收藏
+     * @methodsName: getSingerCategory
+     * @description: 查询歌手分类
      * @return: ResultEntity
      * @date: 2024-01-27 16:57
      */

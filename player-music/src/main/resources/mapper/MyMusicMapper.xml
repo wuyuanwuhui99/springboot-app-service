@@ -169,7 +169,7 @@
     </select>
 
     <select id="getSingerCategory" resultType="MyMusicSingerCategoryEntity">
-        select language as category from music_authors where language is not null and language != '' GROUP BY language
+         SELECT * FROM music_singer_category where disabled = 0 ORDER BY `rank` DESC
     </select>
 
     <select id="getFavoriteDirectory" resultType="MyMusicFavoriteDirectoryEntity">
