@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @ToString
-public class MySingerEntity {
+public class MyMusicAuthorEntity {
     @ApiModelProperty(value = "主键")
     private int id;//主键
 
@@ -26,6 +26,9 @@ public class MySingerEntity {
 
     @ApiModelProperty(value = "总数")
     private int total;
+
+    @ApiModelProperty(value = "是否喜欢")
+    private int isLike;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;

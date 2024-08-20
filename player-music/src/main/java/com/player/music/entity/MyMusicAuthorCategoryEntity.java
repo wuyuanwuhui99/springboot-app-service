@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @ToString
-public class MyMusicSingerCategoryEntity {
+public class MyMusicAuthorCategoryEntity {
     @ApiModelProperty(value = "主键")
     private Long id;//主键
 

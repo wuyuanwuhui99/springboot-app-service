@@ -64,7 +64,7 @@
         select count(*) as total from (select t2.id from music_classify t1 LEFT JOIN music t2 ON t1.music_id = t2.id WHERE classify_id = #{classifyId}) t3 WHERE t3.id IS NOT NULL
     </select>
 
-    <select id="getSingerList" resultType="MusicAuthorEntity">
+    <select id="getMusicAuthorList" resultType="MusicAuthorEntity">
         select
         t1.id,
         t1.author_id,
@@ -79,7 +79,8 @@
         t1.rank,
         t1.create_time,
         t1.update_time,
-        COUNT(t2.author_name) as total
+        COUNT(t2.author_name) as total,
+        (CASE WHEN t3.author_id IS NOT NULL THEN 1 ELSE 0 END) AS is_like
         from
         (select * from music_authors
         <if test="categoryId != '' and categoryId != null and categoryId != 0">
@@ -87,28 +88,29 @@
         </if>
         order by `rank` desc limit #{start},#{pageSize}
         )t1
+        LEFT JOIN music_author_like t3 on t3.author_id = t1.id
         LEFT JOIN music t2 on t1.author_name = t2.author_name
         GROUP BY t2.author_name,t1.id
     </select>
 
-    <select id="getSingerTotal" resultType="Long">
+    <select id="getMusicAuthorTotal" resultType="Long">
         select count(*) as total from music_authors
         <if test="categoryId != '' and categoryId != null">
             where category_id = #{categoryId}
         </if>
     </select>
 
-    <select id="getMySinger" resultType="MySingerEntity">
+    <select id="getMyLikeMusicAuthor" resultType="MyMusicAuthorEntity">
         select t4.*,COUNT(t5.author_id) as total from
             (select t3.* from
-                (select t1.* from music_my_singer t1 WHERE 1=1 OR user_id = #{userId} LIMIT #{start},#{pageSize}) t2
+                (select t1.* from music_author_like t1 WHERE 1=1 OR user_id = #{userId} LIMIT #{start},#{pageSize}) t2
                     LEFT JOIN music_authors t3 on t2.author_id = t3.author_id) t4
         LEFT JOIN music t5 on t5.author_id = t4.author_id
         GROUP BY t5.author_id,t4.id
     </select>
 
-    <select id="getMySingerCount" resultType="Long">
-       SELECT count(*) as total FROM music_my_singer where user_id = #{userId}
+    <select id="getMyLikeMusicAuthorCount" resultType="Long">
+       SELECT count(*) as total FROM music_author_like where user_id = #{userId}
     </select>
 
     <select id="getMusicRecord" resultType="MyMusicEntity">
@@ -171,8 +173,8 @@
         SELECT count(id) from music where song_name like concat('%',#{keyword},'%') or author_name like concat('%',#{keyword},'%') or album_name like concat('%',#{keyword},'%')
     </select>
 
-    <select id="getSingerCategory" resultType="MyMusicSingerCategoryEntity">
-         SELECT * FROM music_singer_category where disabled = 0 ORDER BY `rank` DESC
+    <select id="getMusicAuthorCategory" resultType="MyMusicSingerCategoryEntity">
+         SELECT * FROM music_author_category where disabled = 0 ORDER BY `rank` DESC
     </select>
 
     <select id="getFavoriteDirectory" resultType="MyMusicFavoriteDirectoryEntity">

@@ -15,13 +15,13 @@ public interface MyMusicMapper {
 
     Long getMusicTotalByClassifyId(int classifyId);
 
-    List<MyMusicEntity> getSingerList(int categoryId, int start,int pageSize);
+    List<MyMusicEntity> getMusicAuthorList(int categoryId, int start,int pageSize);
 
-    Long getSingerTotal(int categoryId);
+    Long getMusicAuthorTotal(int categoryId);
 
-    List<MySingerEntity> getMySinger(String userId,int start, int pageSize);
+    List<MyMusicAuthorEntity> getMyLikeMusicAuthor(String userId, int start, int pageSize);
 
-    Long getMySingerCount(String userId);
+    Long getMyLikeMusicAuthorCount(String userId);
 
     List<MyMusicEntity> getMusicRecord(String userId, int start, int pageSize);
 
@@ -41,7 +41,7 @@ public interface MyMusicMapper {
 
     Long searchMusicCount(String keyword);
 
-    List<MyMusicSingerCategoryEntity> getSingerCategory();
+    List<MyMusicAuthorCategoryEntity> getMusicAuthorCategory();
 
     List<MyMusicFavoriteDirectoryEntity> getFavoriteDirectory(String userId,Long musicId);
 

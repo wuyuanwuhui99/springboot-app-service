@@ -15,9 +15,9 @@ public interface IMyMusicService {
 
     ResultEntity getMusicListByClassifyId(String redisKey, int classifyId, int pageNum, int pageSize, boolean isRedis, String token);
 
-    ResultEntity getSingerList(String redisKey, int categoryId, int pageNum, int pageSize);
+    ResultEntity getMusicAuthorList(String redisKey, int categoryId, int pageNum, int pageSize);
 
-    ResultEntity getMySinger(String redisKey,String token,int pageNum, int pageSize);
+    ResultEntity getMyLikeMusicAuthor(String redisKey,String token,int pageNum, int pageSize);
 
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 
@@ -34,7 +34,7 @@ public interface IMyMusicService {
 
     ResultEntity searchMusic(String token,String keyword, int pageNum, int pageSize);
 
-    ResultEntity getSingerCategory(String redisKey);
+    ResultEntity getMusicAuthorCategory(String redisKey);
 
     ResultEntity getFavoriteDirectory(String token,Long musicId);
 

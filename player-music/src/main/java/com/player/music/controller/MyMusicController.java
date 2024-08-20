@@ -46,25 +46,25 @@ public class MyMusicController {
     }
 
     @ApiOperation("获取歌手")
-    @GetMapping("/myMusic/getSingerList")
-    public ResultEntity getSingerList(
+    @GetMapping("/myMusic/getMusicAuthorList")
+    public ResultEntity getMusicAuthorList(
             HttpServletRequest request,
             @RequestParam(name = "pageNum",required = true) int pageNum,
             @RequestParam(name = "pageSize",required = true) int pageSize,
             @RequestParam(name = "categoryId",required = true) int categoryId
     ) {
-        return myMusicService.getSingerList(HttpUtils.getPath(request), categoryId, pageNum, pageSize);
+        return myMusicService.getMusicAuthorList(HttpUtils.getPath(request), categoryId, pageNum, pageSize);
     }
 
     @ApiOperation("获取我关注的歌手")
-    @GetMapping("/myMusic-getway/getMySinger")
-    public ResultEntity getMySinger(
+    @GetMapping("/myMusic-getway/getMyLikeMusicAuthor")
+    public ResultEntity getMyLikeMusicAuthor(
             HttpServletRequest request,
             @RequestHeader("Authorization") String token,
             @RequestParam(name = "pageNum",required = true) int pageNum,
             @RequestParam(name = "pageSize",required = true) int pageSize
     ) {
-        return myMusicService.getMySinger(HttpUtils.getPath(request),token,pageNum,pageSize);
+        return myMusicService.getMyLikeMusicAuthor(HttpUtils.getPath(request),token,pageNum,pageSize);
     }
 
     @ApiOperation("获取最近播放的歌曲")
@@ -126,11 +126,11 @@ public class MyMusicController {
     }
 
     @ApiOperation("查询音乐收藏")
-    @GetMapping("/myMusic/getSingerCategory")
-    public ResultEntity getSingerCategory(
+    @GetMapping("/myMusic/getMusicAuthorCategory")
+    public ResultEntity getMusicAuthorCategory(
             HttpServletRequest request
     ) {
-        return myMusicService.getSingerCategory(HttpUtils.getPath(request));
+        return myMusicService.getMusicAuthorCategory(HttpUtils.getPath(request));
     }
 
     @ApiOperation("查询音乐收藏")
@@ -138,7 +138,7 @@ public class MyMusicController {
     public ResultEntity insertMusicRecord(
             HttpServletRequest request
     ) {
-        return myMusicService.getSingerCategory(HttpUtils.getPath(request));
+        return myMusicService.getMusicAuthorCategory(HttpUtils.getPath(request));
     }
 
     @ApiOperation("查询收藏夹列表")
