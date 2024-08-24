@@ -56,6 +56,18 @@ public class MyMusicController {
         return myMusicService.getMusicAuthorList(HttpUtils.getPath(request), categoryId, pageNum, pageSize);
     }
 
+    @ApiOperation("获取歌手")
+    @GetMapping("/myMusic/getMusicListByAuthorId")
+    public ResultEntity getMusicListByAuthorId(
+            HttpServletRequest request,
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "pageNum",required = true) int pageNum,
+            @RequestParam(name = "pageSize",required = true) int pageSize,
+            @RequestParam(name = "authorId",required = true) int authorId
+    ) {
+        return myMusicService.getMusicListByAuthorId(HttpUtils.getPath(request),token, authorId, pageNum, pageSize);
+    }
+
     @ApiOperation("获取我关注的歌手")
     @GetMapping("/myMusic-getway/getMyLikeMusicAuthor")
     public ResultEntity getMyLikeMusicAuthor(
@@ -125,7 +137,7 @@ public class MyMusicController {
         return myMusicService.searchMusic(token,keyword,pageNum,pageSize);
     }
 
-    @ApiOperation("查询音乐收藏")
+    @ApiOperation("获取歌手分类")
     @GetMapping("/myMusic/getMusicAuthorCategory")
     public ResultEntity getMusicAuthorCategory(
             HttpServletRequest request

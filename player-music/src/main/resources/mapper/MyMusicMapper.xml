@@ -100,6 +100,29 @@
         </if>
     </select>
 
+    <select id="getMusicListByAuthorId" resultType="MyMusicEntity">
+          SELECT
+            t1.*,
+            ( CASE WHEN t2.music_id IS NOT NULL THEN 1 ELSE 0 END ) AS is_like
+        FROM
+            (
+            SELECT
+                *
+            FROM
+                music
+            WHERE
+                author_id = #{authorId}
+            ORDER BY
+                update_time DESC
+                LIMIT #{start},#{pageSize}
+            ) t1
+            LEFT JOIN music_like t2 ON t1.id = t2.music_id and t2.user_id = #{userId}
+    </select>
+
+    <select id="getMusicListByAuthorIdTotal" resultType="Long">
+        select count(*) as total from music WHERE author_id = #{authorId}
+    </select>
+
     <select id="getMyLikeMusicAuthor" resultType="MyMusicAuthorEntity">
         select t4.*,COUNT(t5.author_id) as total from
             (select t3.* from

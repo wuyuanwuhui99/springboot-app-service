@@ -17,6 +17,8 @@ public interface IMyMusicService {
 
     ResultEntity getMusicAuthorList(String redisKey, int categoryId, int pageNum, int pageSize);
 
+    ResultEntity getMusicListByAuthorId(String redisKey,String token, int authorId, int pageNum, int pageSize);
+
     ResultEntity getMyLikeMusicAuthor(String redisKey,String token,int pageNum, int pageSize);
 
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);

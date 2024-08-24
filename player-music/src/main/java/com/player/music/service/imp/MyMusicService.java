@@ -120,6 +120,27 @@ public class MyMusicService implements IMyMusicService {
     }
 
     @Override
+    public ResultEntity getMusicListByAuthorId(String redisKey,String token,int authorId, int pageNum, int pageSize) {
+        String userId = "";
+        if (!StringUtils.isEmpty(token)) {
+            userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
+        }
+        redisKey += "?pageNum=" + pageNum + "&pageSize=" + pageSize + "&authorId=" + authorId;
+        String result = (String) redisTemplate.opsForValue().get(redisKey);
+        if (!StringUtils.isEmpty(result)) {
+            return JSON.parseObject(result, ResultEntity.class);
+        } else {
+            if (pageSize > 500) pageSize = 500;
+            int start = (pageNum - 1) * pageSize;
+            ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicListByAuthorId(userId,authorId, start, pageSize));
+            Long singerTotal = myMusicMapper.getMusicListByAuthorIdTotal(authorId);
+            resultEntity.setTotal(singerTotal);
+            return resultEntity;
+        }
+    }
+
+
+    @Override
     public ResultEntity getMyLikeMusicAuthor(String redisKey,String token,int pageNum, int pageSize){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
         redisKey += "?userId=" + userEntity.getUserId() + "pageNum=" + pageNum + "&pageSize=" + pageSize;
