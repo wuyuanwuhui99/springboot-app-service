@@ -18,9 +18,6 @@ public class MyMusicAuthorEntity {
     @ApiModelProperty(value = "歌手名称")
     private String authorName;
 
-    @ApiModelProperty(value = "用户id")
-    private String userId;
-
     @ApiModelProperty(value = "歌手头像")
     private String avatar;
 

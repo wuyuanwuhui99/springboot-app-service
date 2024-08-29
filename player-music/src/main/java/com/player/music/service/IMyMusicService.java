@@ -15,11 +15,15 @@ public interface IMyMusicService {
 
     ResultEntity getMusicListByClassifyId(String redisKey, int classifyId, int pageNum, int pageSize, boolean isRedis, String token);
 
-    ResultEntity getMusicAuthorList(String redisKey, int categoryId, int pageNum, int pageSize);
+    ResultEntity getMusicAuthorListByCategoryId(String redisKey,String token, int categoryId, int pageNum, int pageSize);
 
     ResultEntity getMusicListByAuthorId(String redisKey,String token, int authorId, int pageNum, int pageSize);
 
-    ResultEntity getMyLikeMusicAuthor(String redisKey,String token,int pageNum, int pageSize);
+    ResultEntity getMyLikeMusicAuthor(String token,int pageNum, int pageSize);
+
+    ResultEntity insertMyLikeMusicAuthor(String token,int authorId);
+
+    ResultEntity deleteMyLikeMusicAuthor(String token,int authorId);
 
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 
