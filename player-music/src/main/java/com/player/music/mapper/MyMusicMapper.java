@@ -35,7 +35,7 @@ public interface MyMusicMapper {
 
     Long getMusicRecordCount(String userId);
 
-    Long insertMusicRecord(String userId,Long musicId);
+    Long insertMusicRecord(MyMusicRecordEntity myMusicRecordEntity);
 
     Long insertMusicLike(String userId,int musicId);
 

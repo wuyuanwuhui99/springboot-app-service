@@ -9,6 +9,7 @@ import com.player.common.utils.JwtToken;
 import com.player.music.entity.MyMusicEntity;
 import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
 import com.player.music.entity.MyMusicFavoriteEntity;
+import com.player.music.entity.MyMusicRecordEntity;
 import com.player.music.mapper.MyMusicMapper;
 import com.player.music.service.IMyMusicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,8 +182,9 @@ public class MyMusicService implements IMyMusicService {
      * @date: 2023-11-20 21:52
      */
     @Override
-    public ResultEntity insertMusicRecord(String token, MyMusicEntity myMusicEntity){
-        return ResultUtil.success(myMusicMapper.insertMusicRecord(JwtToken.parserToken(token, UserEntity.class).getUserId(),myMusicEntity.getId()));
+    public ResultEntity insertMusicRecord(String token, MyMusicRecordEntity myMusicRecordEntity){
+        myMusicRecordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        return ResultUtil.success(myMusicMapper.insertMusicRecord(myMusicRecordEntity));
     }
 
     /**

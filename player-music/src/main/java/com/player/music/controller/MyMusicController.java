@@ -5,6 +5,7 @@ import com.player.common.utils.HttpUtils;
 import com.player.music.entity.MyMusicEntity;
 import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
 import com.player.music.entity.MyMusicFavoriteEntity;
+import com.player.music.entity.MyMusicRecordEntity;
 import com.player.music.service.IMyMusicService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,9 +112,9 @@ public class MyMusicController {
     @PostMapping("/myMusic-getway/insertMusicRecord")
     public ResultEntity insertMusicRecord(
             @RequestHeader("Authorization") String token,
-            @RequestBody MyMusicEntity myMusicEntity
+            @RequestBody MyMusicRecordEntity myMusicRecordEntity
     ) {
-        return myMusicService.insertMusicRecord(token,myMusicEntity);
+        return myMusicService.insertMusicRecord(token,myMusicRecordEntity);
     }
 
     @ApiOperation("插入音乐收藏")

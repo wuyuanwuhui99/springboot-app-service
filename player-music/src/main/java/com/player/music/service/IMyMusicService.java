@@ -4,6 +4,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.music.entity.MyMusicEntity;
 import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
 import com.player.music.entity.MyMusicFavoriteEntity;
+import com.player.music.entity.MyMusicRecordEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface IMyMusicService {
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 
     @Transactional
-    ResultEntity insertMusicRecord(String token,MyMusicEntity myMusicEntity);
+    ResultEntity insertMusicRecord(String token, MyMusicRecordEntity myMusicRecordEntity);
 
     @Transactional
     ResultEntity insertMusicLike(String token,int musicId);
