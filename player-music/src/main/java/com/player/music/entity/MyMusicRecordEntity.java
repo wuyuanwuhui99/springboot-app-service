@@ -18,6 +18,9 @@ public class MyMusicRecordEntity {
     @ApiModelProperty(value = "用户id")
     private String platform;
 
+    @ApiModelProperty(value = "app版本")
+    private String version;
+
     @ApiModelProperty(value = "用户id")
     private int musicId;
 }
