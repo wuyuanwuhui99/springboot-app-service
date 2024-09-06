@@ -12,11 +12,14 @@ public class MyMusicRecordEntity {
     @ApiModelProperty(value = "主键")
     private int id;//主键
 
-    @ApiModelProperty(value = "歌单名称")
+    @ApiModelProperty(value = "用户id")
     private String userId;
 
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "平台")
     private String platform;
+
+    @ApiModelProperty(value = "设备")
+    private String device;
 
     @ApiModelProperty(value = "app版本")
     private String version;
