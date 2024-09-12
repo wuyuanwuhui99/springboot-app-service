@@ -140,29 +140,34 @@
 
     <select id="getSocialCommentByCircleId" resultMap="getCommentListAssociation">
         SELECT
-            t4.*,
-            t5.username AS reply_user_name,
-            count( t6.id ) AS reply_count
+            t6.*,
+            t7.cnt AS reply_count
         FROM
             (
             SELECT
-                t1.*,
-                t2.username,
-                t2.avater,
-                t3.user_id AS reply_user_id
+                t4.*,
+                t5.username AS reply_user_name
             FROM
-                social_comment t1
-                LEFT JOIN USER t2 ON t1.user_id = t2.user_id
-                LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
-            WHERE
-                t1.relation_id = #{id}
-                AND t1.top_id IS NULL
-                AND t1.type = 'MUSIC_CIRCLE'
-            ) t4
-            LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id
-            LEFT JOIN social_comment t6 ON t4.id = t6.parent_id
-        GROUP BY
-            t4.id
+                (
+                SELECT
+                    t1.*,
+                    t2.username,
+                    t2.avater,
+                    t3.user_id AS reply_user_id
+                FROM
+                    social_comment t1
+                    LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                    LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
+                WHERE
+                    t1.relation_id = #{id}
+                    AND t1.top_id IS NULL
+                    AND t1.type = 'MUSIC_CIRCLE'
+                ) t4
+                LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id
+            ) t6,
+            ( SELECT parent_id, count( parent_id ) AS cnt FROM social_comment GROUP BY parent_id ) t7
+        WHERE
+            t6.id = t7.parent_id
     </select>
 
     <resultMap id="getCommentListAssociation" type="com.player.common.entity.CommentEntity">
