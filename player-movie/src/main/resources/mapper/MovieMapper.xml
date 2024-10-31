@@ -204,5 +204,13 @@
         AND classify = #{classify}
         ORDER BY create_time DESC LIMIT 0,10
     </select>
+
+    <select id="getSearchHistory" resultType="com.player.common.entity.SearchHistory">
+        SELECT * FROM search_history WHERE user_id = #{userId} and `type` = #{type} order by create_time desc limit LIMIT #{start},#{pageSize}
+    </select>
+
+    <select id="getSearchHistoryTotal" resultType="com.player.common.entity.SearchHistory">
+        SELECT count(id) as total FROM search_history WHERE user_id = #{userId} and `type` = #{type}
+    </select>
 </mapper>
 

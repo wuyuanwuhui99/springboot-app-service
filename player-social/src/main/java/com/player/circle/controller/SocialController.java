@@ -95,4 +95,6 @@ public class SocialController {
     ) {
         return socialService.isLike(relationId,type,token);
     }
+
+
 }

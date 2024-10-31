@@ -223,4 +223,15 @@ public class MovieController {
     ) {
         return movieService.getMovieListByType(types,classify,HttpUtils.getPath(request));
     }
+
+    @OperLog(message = "获取搜索历史", operation = OperationType.QUERY)
+    @ApiOperation("获取搜索历史,请求地地址：/service/movie-getway/getSearchHistory")
+    @GetMapping("/movie-getway/getSearchHistory")
+    public ResultEntity getSearchHistory(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("pageNum") int pageNum,
+            @RequestParam("pageSize")int pageSize
+    ) {
+        return movieService.getSearchHistory(token,pageNum,pageSize);
+    }
 }

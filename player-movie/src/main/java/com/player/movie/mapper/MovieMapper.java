@@ -1,6 +1,7 @@
 package com.player.movie.mapper;
 
 import com.player.common.entity.LogEntity;
+import com.player.common.entity.SearchHistory;
 import com.player.movie.entity.MovieEntity;
 import com.player.movie.entity.MovieStarEntity;
 import com.player.movie.entity.MovieUrlEntity;
@@ -93,4 +94,8 @@ public interface MovieMapper {
     MovieEntity getMovieDetail(int movieId);
 
     List<MovieEntity> getMovieListByType(@Param("types") String[] types,String classify);
+
+    List<SearchHistory> getSearchHistory(String userId, int start, int pageSize);
+
+    Long getSearchHistoryTotal(String userId);
 }

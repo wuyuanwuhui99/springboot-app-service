@@ -359,4 +359,19 @@ public class MovieService implements IMovieService {
             return resultEntity;
         }
     }
+
+    /**
+     * @author: wuwenqiang
+     * @description: 查询收藏列表
+     * @date: 2020-12-25 22:29
+     */
+    @Override
+    public ResultEntity getSearchHistory(String token,int pageNum,int pageSize) {
+        if(pageSize > 500) pageSize = 500;
+        int start = (pageNum - 1)*pageSize;
+        String userId = JwtToken.getUserId(token);
+        ResultEntity resultEntity = ResultUtil.success(movieMapper.getSearchHistory(userId, start, pageSize));
+        resultEntity.setTotal(movieMapper.getSearchHistoryTotal(userId));
+        return resultEntity;
+    }
 }

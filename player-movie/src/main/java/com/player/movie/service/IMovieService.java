@@ -48,4 +48,7 @@ public interface IMovieService {
     ResultEntity getMovieDetail(int movieId);
 
     ResultEntity getMovieListByType(String types,String classify,String redisKey);
+
+    ResultEntity getSearchHistory(String token,int pageNum,int pageSize);
+
 }
