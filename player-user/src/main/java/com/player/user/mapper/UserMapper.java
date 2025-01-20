@@ -27,6 +27,10 @@ public interface UserMapper {
 
     UserEntity getUserById(String userId);
 
+    UserEntity getUserByTel(String tel);
+
+    UserEntity getUserByEmail(String email);
+
     Long updateUser(UserEntity userEntity);
 
     Long updatePassword(PasswordEntity passwordEntity);

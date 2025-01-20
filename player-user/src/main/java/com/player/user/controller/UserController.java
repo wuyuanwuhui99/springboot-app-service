@@ -53,26 +53,32 @@ public class UserController {
     @OperLog(message = "查询用户是否存在", operation = OperationType.QUERY)
     @ApiOperation("查询用户是否存在,请求地地址：/service/movie/getUserById")
     @GetMapping("/user/getUserById")
-    public ResultEntity getUserById(@RequestParam("userId")String userId) {
-        return userService.getUserById(userId);
+    public ResultEntity getUserById(@RequestParam("userId")String userId,@RequestParam("tel")String tel,@RequestParam("email")String email) {
+        return userService.getUserById(userId,tel,email);
     }
 
     @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
     @ApiOperation("更新用户信息")
-    @PutMapping("/user-getway/updateUser")
+    @PutMapping("/user/updateUser")
     public ResultEntity updateUser(@RequestHeader("Authorization") String token,@RequestBody UserEntity userEntity,HttpServletRequest request) {
         return userService.updateUser(userEntity,token);
     }
 
     @ApiOperation("修改密码")
-    @PutMapping("/user-getway/updatePassword")
+    @PutMapping("/user/updatePassword")
     public ResultEntity updatePassword(@RequestHeader("Authorization") String token,@RequestBody PasswordEntity passwordEntity,HttpServletRequest request) {
         return userService.updatePassword(passwordEntity,token);
     }
 
     @ApiOperation("头像上传")
-    @PutMapping("/user-getway/updateAvater")
+    @PutMapping("/user/updateAvater")
     public ResultEntity updateAvater(@RequestHeader("Authorization") String token, @RequestBody Map map) {
         return userService.updateAvater(token,map.get("img").toString());
+    }
+
+    @ApiOperation("找回密码")
+    @PostMapping("/user/getBackPassword")
+    public ResultEntity getBackPassword(@RequestHeader("Authorization") String token, @RequestBody Map map) {
+        return userService.getBackPassword(token,map.get("email").toString());
     }
 }

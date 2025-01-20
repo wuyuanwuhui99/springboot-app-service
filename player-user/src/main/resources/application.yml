@@ -2,7 +2,7 @@ server:
   port: 9000
 token:
   expiration-time: 2592000000 #token失效时间一个月 1000 * 60 * 60 * 24 * 30
-  secret: wuwenqiang #token秘钥
+  secret: ${SECRET} #token秘钥
 app:
   appId: com.player.user
   appName: 用户中心
@@ -27,7 +27,7 @@ spring:
     druid:
       url: jdbc:mysql://localhost:3306/play?characterEncoding=utf-8
       username: root
-      password: wwq_2021
+      password: ${MYSQL_PASSWORD}
       driverClassName: com.mysql.jdbc.Driver
       initialSize: 5  #初始建立连接数量
       minIdle: 5  #最小连接数量

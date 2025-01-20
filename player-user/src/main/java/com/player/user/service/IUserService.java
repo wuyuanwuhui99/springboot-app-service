@@ -16,11 +16,13 @@ public interface IUserService {
 
     ResultEntity register(UserEntity userEntity);
 
-    ResultEntity getUserById(String userId);
+    ResultEntity getUserById(String userId,String number,String email);
 
     ResultEntity updateUser(UserEntity userEntity,String token);
 
     ResultEntity updatePassword(PasswordEntity passwordEntity, String token);
 
     ResultEntity updateAvater(String token, String base64);
+
+    ResultEntity getBackPassword(String token,String email);
 }

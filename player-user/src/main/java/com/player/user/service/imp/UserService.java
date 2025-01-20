@@ -1,5 +1,6 @@
 package com.player.user.service.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.player.common.entity.LogEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -104,8 +106,17 @@ public class UserService implements IUserService {
      * @date: 2021-06-17 22:33
      */
     @Override
-    public ResultEntity getUserById(String userId) {
-        return ResultUtil.success(userMapper.getUserById(userId) != null ? 1 : 0);
+    public ResultEntity getUserById(String userId,String tel,String email) {
+        UserEntity userById = userMapper.getUserById(userId);
+        if(userById != null){
+            return ResultUtil.success(1,"账号已存在");
+        }else if(!"".equals(tel) &&  userMapper.getUserByTel(tel) != null){
+            return ResultUtil.success(1,"邮箱已存在");
+        }else if(!"".equals(email) &&  userMapper.getUserByEmail(email) != null){
+            return ResultUtil.success(1,"邮箱已存在");
+        }else{
+            return ResultUtil.success(0);
+        }
     }
 
     /**
@@ -158,5 +169,21 @@ public class UserService implements IUserService {
         }else{
             return ResultUtil.fail("修改头像失败");
         }
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: updatePassword
+     * @description: 修改密码
+     * @return: ResultEntity
+     * @date: 2021-06-18 00:21
+     */
+    @Override
+    public ResultEntity getBackPassword(String token,String email){
+        Random random = new Random();
+        int randomNumber = random.nextInt(9000) + 1000;
+        redisTemplate.opsForValue().set(email, randomNumber,5, TimeUnit.MINUTES);
+        System.out.println("验证码是：" + randomNumber);
+        return  ResultUtil.success("验证码已发送到邮箱，请在五分钟内完成操作");
     }
 }
