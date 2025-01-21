@@ -16,7 +16,7 @@ public interface IUserService {
 
     ResultEntity register(UserEntity userEntity);
 
-    ResultEntity getUserById(String userId,String number,String email);
+    ResultEntity vertifyUser(UserEntity userEntity);
 
     ResultEntity updateUser(UserEntity userEntity,String token);
 

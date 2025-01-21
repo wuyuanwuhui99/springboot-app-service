@@ -25,7 +25,7 @@ public interface UserMapper {
 
     UserEntity register(UserEntity userEntity);
 
-    UserEntity getUserById(String userId);
+    UserEntity vertifyUser(UserEntity userEntity);
 
     UserEntity getUserByTel(String tel);
 

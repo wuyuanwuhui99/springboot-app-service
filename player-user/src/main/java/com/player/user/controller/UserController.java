@@ -51,10 +51,10 @@ public class UserController {
     }
 
     @OperLog(message = "查询用户是否存在", operation = OperationType.QUERY)
-    @ApiOperation("查询用户是否存在,请求地地址：/service/movie/getUserById")
-    @GetMapping("/user/getUserById")
-    public ResultEntity getUserById(@RequestParam("userId")String userId,@RequestParam("tel")String tel,@RequestParam("email")String email) {
-        return userService.getUserById(userId,tel,email);
+    @ApiOperation("查询用户是否存在,请求地地址：/service/user/vertifyUser")
+    @PostMapping("/user/vertifyUser")
+    public ResultEntity vertifyUser(@RequestBody UserEntity userEntity) {
+        return userService.vertifyUser(userEntity);
     }
 
     @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)

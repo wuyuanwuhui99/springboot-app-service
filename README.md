@@ -33,28 +33,39 @@ sql数据来自于python爬虫项目，自动爬取第三方电影网站，由�
 
 ================================手机UI项目================================   
 flutter版本参见:   
-通用地址：https://github.com/wuyuanwuhui99/flutter-movie-app-ui   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-movie-app-ui
+github地址：https://github.com/wuyuanwuhui99/flutter-movie-app-ui   
+gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-movie-app-ui
+
+flutter音乐项目参见:   
+github地址：https://github.com/wuyuanwuhui99/flutter-music-app-ui   
+gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/flutter-music-app-ui
 
 react native版本参见:   
-通用地址：https://github.com/wuyuanwuhui99/react-native-app-ui   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/react-native-app-ui
+github地址：https://github.com/wuyuanwuhui99/react-native-app-ui   
 
 java安卓原生版本参见：  
 通用地址：https://github.com/wuyuanwuhui99/android-java-movie-app-ui   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/android-java-movie-app-ui
+gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/android-java-movie-app-ui
 
 uniapp版本参见：
-通用地址：https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui  
+github地址：https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui   
+gitee地址：https://gitee/wuyuanwuhui99/uniapp-vite-vue3-ts-movie-app-ui  
+
+uniapp音乐项目参见：
+github地址：https://github.com/wuyuanwuhui99/uniapp-vite-vue3-ts-music-app-ui   
+gitee地址：https://gitee/wuyuanwuhui99/uniapp-vite-vue3-ts-music-app-ui  
 
 微信小程序版本参见：  
 通用地址：https://github.com/wuyuanwuhui99/weixin-movie-app-ui、  
 国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/weixin-movie-app-ui
 
 harmony鸿蒙版本参见:   
-通用地址：https://github.com/wuyuanwuhui99/Harmony_movie_app_ui   
-国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/Harmony_movie_app_ui
+github地址：https://github.com/wuyuanwuhui99/Harmony_movie_app_ui   
+gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/Harmony_movie_app_ui
+
+harmony鸿蒙音乐项目参见:   
+github地址：https://github.com/wuyuanwuhui99/harmony_music_app_ui   
+gitee地址：https://hub.nuaa.cf/wuyuanwuhui99/harmony_music_app_ui
 
 vue在线音乐项目：  
 通用地址：https://github.com/wuyuanwuhui99/vue-music-app-ui   
@@ -68,6 +79,11 @@ vue3+ts明日头条项目：
 通用地址：https://github.com/wuyuanwuhui99/vue3-ts-toutiao-app-ui  
 国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/vue3-ts-toutiao-app-ui   
 ================================手机UI项目================================   
+
+play-user项目启动参数 -DSECRET=wuwenqiang -DMYSQL_PASSWORD=wwq_2021   
+参数解析   
+SECRET：密钥   
+MYSQL_PASSWORD：数据库密码   
 
 nginx(nginx.conf文件)配置如下   
 ```

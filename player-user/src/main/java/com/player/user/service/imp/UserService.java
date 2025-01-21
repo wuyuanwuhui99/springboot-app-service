@@ -106,14 +106,16 @@ public class UserService implements IUserService {
      * @date: 2021-06-17 22:33
      */
     @Override
-    public ResultEntity getUserById(String userId,String tel,String email) {
-        UserEntity userById = userMapper.getUserById(userId);
-        if(userById != null){
-            return ResultUtil.success(1,"账号已存在");
-        }else if(!"".equals(tel) &&  userMapper.getUserByTel(tel) != null){
-            return ResultUtil.success(1,"邮箱已存在");
-        }else if(!"".equals(email) &&  userMapper.getUserByEmail(email) != null){
-            return ResultUtil.success(1,"邮箱已存在");
+    public ResultEntity vertifyUser(UserEntity userEntity) {
+        UserEntity mUserEntity = userMapper.vertifyUser(userEntity);
+        if(mUserEntity != null){
+            if(mUserEntity.getUserId().equals(userEntity.getUserId())){
+                return ResultUtil.success(1,"账号已存在");
+            }else if(mUserEntity.getTelephone().equals(userEntity.getTelephone())){
+                return ResultUtil.success(1,"电话已存在");
+            }else {
+                return ResultUtil.success(1,"邮箱已存在");
+            }
         }else{
             return ResultUtil.success(0);
         }
