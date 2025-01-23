@@ -25,16 +25,17 @@
     </insert>
 
     <select id="vertifyUser" parameterType="com.player.common.entity.UserEntity" resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE 1 = 1
+        <include refid="userData"></include> WHERE
          <if test="userId !=null and userId!=''">
-             and user_id = #{userId}
+            user_id = #{userId}
          </if>
         <if test="telephone !=null and telephone!=''">
-            and telephone = #{telephone}
+            or telephone = #{telephone}
         </if>
         <if test="email !=null and email!=''">
-            and email = #{email}
+            or email = #{email}
         </if>
+        limit 0,1
     </select>
 
     <update id="updateUser" parameterType="com.player.common.entity.UserEntity">

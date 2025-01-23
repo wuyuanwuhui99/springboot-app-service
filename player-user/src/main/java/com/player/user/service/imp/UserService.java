@@ -1,25 +1,22 @@
 package com.player.user.service.imp;
 
-import com.alibaba.fastjson.JSON;
-import com.player.common.entity.LogEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
 import com.player.common.utils.Common;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
+import com.player.user.entity.MailEntity;
 import com.player.user.entity.PasswordEntity;
 import com.player.user.mapper.UserMapper;
 import com.player.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -30,11 +27,18 @@ public class UserService implements IUserService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    //注入邮件工具类
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Value("${app.avater-path}")
     private String avaterPath;
 
     @Value("${app.avater-img}")
     private String avaterImg;
+
+    @Value("${spring.mail.username}")
+    private String sendMailer;
 
     @Autowired
     private UserMapper userMapper;
@@ -187,5 +191,31 @@ public class UserService implements IUserService {
         redisTemplate.opsForValue().set(email, randomNumber,5, TimeUnit.MINUTES);
         System.out.println("验证码是：" + randomNumber);
         return  ResultUtil.success("验证码已发送到邮箱，请在五分钟内完成操作");
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: sendSimpleMail
+     * @description: 发送文本邮件
+     * @return: ResultEntity
+     * @date: 2025-01-23 21:42
+     */
+    @Override
+    public ResultEntity sendSimpleMail(MailEntity mailRequest){
+        SimpleMailMessage message = new SimpleMailMessage();
+        //邮件发件人
+        message.setFrom(sendMailer);
+        //邮件收件人 1或多个
+        message.setTo(mailRequest.getSendTo().split(","));
+        //邮件主题
+        message.setSubject(mailRequest.getSubject());
+        //邮件内容
+        message.setText(mailRequest.getText());
+        //邮件发送时间
+        message.setSentDate(new Date());
+
+        javaMailSender.send(message);
+
+        return ResultUtil.success("邮件发送成功");
     }
 }

@@ -60,6 +60,7 @@ public class ResultUtil {
         ResultEntity resultEntity = new ResultEntity();
         resultEntity.setData(object);
         resultEntity.setToken(token);
+        resultEntity.setMsg(msg);
         resultEntity.setStatus(ResultCode.SUCCESS);
         return resultEntity;
     }

@@ -4,6 +4,7 @@ import com.player.common.entity.ResultEntity;
 import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.OperationType;
+import com.player.user.entity.MailEntity;
 import com.player.user.entity.PasswordEntity;
 import com.player.user.service.IUserService;
 import io.swagger.annotations.Api;
@@ -80,5 +81,11 @@ public class UserController {
     @PostMapping("/user/getBackPassword")
     public ResultEntity getBackPassword(@RequestHeader("Authorization") String token, @RequestBody Map map) {
         return userService.getBackPassword(token,map.get("email").toString());
+    }
+
+    @ApiOperation("发送邮件")
+    @PostMapping("/user/SendSimpleMessage")
+    public void SendSimpleMessage(@RequestBody MailEntity mailRequest) {
+        userService.sendSimpleMail(mailRequest);
     }
 }

@@ -4,6 +4,7 @@ import com.player.common.entity.LogEntity;
 import com.player.common.entity.ResultEntity;
 import com.player.common.entity.ResultUtil;
 import com.player.common.entity.UserEntity;
+import com.player.user.entity.MailEntity;
 import com.player.user.entity.PasswordEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,4 +26,6 @@ public interface IUserService {
     ResultEntity updateAvater(String token, String base64);
 
     ResultEntity getBackPassword(String token,String email);
+
+    ResultEntity sendSimpleMail(MailEntity mailRequest);
 }

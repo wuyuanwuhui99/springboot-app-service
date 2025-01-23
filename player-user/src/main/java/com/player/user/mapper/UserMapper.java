@@ -27,10 +27,6 @@ public interface UserMapper {
 
     UserEntity vertifyUser(UserEntity userEntity);
 
-    UserEntity getUserByTel(String tel);
-
-    UserEntity getUserByEmail(String email);
-
     Long updateUser(UserEntity userEntity);
 
     Long updatePassword(PasswordEntity passwordEntity);
