@@ -36,7 +36,8 @@
         <org.apache.tomcat.embed.version>8.5.29</org.apache.tomcat.embed.version>
         <commons-lang>2.6</commons-lang>
         <com.alibaba>1.2.53</com.alibaba>
-        <springboot.mail>3.3.3</springboot.mail>
+        <springboot.mail>2.0.1.RELEASE</springboot.mail>
+        <javax.mail>1.6.2</javax.mail>
     </properties>
 
     <modules>

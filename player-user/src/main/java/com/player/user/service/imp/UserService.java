@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService implements IUserService {
@@ -202,6 +203,13 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity sendSimpleMail(MailEntity mailRequest){
+        if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", mailRequest.getSendTo())){
+            return ResultUtil.fail(null,"邮箱格式错误");
+        }
+        Random random = new Random();
+        int code = random.nextInt(9000) + 1000;
+        mailRequest.setText("验证码：" + code);
+        redisTemplate.opsForValue().set(mailRequest.getSendTo(), code,5, TimeUnit.MINUTES);
         SimpleMailMessage message = new SimpleMailMessage();
         //邮件发件人
         message.setFrom(sendMailer);
