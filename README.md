@@ -80,10 +80,12 @@ vue3+ts明日头条项目：
 国内镜像地址：https://hub.nuaa.cf/wuyuanwuhui99/vue3-ts-toutiao-app-ui   
 ================================手机UI项目================================   
 
-play-user项目启动参数 -DSECRET=wuwenqiang -DMYSQL_PASSWORD=wwq_2021   
+play-user项目启动参数 -DSECRET=wuwenqiang -DMYSQL_PASSWORD=wwq_2021 -DEMAIL=邮箱地址 -DEMAIL_PASSWORD=邮箱第三方授权码   
 参数解析   
 SECRET：密钥   
 MYSQL_PASSWORD：数据库密码   
+EMAIL：邮箱地址   
+EMAIL_PASSWORD：邮箱授权码（不是登录QQ的密码）   
 
 nginx(nginx.conf文件)配置如下   
 ```

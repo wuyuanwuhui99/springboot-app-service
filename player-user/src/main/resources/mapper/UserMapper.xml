@@ -14,7 +14,7 @@
     </select>
 
     <select id="login" resultType="com.player.common.entity.UserEntity" parameterType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE user_id=#{userId} and password=#{password}
+        <include refid="userData"></include> WHERE (user_id=#{userId} or email = #{email} or telephone = #{telephone}) and password=#{password}
     </select>
 
     <insert id="register" parameterType="com.player.common.entity.UserEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -65,4 +65,12 @@
     <update id="updateAvater">
          UPDATE user SET avater = #{avater},update_date = now() WHERE user_id = #{userId}
     </update>
+
+    <update id="resetPassword" parameterType="ResetPasswordEntity">
+         UPDATE user SET password = #{password},update_date = now() WHERE email = #{email}
+    </update>
+
+    <select id="vertifyUserByEmail" parameterType="com.player.common.entity.UserEntity" resultType="com.player.common.entity.UserEntity">
+        <include refid="userData"></include> WHERE email = #{email}
+    </select>
 </mapper>

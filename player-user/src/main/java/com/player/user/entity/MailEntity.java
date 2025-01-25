@@ -1,57 +1,27 @@
 package com.player.user.entity;
 
-import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.ToString;
 
-public class MailEntity implements Serializable {
+@Data
+@ToString
+public class MailEntity {
     /**
      * 接收人
      */
-    private String sendTo;
+    @ApiModelProperty(value = "发送的用户")
+    private String email;
 
     /**
      *  邮件主题
      */
+    @ApiModelProperty(value = "主题")
     private String subject;
 
     /**
      *  邮件内容
      */
+    @ApiModelProperty(value = "发送的文本")
     private String text;
-
-    /**
-     *  附件路径
-     */
-    private String filePath;
-
-    public String getSendTo() {
-        return sendTo;
-    }
-
-    public void setSendTo(String sendTo) {
-        this.sendTo = sendTo;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
 }

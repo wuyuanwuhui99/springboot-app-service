@@ -8,8 +8,10 @@ import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import com.player.user.entity.MailEntity;
 import com.player.user.entity.PasswordEntity;
+import com.player.user.entity.ResetPasswordEntity;
 import com.player.user.mapper.UserMapper;
 import com.player.user.service.IUserService;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -180,43 +183,29 @@ public class UserService implements IUserService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: updatePassword
-     * @description: 修改密码
-     * @return: ResultEntity
-     * @date: 2021-06-18 00:21
-     */
-    @Override
-    public ResultEntity getBackPassword(String token,String email){
-        Random random = new Random();
-        int randomNumber = random.nextInt(9000) + 1000;
-        redisTemplate.opsForValue().set(email, randomNumber,5, TimeUnit.MINUTES);
-        System.out.println("验证码是：" + randomNumber);
-        return  ResultUtil.success("验证码已发送到邮箱，请在五分钟内完成操作");
-    }
-
-    /**
-     * @author: wuwenqiang
      * @methodsName: sendSimpleMail
      * @description: 发送文本邮件
      * @return: ResultEntity
      * @date: 2025-01-23 21:42
      */
     @Override
-    public ResultEntity sendSimpleMail(MailEntity mailRequest){
-        if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", mailRequest.getSendTo())){
+    public ResultEntity getBackPasswordByEmail(MailEntity mailRequest){
+        if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", mailRequest.getEmail())){
             return ResultUtil.fail(null,"邮箱格式错误");
+        }else if(userMapper.vertifyUserByEmail(mailRequest.getEmail()).size() == 0){
+            return  ResultUtil.fail(null,"该账号不存在");
         }
         Random random = new Random();
         int code = random.nextInt(9000) + 1000;
-        mailRequest.setText("验证码：" + code);
-        redisTemplate.opsForValue().set(mailRequest.getSendTo(), code,5, TimeUnit.MINUTES);
+        mailRequest.setText("验证码：" + code + "，请在五分钟内完成操作");
+        redisTemplate.opsForValue().set(mailRequest.getEmail(), code,5, TimeUnit.MINUTES);
         SimpleMailMessage message = new SimpleMailMessage();
         //邮件发件人
         message.setFrom(sendMailer);
         //邮件收件人 1或多个
-        message.setTo(mailRequest.getSendTo().split(","));
+        message.setTo(mailRequest.getEmail());
         //邮件主题
-        message.setSubject(mailRequest.getSubject());
+        message.setSubject("验证码");
         //邮件内容
         message.setText(mailRequest.getText());
         //邮件发送时间
@@ -224,6 +213,32 @@ public class UserService implements IUserService {
 
         javaMailSender.send(message);
 
-        return ResultUtil.success("邮件发送成功");
+        return ResultUtil.success(1,"验证码已发送到邮箱，请五分钟内完成操作");
+    }
+
+    /**
+     * @author: wuwenqiang
+     * @methodsName: resetPassword
+     * @description: 发送文本邮件
+     * @return: ResultEntity
+     * @date: 2025-01-23 21:42
+     */
+    @Override
+    public ResultEntity resetPassword(ResetPasswordEntity resetPasswordEntity){
+        int code = (int)redisTemplate.opsForValue().get(resetPasswordEntity.getEmail());
+        if(code != resetPasswordEntity.getCode()){
+            return ResultUtil.fail(null,"验证码无效");
+        }else{
+            userMapper.resetPassword(resetPasswordEntity);
+            UserEntity userEntity = new UserEntity();
+            userEntity.setEmail(resetPasswordEntity.getEmail());
+            userEntity.setPassword(resetPasswordEntity.getPassword());
+            UserEntity mUserEntity = userMapper.login(userEntity);
+            String token = JwtToken.createToken(mUserEntity);//token有效期30天
+            redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
+            ResultEntity resultEntity = ResultUtil.success(mUserEntity, "登录成功", token);
+            resultEntity.setToken(token);
+            return resultEntity;
+        }
     }
 }

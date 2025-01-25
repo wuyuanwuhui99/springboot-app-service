@@ -6,6 +6,7 @@ import com.player.common.myInterface.OperLog;
 import com.player.common.utils.OperationType;
 import com.player.user.entity.MailEntity;
 import com.player.user.entity.PasswordEntity;
+import com.player.user.entity.ResetPasswordEntity;
 import com.player.user.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,21 +25,21 @@ public class UserController {
 
     @OperLog(message = "查询用户信息", operation = OperationType.QUERY)
     @ApiOperation("查询用户信息")
-    @GetMapping("/user/getUserData")
+    @GetMapping("/user-getway/getUserData")
     public ResultEntity getUserData(@RequestHeader(required = false,value = "Authorization") String token) {
         return userService.getUserData(token);
     }
 
     @OperLog(message = "登录校验", operation = OperationType.LOGIN)
     @ApiOperation("登录校验")
-    @PostMapping("/user/login")
+    @PostMapping("/user-getway/login")
     public ResultEntity login(@RequestBody UserEntity userEntity) {
         return userService.login(userEntity);
     }
 
     @OperLog(message = "退出登录", operation = OperationType.LOGOUT)
     @ApiOperation("退出登录")
-    @PostMapping("/music/logout")
+    @PostMapping("/user-getway/logout")
     public ResultEntity logout(@RequestHeader("Authorization") String token) {
         return userService.logout(token);
     }
@@ -60,32 +61,32 @@ public class UserController {
 
     @OperLog(message = "更新用户信息", operation = OperationType.UPDATE)
     @ApiOperation("更新用户信息")
-    @PutMapping("/user/updateUser")
+    @PutMapping("/user-getway/updateUser")
     public ResultEntity updateUser(@RequestHeader("Authorization") String token,@RequestBody UserEntity userEntity,HttpServletRequest request) {
         return userService.updateUser(userEntity,token);
     }
 
     @ApiOperation("修改密码")
-    @PutMapping("/user/updatePassword")
+    @PutMapping("/user-getway/updatePassword")
     public ResultEntity updatePassword(@RequestHeader("Authorization") String token,@RequestBody PasswordEntity passwordEntity,HttpServletRequest request) {
         return userService.updatePassword(passwordEntity,token);
     }
 
     @ApiOperation("头像上传")
-    @PutMapping("/user/updateAvater")
+    @PutMapping("/user-getway/updateAvater")
     public ResultEntity updateAvater(@RequestHeader("Authorization") String token, @RequestBody Map map) {
         return userService.updateAvater(token,map.get("img").toString());
     }
 
     @ApiOperation("找回密码")
-    @PostMapping("/user/getBackPassword")
-    public ResultEntity getBackPassword(@RequestHeader("Authorization") String token, @RequestBody Map map) {
-        return userService.getBackPassword(token,map.get("email").toString());
+    @PostMapping("/user/getBackPasswordByEmail")
+    public ResultEntity getBackPasswordByEmail(@RequestBody MailEntity mailRequest ) {
+        return userService.getBackPasswordByEmail(mailRequest);
     }
 
-    @ApiOperation("发送邮件")
-    @PostMapping("/user/SendSimpleMessage")
-    public void SendSimpleMessage(@RequestBody MailEntity mailRequest) {
-        userService.sendSimpleMail(mailRequest);
+    @ApiOperation("更新密码")
+    @PostMapping("/user/resetPassword")
+    public ResultEntity resetPassword(@RequestBody ResetPasswordEntity resetPasswordEntity ) {
+        return userService.resetPassword(resetPasswordEntity);
     }
 }
