@@ -8,6 +8,9 @@ import java.util.Date;
 @Data
 @ToString
 public class UserEntity {
+    @ApiModelProperty(value = "自增长id")
+    private Long id;
+
     @ApiModelProperty(value = "用户id，主键")
     private String userId;
 

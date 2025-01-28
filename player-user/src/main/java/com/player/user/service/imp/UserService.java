@@ -11,16 +11,15 @@ import com.player.user.entity.PasswordEntity;
 import com.player.user.entity.ResetPasswordEntity;
 import com.player.user.mapper.UserMapper;
 import com.player.user.service.IUserService;
-import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -98,12 +97,14 @@ public class UserService implements IUserService {
      * @date: 2021-01-01 23:39
      */
     @Override
+    @Transactional
     public ResultEntity register(UserEntity userEntity) {
-        UserEntity myUserEntity = userMapper.register(userEntity);
-        if (myUserEntity != null) {
-            String newToken = JwtToken.createToken(myUserEntity);
+        Long row = userMapper.register(userEntity);
+        if (row > 0 ) {
+            UserEntity userEntity1 = userMapper.vertifyUser(userEntity);
+            String newToken = JwtToken.createToken(userEntity1);
             redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
-            return ResultUtil.success(myUserEntity, null, newToken);
+            return ResultUtil.success(userEntity1, null, newToken);
         }
         return ResultUtil.fail(null, "注册失败");
     }
@@ -135,6 +136,7 @@ public class UserService implements IUserService {
      * @date:  2021-06-17 22:33
      */
     @Override
+    @Transactional
     public ResultEntity updateUser(UserEntity userEntity,String token) {
         String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
         userEntity.setUserId(userId);
@@ -147,6 +149,7 @@ public class UserService implements IUserService {
      * @date: 2020-12-24 22:40
      */
     @Override
+    @Transactional
     public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
         if(passwordEntity.getUserId() != JwtToken.parserToken(token, UserEntity.class).getUserId()){
             return ResultUtil.fail(null,"禁止修改其他用户密码");
@@ -162,6 +165,7 @@ public class UserService implements IUserService {
      * @date: 2021-06-18 00:21
      */
     @Override
+    @Transactional
     public ResultEntity updateAvater(String token, String base64){
         String userId = JwtToken.getUserId(token);
         if ("".equals(base64) || base64 == null) {
@@ -224,6 +228,7 @@ public class UserService implements IUserService {
      * @date: 2025-01-23 21:42
      */
     @Override
+    @Transactional
     public ResultEntity resetPassword(ResetPasswordEntity resetPasswordEntity){
         int code = (int)redisTemplate.opsForValue().get(resetPasswordEntity.getEmail());
         if(code != resetPasswordEntity.getCode()){

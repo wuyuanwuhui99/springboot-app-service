@@ -26,7 +26,7 @@ public interface UserMapper {
 
     UserEntity login(UserEntity userEntity);
 
-    UserEntity register(UserEntity userEntity);
+    Long register(UserEntity userEntity);
 
     UserEntity vertifyUser(UserEntity userEntity);
 

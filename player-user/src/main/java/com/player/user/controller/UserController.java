@@ -32,7 +32,7 @@ public class UserController {
 
     @OperLog(message = "登录校验", operation = OperationType.LOGIN)
     @ApiOperation("登录校验")
-    @PostMapping("/user-getway/login")
+    @PostMapping("/user/login")
     public ResultEntity login(@RequestBody UserEntity userEntity) {
         return userService.login(userEntity);
     }
