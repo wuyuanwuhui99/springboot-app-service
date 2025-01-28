@@ -70,4 +70,8 @@
     <select id="vertifyUserByEmail" parameterType="com.player.common.entity.UserEntity" resultType="com.player.common.entity.UserEntity">
         <include refid="userData"></include> WHERE email = #{email}
     </select>
+
+    <update id="updatePassword" parameterType="PasswordEntity">
+        UPDATE user SET password = #{newPassword},update_date = now() WHERE user_id = #{userId} and password=#{oldPassword}
+    </update>
 </mapper>

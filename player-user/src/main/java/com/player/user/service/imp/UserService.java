@@ -151,10 +151,12 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
-        if(passwordEntity.getUserId() != JwtToken.parserToken(token, UserEntity.class).getUserId()){
-            return ResultUtil.fail(null,"禁止修改其他用户密码");
+        passwordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        Long row = userMapper.updatePassword(passwordEntity);
+        if(row > 0){
+            return ResultUtil.success(row,"修改密码成功");
         }
-        return ResultUtil.success(userMapper.updatePassword(passwordEntity));
+        return ResultUtil.fail(0,"旧密码错误");
     }
 
     /**
