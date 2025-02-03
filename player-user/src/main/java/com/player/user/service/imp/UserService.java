@@ -101,7 +101,7 @@ public class UserService implements IUserService {
     public ResultEntity register(UserEntity userEntity) {
         Long row = userMapper.register(userEntity);
         if (row > 0 ) {
-            UserEntity userEntity1 = userMapper.vertifyUser(userEntity);
+            UserEntity userEntity1 = userMapper.queryUser(userEntity);
             String newToken = JwtToken.createToken(userEntity1);
             redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(userEntity1, null, newToken);
@@ -116,7 +116,7 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity vertifyUser(UserEntity userEntity) {
-        UserEntity mUserEntity = userMapper.vertifyUser(userEntity);
+        UserEntity mUserEntity = userMapper.queryUser(userEntity);
         if(mUserEntity != null){
             if(mUserEntity.getUserId().equals(userEntity.getUserId())){
                 return ResultUtil.success(1,"账号已存在");

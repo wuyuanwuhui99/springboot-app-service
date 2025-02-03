@@ -54,7 +54,7 @@
                 FROM music_classify t1
                 LEFT JOIN music t2
                 ON t1.music_id = t2.id
-                WHERE t1.classify_id =#{classifyId} ORDER BY t1.audio_rank DESC limit #{start},#{pageSize}
+                WHERE t1.classify_id =#{classifyId} AND t2.local_play_url IS NOT NULL ORDER BY t1.audio_rank DESC limit #{start},#{pageSize}
             ) t3
         LEFT JOIN music_like t4
         ON t3.id = t4.music_id AND t4.user_id = #{userId} WHERE t3.id is not null

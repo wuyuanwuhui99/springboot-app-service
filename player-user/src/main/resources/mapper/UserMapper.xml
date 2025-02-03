@@ -21,18 +21,23 @@
        INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{userId},#{password},now(),now(),#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
     </insert>
 
-    <select id="vertifyUser" parameterType="com.player.common.entity.UserEntity" resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE
-         <if test="userId !=null and userId!=''">
-            user_id = #{userId}
-         </if>
-        <if test="telephone !=null and telephone!=''">
-            or telephone = #{telephone}
-        </if>
-        <if test="email !=null and email!=''">
-            or email = #{email}
-        </if>
-        limit 0,1
+    <select id="queryUser" parameterType="com.player.common.entity.UserEntity" resultType="com.player.common.entity.UserEntity">
+        <include refid="userData"></include>
+        <where>
+            <choose>
+                <when test="userId !=null and userId!='' and email !=null and email!=''">
+                    user_id = #{userId} and email = #{email}
+                </when>
+                <when test="userId !=null and userId!=''">
+                    user_id = #{userId}
+                </when>
+                <when test="email !=null and email!=''">
+                    email = #{email}
+                </when>
+            </choose>
+        </where>
+
+    limit 0,1
     </select>
 
     <update id="updateUser" parameterType="com.player.common.entity.UserEntity">
