@@ -79,9 +79,9 @@ public class UserController {
     }
 
     @ApiOperation("找回密码")
-    @PostMapping("/user/getBackPasswordByEmail")
-    public ResultEntity getBackPasswordByEmail(@RequestBody MailEntity mailRequest ) {
-        return userService.getBackPasswordByEmail(mailRequest);
+    @PostMapping("/user/sendEmailVertifyCode")
+    public ResultEntity sendEmailVertifyCode(@RequestBody MailEntity mailRequest ) {
+        return userService.sendEmailVertifyCode(mailRequest);
     }
 
     @ApiOperation("更新密码")

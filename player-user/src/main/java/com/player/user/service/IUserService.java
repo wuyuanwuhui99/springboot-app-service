@@ -26,7 +26,7 @@ public interface IUserService {
 
     ResultEntity updateAvater(String token, String base64);
 
-    ResultEntity getBackPasswordByEmail(MailEntity mailRequest);
-
     ResultEntity resetPassword(ResetPasswordEntity resetPasswordEntity);
+
+    ResultEntity sendEmailVertifyCode(MailEntity mailEntity);
 }

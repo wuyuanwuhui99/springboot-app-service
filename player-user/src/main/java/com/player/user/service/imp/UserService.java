@@ -195,7 +195,7 @@ public class UserService implements IUserService {
      * @date: 2025-01-23 21:42
      */
     @Override
-    public ResultEntity getBackPasswordByEmail(MailEntity mailRequest){
+    public ResultEntity sendEmailVertifyCode(MailEntity mailRequest){
         if(!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", mailRequest.getEmail())){
             return ResultUtil.fail(null,"邮箱格式错误");
         }else if(userMapper.vertifyUserByEmail(mailRequest.getEmail()).size() == 0){
