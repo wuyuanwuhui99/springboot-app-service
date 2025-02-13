@@ -89,4 +89,10 @@ public class UserController {
     public ResultEntity resetPassword(@RequestBody ResetPasswordEntity resetPasswordEntity ) {
         return userService.resetPassword(resetPasswordEntity);
     }
+
+    @ApiOperation("更新密码")
+    @PostMapping("/user/loginByEmail")
+    public ResultEntity loginByEmail(@RequestBody MailEntity mailEntity ) {
+        return userService.loginByEmail(mailEntity);
+    }
 }

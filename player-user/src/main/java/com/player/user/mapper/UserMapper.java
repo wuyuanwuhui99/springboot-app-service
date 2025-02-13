@@ -41,4 +41,6 @@ public interface UserMapper {
     List<UserEntity> vertifyUserByEmail(String email);
 
     Long resetPassword(ResetPasswordEntity resetPasswordEntity);
+
+    UserEntity loginByEmail(String email);
 }

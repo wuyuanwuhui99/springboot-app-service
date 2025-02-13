@@ -29,4 +29,6 @@ public interface IUserService {
     ResultEntity resetPassword(ResetPasswordEntity resetPasswordEntity);
 
     ResultEntity sendEmailVertifyCode(MailEntity mailEntity);
+
+    ResultEntity loginByEmail(MailEntity mailEntity);
 }

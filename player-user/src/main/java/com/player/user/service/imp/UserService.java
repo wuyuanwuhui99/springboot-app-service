@@ -248,4 +248,21 @@ public class UserService implements IUserService {
             return resultEntity;
         }
     }
+
+    @Override
+    public ResultEntity loginByEmail(MailEntity mailEntity){
+        int code = (int) redisTemplate.opsForValue().get(mailEntity.getEmail());
+        if(!mailEntity.getCode().equals(code + "")){
+            return ResultUtil.fail(null,"验证码无效");
+        }else{
+            UserEntity userEntity = userMapper.loginByEmail(mailEntity.getEmail());
+            if (userEntity != null) {
+                String token = JwtToken.createToken(userEntity);//token有效期30天
+                redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
+                return ResultUtil.success(userEntity, "登录成功", token);
+            } else {
+                return ResultUtil.fail(null, "登录失败，邮箱不存在", ResultCode.FAIL);
+            }
+        }
+    }
 }
