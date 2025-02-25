@@ -309,5 +309,9 @@
             select #{item.musicId},#{item.favoriteId},now(),now() FROM dual WHERE EXISTS (SELECT * FROM music_favorite_directory WHERE user_id = #{item.userId} and id = #{item.favoriteId})
         </foreach>
     </insert>
+
+    <insert id="saveLog">
+        INSERT INTO log(`method`,`url`,`headers`,`ip`,`params`,`query_string`,`result`,`start_time`,`run_time`,`description`,`end_time`,`oparation`,`type`,`user_id`,`app_id`,`app_name`) values (#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{oparation},#{type},#{userId},#{appId},#{appName})
+    </insert>
 </mapper>
 

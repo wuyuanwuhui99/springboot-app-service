@@ -5,7 +5,7 @@ import com.player.common.entity.UserEntity;
 import com.player.common.myInterface.OperLog;
 import com.player.common.utils.JwtToken;
 import com.player.music.entity.LogEntity;
-import com.player.music.dao.LogDao;
+import com.player.music.mapper.MyMusicMapper;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 @Component
 public class LogAspect {
     @Autowired
-    private LogDao logDao;
+    private MyMusicMapper myMusicMapper;
 
     @Value("${app.appId}")
     private String appId;
@@ -113,11 +113,11 @@ public class LogAspect {
             Object result = proceedingJoinPoint.proceed();
             sysLog.setEndTime(new Date());
             sysLog.setResult(JSON.toJSONString(result));
-            logDao.save(sysLog);
+            myMusicMapper.saveLog(sysLog);
             return result;
         } catch (Throwable throwable) {
             sysLog.setResult(throwable.getMessage());
-            logDao.save(sysLog);
+            myMusicMapper.saveLog(sysLog);
             throwable.printStackTrace();
         }
         return null;

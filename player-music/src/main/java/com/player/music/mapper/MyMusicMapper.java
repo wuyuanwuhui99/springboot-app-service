@@ -71,4 +71,5 @@ public interface MyMusicMapper {
 
     Long isMusicFavorite(String userId,Long musicId);
 
+    Long saveLog(LogEntity logEntity);
 }
