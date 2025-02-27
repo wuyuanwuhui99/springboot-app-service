@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.player.user.mapper.UserMapper">
     <sql id="userData">
-        SELECT user_id,create_date,update_date,username,telephone,email,avater,birthday,sign,sex,role,region,disabled,permission from  user
+        SELECT id,user_account,create_date,update_date,username,telephone,email,avater,birthday,sign,sex,role,region,disabled,permission from  user
     </sql>
 
     <select id="getUserData"  resultType="com.player.common.entity.UserEntity">
@@ -10,26 +10,26 @@
     </select>
 
     <select id="getMyUserData"  resultType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE user_id = #{userId} and disabled = 0
+        <include refid="userData"></include> WHERE user_account = #{userAccount} and disabled = 0
     </select>
 
     <select id="login" resultType="com.player.common.entity.UserEntity" parameterType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE (user_id=#{userId} or email = #{email} or telephone = #{telephone}) and password=#{password}
+        <include refid="userData"></include> WHERE (user_account=#{userAccount} or email = #{email} and password=#{password}
     </select>
 
     <insert id="register" parameterType="com.player.common.entity.UserEntity">
-       INSERT INTO user(user_id,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{userId},#{password},now(),now(),#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_id FROM user WHERE user_id = #{userId})
+       INSERT INTO user(id,user_account,password,create_date,update_date,username,telephone,email,avater,birthday,sex,sign,region) SELECT #{id},#{userAccount},#{password},now(),now(),#{username},#{telephone},#{email},#{avater},#{birthday},#{sex},#{sign},#{region} FROM dual WHERE NOT EXISTS (SELECT user_account FROM user WHERE user_account = #{userAccount})
     </insert>
 
     <select id="queryUser" parameterType="com.player.common.entity.UserEntity" resultType="com.player.common.entity.UserEntity">
         <include refid="userData"></include>
         <where>
             <choose>
-                <when test="userId !=null and userId!='' and email !=null and email!=''">
-                    user_id = #{userId} and email = #{email}
+                <when test="userAccount !=null and userAccount!='' and email !=null and email!=''">
+                    user_account = #{userAccount} and email = #{email}
                 </when>
-                <when test="userId !=null and userId!=''">
-                    user_id = #{userId}
+                <when test="userAccount !=null and userAccount!=''">
+                    user_account = #{userAccount}
                 </when>
                 <when test="email !=null and email!=''">
                     email = #{email}
@@ -51,21 +51,21 @@
             sex = #{sex},
             sign = #{sign},
             region = #{region}
-        WHERE user_id = #{userId}  and disabled = 0
+        WHERE user_account = #{userAccount}  and disabled = 0
     </update>
 
     <update id="PasswordEntity" parameterType="Map">
         UPDATE user SET
             password = #{newPassword},
-        WHERE user_id = #{userId} AND password = #{oldPassword}
+        WHERE user_account = #{userAccount} AND password = #{oldPassword}
     </update>
 
     <insert id="log" parameterType="com.player.common.entity.LogEntity">
-       INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{userId})
+       INSERT INTO log(method,url,headers,ip,params,query_string,result,start_time,run_time,description,end_time,type,oparation,user_id)VALUES(#{method},#{url},#{headers},#{ip},#{params},#{queryString},#{result},#{startTime},#{runTime},#{description},#{endTime},#{type},#{oparation},#{id})
     </insert>
 
     <update id="updateAvater">
-         UPDATE user SET avater = #{avater},update_date = now() WHERE user_id = #{userId}
+         UPDATE user SET avater = #{avater},update_date = now() WHERE user_account = #{userAccount}
     </update>
 
     <update id="resetPassword" parameterType="ResetPasswordEntity">
@@ -77,7 +77,7 @@
     </select>
 
     <update id="updatePassword" parameterType="PasswordEntity">
-        UPDATE user SET password = #{newPassword},update_date = now() WHERE user_id = #{userId} and password=#{oldPassword}
+        UPDATE user SET password = #{newPassword},update_date = now() WHERE user_account = #{userAccount} and password=#{oldPassword}
     </update>
 
     <select id="loginByEmail" parameterType="String" resultType="com.player.common.entity.UserEntity">

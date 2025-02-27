@@ -71,9 +71,9 @@ public class JwtToken {
         }
     }
     
-    public static String getUserId(String token){
+    public static String getId(String token){
         UserEntity userEntity = parserToken(token,UserEntity.class);
-        if(userEntity != null)return userEntity.getUserId();
+        if(userEntity != null)return userEntity.getId();
         return null;
     }
 }

@@ -97,7 +97,7 @@ public class LogAspect {
         if(StringUtils.isNotEmpty(token)){
             UserEntity userEntity =jwtToken.parserToken(token, UserEntity.class);
             if(userEntity != null && !"".equals(userEntity)){
-                sysLog.setUserId(userEntity.getUserId());
+                sysLog.setUserId(userEntity.getId());
             }
         }
         // 记录下请求内容

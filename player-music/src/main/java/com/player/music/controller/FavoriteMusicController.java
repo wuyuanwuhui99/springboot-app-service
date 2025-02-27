@@ -31,7 +31,7 @@ public class FavoriteMusicController {
     @ApiOperation("根据用户命名和mid查询收藏的歌曲 ")
     @GetMapping("/music-getway/queryFavorite")
     public ResultEntity queryFavorite(HttpServletRequest request, @Param("mid") String mid) {
-        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        String userId = JwtToken.getId(request.getHeader("Authorization"));
         return favoriteMusicService.queryFavorite(userId, mid);
     }
 
@@ -46,7 +46,7 @@ public class FavoriteMusicController {
     @ApiOperation("添加收藏,如果是管理员账户，添加到抖音歌曲表")
     @PostMapping("/music-getway/addFavorite")
     public ResultEntity addFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity,HttpServletRequest request) {
-        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        String userId = JwtToken.getId(request.getHeader("Authorization"));
         return favoriteMusicService.addFavorite(favoriteMusicEntity, userId);
     }
 
@@ -61,7 +61,7 @@ public class FavoriteMusicController {
     @ApiOperation("取消收藏")
     @DeleteMapping("/music-getway/deleteFavorite")
     public ResultEntity deleteFavorite(@RequestBody FavoriteMusicEntity favoriteMusicEntity,HttpServletRequest request) {
-        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        String userId = JwtToken.getId(request.getHeader("Authorization"));
         return favoriteMusicService.deleteFavorite(favoriteMusicEntity,userId);
     }
 
@@ -76,7 +76,7 @@ public class FavoriteMusicController {
     @ApiOperation("根据用户id查询该用户收藏的列表")
     @GetMapping("/music-getway/getFavorite")
     public ResultEntity getFavorite(HttpServletRequest request) {
-        String userId = JwtToken.getUserId(request.getHeader("Authorization"));
+        String userId = JwtToken.getId(request.getHeader("Authorization"));
         return favoriteMusicService.getFavorite(userId);
     }
 }

@@ -2,7 +2,6 @@ package com.player.music.controller;
 
 import com.player.common.entity.ResultEntity;
 import com.player.common.utils.HttpUtils;
-import com.player.music.entity.MyMusicEntity;
 import com.player.music.entity.MyMusicFavoriteDirectoryEntity;
 import com.player.music.entity.MyMusicFavoriteEntity;
 import com.player.music.entity.MyMusicRecordEntity;

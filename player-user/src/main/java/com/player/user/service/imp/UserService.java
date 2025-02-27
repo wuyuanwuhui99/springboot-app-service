@@ -169,7 +169,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updateAvater(String token, String base64){
-        String userId = JwtToken.getUserId(token);
+        String userId = JwtToken.getId(token);
         if ("".equals(base64) || base64 == null) {
             return ResultUtil.fail("请选择文件");
         }
