@@ -8,11 +8,11 @@ import java.util.Date;
 @Data
 @ToString
 public class UserEntity {
-    @ApiModelProperty(value = "自增长id")
-    private Long id;
+    @ApiModelProperty(value = "用户uid")
+    private String id;
 
-    @ApiModelProperty(value = "用户id，主键")
-    private String userId;
+    @ApiModelProperty(value = "用户账号")
+    private String userAccount;
 
     @ApiModelProperty(value = "创建日期")
     private Date createDate;

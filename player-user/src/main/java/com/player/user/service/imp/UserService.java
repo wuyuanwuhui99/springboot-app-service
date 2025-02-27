@@ -56,7 +56,7 @@ public class UserService implements IUserService {
         if (token == null || StringUtils.isEmpty(token) || userEntity == null) {
             userEntity = userMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
         } else {
-            userEntity = userMapper.getMyUserData(userEntity.getUserId());
+            userEntity = userMapper.getMyUserData(userEntity.getUserAccount());
         }
         String newToken = JwtToken.createToken(userEntity);
         redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
@@ -118,7 +118,7 @@ public class UserService implements IUserService {
     public ResultEntity vertifyUser(UserEntity userEntity) {
         UserEntity mUserEntity = userMapper.queryUser(userEntity);
         if(mUserEntity != null){
-            if(mUserEntity.getUserId().equals(userEntity.getUserId())){
+            if(mUserEntity.getUserAccount().equals(userEntity.getUserAccount())){
                 return ResultUtil.success(1,"账号已存在");
             }else if(mUserEntity.getTelephone().equals(userEntity.getTelephone())){
                 return ResultUtil.success(1,"电话已存在");
@@ -138,8 +138,8 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updateUser(UserEntity userEntity,String token) {
-        String userId = JwtToken.parserToken(token, UserEntity.class).getUserId();
-        userEntity.setUserId(userId);
+        String userId = JwtToken.parserToken(token, UserEntity.class).getUserAccount();
+        userEntity.setUserAccount(userId);
         return ResultUtil.success(userMapper.updateUser(userEntity));
     }
 
@@ -151,7 +151,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
-        passwordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        passwordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserAccount());
         Long row = userMapper.updatePassword(passwordEntity);
         if(row > 0){
             return ResultUtil.success(row,"修改密码成功");
