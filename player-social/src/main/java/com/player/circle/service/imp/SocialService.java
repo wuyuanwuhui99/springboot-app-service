@@ -34,7 +34,7 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity insertComment(String token, CommentEntity commentEntity){
-        commentEntity.setUserId(JwtToken.getUserId(token));
+        commentEntity.setUserId(JwtToken.getId(token));
         socialMapper.insertComment(commentEntity);
         return ResultUtil.success(socialMapper.getCommentItem(commentEntity.getId(),commentEntity.getType()));
     }
@@ -46,7 +46,7 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity deleteComment(int id,String token){
-        return ResultUtil.success(socialMapper.deleteComment(id,JwtToken.getUserId(token)));
+        return ResultUtil.success(socialMapper.deleteComment(id,JwtToken.getId(token)));
     }
 
     /**
@@ -68,7 +68,7 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity saveLike(LikeEntity likeEntity, String token) {
-        likeEntity.setUserId(JwtToken.getUserId(token));
+        likeEntity.setUserId(JwtToken.getId(token));
         socialMapper.saveLike(likeEntity);
         LikeEntity likeById = socialMapper.getLikeById(likeEntity.getId());
         return ResultUtil.success(likeById);
@@ -82,13 +82,13 @@ public class SocialService implements ISocialService {
     @Override
     public ResultEntity deleteLike(Long relationId,String type,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(socialMapper.deleteLike(relationId,type,userEntity.getUserId()));
+        return ResultUtil.success(socialMapper.deleteLike(relationId,type,userEntity.getId()));
     }
 
     @Override
     public ResultEntity isLike(Long relationId,String type,String token) {
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(socialMapper.isLike(relationId,type,userEntity.getUserId()));
+        return ResultUtil.success(socialMapper.isLike(relationId,type,userEntity.getId()));
     }
 
     /**

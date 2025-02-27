@@ -31,7 +31,7 @@
 		        (SELECT c.*,COUNT(t.id) AS replyCount FROM social_comment c  LEFT JOIN social_comment t ON  c.id = t.top_id  WHERE c.relation_id = #{relationId} AND c.type = #{type} AND c.top_id is null GROUP BY c.id)
 	        ) tu
         ) tc
-        LEFT JOIN `user` u ON u.user_id = tc.user_id LIMIT #{start},#{pageSize}
+        LEFT JOIN `user` u ON u.id = tc.user_id LIMIT #{start},#{pageSize}
     </select>
 
     <select id="getSocialReplyTopId" resultType="com.player.common.entity.CommentEntity">
