@@ -114,7 +114,7 @@ public class CircleService implements ICircleService {
             circleEntity.setImgs(imgs);
         }
 
-        circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserId());
+        circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getId());
         return ResultUtil.success(circleMapper.insertCircle(circleEntity));
     }
 }

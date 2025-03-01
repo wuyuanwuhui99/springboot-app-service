@@ -80,7 +80,7 @@
         u.username,
         u.avater as useravater
         FROM circle c
-        LEFT JOIN user u on c.user_id = u.user_id
+        LEFT JOIN user u on c.user_id = u.id
         <if test="type=='MUSIC'">
             LEFT JOIN music m on c.relation_id = m.id
         </if>
@@ -125,7 +125,7 @@
     </insert>
 
     <select id="getCircleLikeByCircleId" resultMap="getCircleLikeMap">
-        SELECT c.*,u.username FROM social_like c LEFT JOIN user u on c.user_id = u.user_id where c.relation_id = #{id} and c.type = 'MUSIC_CIRCLE'
+        SELECT c.*,u.username FROM social_like c LEFT JOIN user u on c.user_id = u.id where c.relation_id = #{id} and c.type = 'MUSIC_CIRCLE'
     </select>
 
     <resultMap id="getCircleLikeMap" type="com.player.common.entity.LikeEntity">
@@ -156,14 +156,14 @@
                     t3.user_id AS reply_user_id
                 FROM
                     social_comment t1
-                    LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                    LEFT JOIN user t2 ON t1.user_id = t2.id
                     LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
                 WHERE
                     t1.relation_id = #{id}
                     AND t1.top_id IS NULL
                     AND t1.type = 'MUSIC_CIRCLE'
                 ) t4
-                LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id
+                LEFT JOIN user t5 ON t4.reply_user_id = t5.id
             ) t6,
             ( SELECT parent_id, count( parent_id ) AS cnt FROM social_comment GROUP BY parent_id ) t7
         WHERE
@@ -202,12 +202,12 @@
                     t3.user_id AS reply_user_id
                 FROM
                     social_comment t1
-                    LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                    LEFT JOIN user t2 ON t1.user_id = t2.id
                     LEFT JOIN social_comment t3 ON t1.parent_id = t3.id
                 WHERE
                     t1.parent_id = #{id}
                 ) t4
-                LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id)t6
+                LEFT JOIN user t5 ON t4.reply_user_id = t5.id)t6
             ORDER BY t6.create_time DESC limit 0 ,5
     </select>
 </mapper>
