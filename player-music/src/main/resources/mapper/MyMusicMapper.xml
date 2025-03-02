@@ -157,8 +157,8 @@
                 SELECT
                     t1.*
                 FROM
-                    ( SELECT * FROM music_record WHERE or user_id = #{userId} ) t1
-                    INNER JOIN ( SELECT music_id, MAX( create_time ) AS max_date FROM ( SELECT * FROM music_record WHERE  or user_id = #{userId} ) t2 GROUP BY music_id ) t3 ON t1.music_id = t3.music_id
+                    ( SELECT * FROM music_record WHERE user_id = #{userId} ) t1
+                    INNER JOIN ( SELECT music_id, MAX( create_time ) AS max_date FROM ( SELECT * FROM music_record WHERE user_id = #{userId} ) t2 GROUP BY music_id ) t3 ON t1.music_id = t3.music_id
                     AND t1.create_time = t3.max_date
                 ORDER BY
                     t1.create_time DESC
