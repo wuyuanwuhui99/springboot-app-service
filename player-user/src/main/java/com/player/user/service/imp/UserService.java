@@ -153,7 +153,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
-        passwordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class,secret).getUserAccount());
+        passwordEntity.setId(JwtToken.parserToken(token, UserEntity.class,secret).getId());
         Long row = userMapper.updatePassword(passwordEntity);
         if(row > 0){
             return ResultUtil.success(row,"修改密码成功");

@@ -77,7 +77,7 @@
     </select>
 
     <update id="updatePassword" parameterType="PasswordEntity">
-        UPDATE user SET password = #{newPassword},update_date = now() WHERE user_account = #{userAccount} and password=#{oldPassword}
+        UPDATE user SET password = #{newPassword},update_date = now() WHERE id = #{id} and password=#{oldPassword}
     </update>
 
     <select id="loginByEmail" parameterType="String" resultType="com.player.common.entity.UserEntity">

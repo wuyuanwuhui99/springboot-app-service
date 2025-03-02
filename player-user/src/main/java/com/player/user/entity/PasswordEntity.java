@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 public class PasswordEntity {
     @ApiModelProperty(value = "用户id")
-    private String userId;
+    private String id;
 
     @ApiModelProperty(value = "新密码")
     private String newPassword;
