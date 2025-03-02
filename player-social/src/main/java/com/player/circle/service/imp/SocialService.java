@@ -5,10 +5,14 @@ import com.player.circle.service.ISocialService;
 import com.player.common.entity.*;
 import com.player.common.utils.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SocialService implements ISocialService {
+
+    @Value("${token.secret}")
+    private String secret;
     
     @Autowired
     private SocialMapper socialMapper;
@@ -34,7 +38,7 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity insertComment(String token, CommentEntity commentEntity){
-        commentEntity.setUserId(JwtToken.getId(token));
+        commentEntity.setUserId(JwtToken.getId(token,secret));
         socialMapper.insertComment(commentEntity);
         return ResultUtil.success(socialMapper.getCommentItem(commentEntity.getId(),commentEntity.getType()));
     }
@@ -46,7 +50,7 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity deleteComment(int id,String token){
-        return ResultUtil.success(socialMapper.deleteComment(id,JwtToken.getId(token)));
+        return ResultUtil.success(socialMapper.deleteComment(id,JwtToken.getId(token,secret)));
     }
 
     /**
@@ -68,7 +72,7 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity saveLike(LikeEntity likeEntity, String token) {
-        likeEntity.setUserId(JwtToken.getId(token));
+        likeEntity.setUserId(JwtToken.getId(token,secret));
         socialMapper.saveLike(likeEntity);
         LikeEntity likeById = socialMapper.getLikeById(likeEntity.getId());
         return ResultUtil.success(likeById);
@@ -81,13 +85,13 @@ public class SocialService implements ISocialService {
      */
     @Override
     public ResultEntity deleteLike(Long relationId,String type,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         return ResultUtil.success(socialMapper.deleteLike(relationId,type,userEntity.getId()));
     }
 
     @Override
     public ResultEntity isLike(Long relationId,String type,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         return ResultUtil.success(socialMapper.isLike(relationId,type,userEntity.getId()));
     }
 

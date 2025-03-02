@@ -7,6 +7,7 @@ import com.player.movie.entity.MovieEntity;
 import com.player.movie.mapper.MovieMapper;
 import com.player.movie.service.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,10 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class MovieService implements IMovieService {
-    
+
+    @Value("${token.secret}")
+    private String secret;
+
     @Autowired
     private MovieMapper movieMapper;
 
@@ -67,8 +71,8 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getUserMsg(String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.getUserMsg(userEntity.getUserId()));
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
+        return ResultUtil.success(movieMapper.getUserMsg(userEntity.getId()));
     }
 
     /**
@@ -211,9 +215,9 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity getPlayRecord(String token,int pageNum,int pageSize) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         int start = (pageNum - 1) * pageSize;
-        return ResultUtil.success(movieMapper.getPlayRecord(userEntity.getUserId(),start,pageSize));
+        return ResultUtil.success(movieMapper.getPlayRecord(userEntity.getId(),start,pageSize));
     }
 
     /**
@@ -224,11 +228,11 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity savePlayRecord(MovieEntity movieEntity,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         Date date = new Date();
         movieEntity.setCreateTime(date);
         movieEntity.setUpdateTime(date);
-        movieEntity.setUserId(userEntity.getUserId());
+        movieEntity.setUserId(userEntity.getId());
         return ResultUtil.success(movieMapper.savePlayRecord(movieEntity));
     }
 
@@ -241,7 +245,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getViewRecord(String token,int pageNum,int pageSize){
         if(pageSize > 500) pageSize = 500;
         int start = (pageNum - 1)*pageSize;
-        return ResultUtil.success(movieMapper.getViewRecord(JwtToken.getUserId(token),start,pageSize));
+        return ResultUtil.success(movieMapper.getViewRecord(JwtToken.getId(token,secret),start,pageSize));
     }
 
     /**
@@ -252,11 +256,11 @@ public class MovieService implements IMovieService {
     @Override
     @Transactional
     public ResultEntity saveViewRecord(MovieEntity movieEntity,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         Date date = new Date();
         movieEntity.setCreateTime(date);
         movieEntity.setUpdateTime(date);
-        movieEntity.setUserId(userEntity.getUserId());
+        movieEntity.setUserId(userEntity.getId());
         ResultEntity resultEntity = ResultUtil.success(movieMapper.saveViewRecord(movieEntity));
         return resultEntity;
     }
@@ -270,7 +274,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getFavoriteList(String token,int pageNum,int pageSize) {
         if(pageSize > 500) pageSize = 500;
         int start = (pageNum - 1)*pageSize;
-        return ResultUtil.success(movieMapper.getFavoriteList(JwtToken.getUserId(token),start,pageSize));
+        return ResultUtil.success(movieMapper.getFavoriteList(JwtToken.getId(token,secret),start,pageSize));
     }
 
     /**
@@ -280,7 +284,7 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity saveFavorite(int movieId, String token) {
-        return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getUserId(token)));
+        return ResultUtil.success(movieMapper.saveFavorite(movieId,JwtToken.getId(token,secret)));
     }
 
     /**
@@ -290,13 +294,13 @@ public class MovieService implements IMovieService {
      */
     @Override
     public ResultEntity deleteFavorite(int movieId,String token) {
-        return ResultUtil.success(movieMapper.deleteFavorite(movieId,JwtToken.getUserId(token)));
+        return ResultUtil.success(movieMapper.deleteFavorite(movieId,JwtToken.getId(token,secret)));
     }
 
     @Override
     public ResultEntity isFavorite(Long movieId,String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
-        return ResultUtil.success(movieMapper.isFavorite(movieId,userEntity.getUserId()));
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
+        return ResultUtil.success(movieMapper.isFavorite(movieId,userEntity.getId()));
     }
 
     @Override
@@ -369,7 +373,7 @@ public class MovieService implements IMovieService {
     public ResultEntity getSearchHistory(String token,int pageNum,int pageSize) {
         if(pageSize > 500) pageSize = 500;
         int start = (pageNum - 1)*pageSize;
-        String userId = JwtToken.getUserId(token);
+        String userId = JwtToken.getId(token,secret);
         ResultEntity resultEntity = ResultUtil.success(movieMapper.getSearchHistory(userId, start, pageSize));
         resultEntity.setTotal(movieMapper.getSearchHistoryTotal(userId));
         return resultEntity;

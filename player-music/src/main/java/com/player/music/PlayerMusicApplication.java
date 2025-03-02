@@ -11,5 +11,4 @@ public class PlayerMusicApplication {
     public static void main(String[] args) {
         SpringApplication.run(PlayerMusicApplication.class, args);
     }
-
 }

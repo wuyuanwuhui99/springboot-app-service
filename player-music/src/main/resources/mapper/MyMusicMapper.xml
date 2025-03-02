@@ -126,7 +126,7 @@
     <select id="getMyLikeMusicAuthor" resultType="MyMusicAuthorEntity">
         select t4.*,COUNT(t5.author_id) as total from
             (select t3.* from
-                (select t1.* from music_author_like t1 WHERE 1=1 OR user_id = #{userId} LIMIT #{start},#{pageSize}) t2
+                (select t1.* from music_author_like t1 WHERE user_id = #{userId} LIMIT #{start},#{pageSize}) t2
                     LEFT JOIN music_authors t3 on t2.author_id = t3.author_id) t4
         LEFT JOIN music t5 on t5.author_id = t4.author_id
         GROUP BY t5.author_id,t4.id
@@ -157,8 +157,8 @@
                 SELECT
                     t1.*
                 FROM
-                    ( SELECT * FROM music_record WHERE 1=1 or user_id = #{userId} ) t1
-                    INNER JOIN ( SELECT music_id, MAX( create_time ) AS max_date FROM ( SELECT * FROM music_record WHERE  1=1 or user_id = #{userId} ) t2 GROUP BY music_id ) t3 ON t1.music_id = t3.music_id
+                    ( SELECT * FROM music_record WHERE or user_id = #{userId} ) t1
+                    INNER JOIN ( SELECT music_id, MAX( create_time ) AS max_date FROM ( SELECT * FROM music_record WHERE  or user_id = #{userId} ) t2 GROUP BY music_id ) t3 ON t1.music_id = t3.music_id
                     AND t1.create_time = t3.max_date
                 ORDER BY
                     t1.create_time DESC

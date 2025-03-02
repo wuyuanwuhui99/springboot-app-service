@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class CircleService implements ICircleService {
+    @Value("${token.secret}")
+    private String secret;
+
     @Value("${static.upload-path}")
     private String uploadPath;
 
@@ -114,7 +117,7 @@ public class CircleService implements ICircleService {
             circleEntity.setImgs(imgs);
         }
 
-        circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getId());
+        circleEntity.setUserId(JwtToken.parserToken(token, UserEntity.class,secret).getId());
         return ResultUtil.success(circleMapper.insertCircle(circleEntity));
     }
 }

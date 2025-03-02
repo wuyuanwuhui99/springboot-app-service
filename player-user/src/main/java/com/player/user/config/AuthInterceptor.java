@@ -7,6 +7,7 @@ import com.player.common.entity.UserEntity;
 import com.player.common.utils.JwtToken;
 import com.player.common.utils.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AuthInterceptor implements HandlerInterceptor {
+    @Value("${token.secret}")
+    private String secret;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -33,7 +36,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             renderJson(response, ResultUtil.fail("未通过登录认证", null, ResultCode.LOGOUT));
             return false;
         }
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         if (userEntity == null) {
             response.setContentType("application/json;charset=UTF-8");
             //设置编码格式
@@ -49,13 +52,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     protected void renderJson(HttpServletResponse response, ResultEntity resultEntity) {
         String dataJson = JSONObject.toJSONString(resultEntity);
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             response.setContentType("application/json; charset=utf-8");
             writer = response.getWriter();
             writer.write(dataJson);
             writer.flush();
-            return;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -34,6 +34,9 @@ public class UserService implements IUserService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Value("${token.secret}")
+    public String secret;
+
     @Value("${app.avater-path}")
     private String avaterPath;
 
@@ -52,13 +55,13 @@ public class UserService implements IUserService {
      */
     @Override
     public ResultEntity getUserData(String token) {
-        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class);
+        UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         if (token == null || StringUtils.isEmpty(token) || userEntity == null) {
             userEntity = userMapper.getUserData();//如果用户签名为空，随机从数据库中查询一个公共的账号
         } else {
             userEntity = userMapper.getMyUserData(userEntity.getUserAccount());
         }
-        String newToken = JwtToken.createToken(userEntity);
+        String newToken = JwtToken.createToken(userEntity,secret);
         redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
         return ResultUtil.success(userEntity, null, newToken);
     }
@@ -72,7 +75,7 @@ public class UserService implements IUserService {
     public ResultEntity login(UserEntity userEntity) {
         UserEntity resultUserEntity = userMapper.login(userEntity);
         if (resultUserEntity != null) {
-            String token = JwtToken.createToken(resultUserEntity);//token有效期30天
+            String token = JwtToken.createToken(resultUserEntity,secret);//token有效期30天
             redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(resultUserEntity, "登录成功", token);
         } else {
@@ -99,10 +102,11 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity register(UserEntity userEntity) {
+        userEntity.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         Long row = userMapper.register(userEntity);
         if (row > 0 ) {
             UserEntity userEntity1 = userMapper.queryUser(userEntity);
-            String newToken = JwtToken.createToken(userEntity1);
+            String newToken = JwtToken.createToken(userEntity1,secret);
             redisTemplate.opsForValue().set(newToken, "1",30, TimeUnit.DAYS);
             return ResultUtil.success(userEntity1, null, newToken);
         }
@@ -120,8 +124,6 @@ public class UserService implements IUserService {
         if(mUserEntity != null){
             if(mUserEntity.getUserAccount().equals(userEntity.getUserAccount())){
                 return ResultUtil.success(1,"账号已存在");
-            }else if(mUserEntity.getTelephone().equals(userEntity.getTelephone())){
-                return ResultUtil.success(1,"电话已存在");
             }else {
                 return ResultUtil.success(1,"邮箱已存在");
             }
@@ -138,7 +140,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updateUser(UserEntity userEntity,String token) {
-        String userId = JwtToken.parserToken(token, UserEntity.class).getUserAccount();
+        String userId = JwtToken.parserToken(token, UserEntity.class,secret).getUserAccount();
         userEntity.setUserAccount(userId);
         return ResultUtil.success(userMapper.updateUser(userEntity));
     }
@@ -151,7 +153,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updatePassword(PasswordEntity passwordEntity, String token) {
-        passwordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class).getUserAccount());
+        passwordEntity.setUserId(JwtToken.parserToken(token, UserEntity.class,secret).getUserAccount());
         Long row = userMapper.updatePassword(passwordEntity);
         if(row > 0){
             return ResultUtil.success(row,"修改密码成功");
@@ -169,7 +171,7 @@ public class UserService implements IUserService {
     @Override
     @Transactional
     public ResultEntity updateAvater(String token, String base64){
-        String userId = JwtToken.getId(token);
+        String userId = JwtToken.getId(token,secret);
         if ("".equals(base64) || base64 == null) {
             return ResultUtil.fail("请选择文件");
         }
@@ -241,7 +243,7 @@ public class UserService implements IUserService {
             userEntity.setEmail(resetPasswordEntity.getEmail());
             userEntity.setPassword(resetPasswordEntity.getPassword());
             UserEntity mUserEntity = userMapper.login(userEntity);
-            String token = JwtToken.createToken(mUserEntity);//token有效期30天
+            String token = JwtToken.createToken(mUserEntity,secret);//token有效期30天
             redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
             ResultEntity resultEntity = ResultUtil.success(mUserEntity, "登录成功", token);
             resultEntity.setToken(token);
@@ -257,7 +259,7 @@ public class UserService implements IUserService {
         }else{
             UserEntity userEntity = userMapper.loginByEmail(mailEntity.getEmail());
             if (userEntity != null) {
-                String token = JwtToken.createToken(userEntity);//token有效期30天
+                String token = JwtToken.createToken(userEntity,secret);//token有效期30天
                 redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
                 return ResultUtil.success(userEntity, "登录成功", token);
             } else {

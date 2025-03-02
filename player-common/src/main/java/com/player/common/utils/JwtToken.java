@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
  */
 public class JwtToken {
 
-    private static String secret = "wuwenqiang";
-
     private static Long expirationTime = 2592000000L;
 
 
@@ -27,9 +25,9 @@ public class JwtToken {
      * @param value
      * @return
      */
-    public static String createToken(Object value) {
+    public static String createToken(Object value,String secret) {
         // 生成SecretKey 对象
-        SecretKey secretKey = createSecretKey();
+        SecretKey secretKey = createSecretKey(secret);
         String jsonValue = JSONObject.toJSONString(value);
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long nowMillis = System.currentTimeMillis();
@@ -40,10 +38,10 @@ public class JwtToken {
             Date exp = new Date(expMillis);
             jwtBuilder.setExpiration(exp);  // 设置token过期时间
         }
-        return jwtBuilder.compact();
+        return "Bearer " + jwtBuilder.compact();
     }
 
-    private static SecretKey createSecretKey() {
+    private static SecretKey createSecretKey(String secret) {
         byte[] bytes = DatatypeConverter.parseBase64Binary(secret);
         return new SecretKeySpec(bytes, 0, bytes.length, "AES");
     }
@@ -56,8 +54,9 @@ public class JwtToken {
      * @param <T>
      * @return
      */
-    public static <T> T parserToken(String token, Class<T> clazz) {
-        SecretKey secretKey = createSecretKey();
+    public static <T> T parserToken(String token, Class<T> clazz,String secret) {
+        token = token.substring(7);
+        SecretKey secretKey = createSecretKey(secret);
         try {
             Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
             String subject = claims.getSubject();
@@ -71,8 +70,8 @@ public class JwtToken {
         }
     }
     
-    public static String getId(String token){
-        UserEntity userEntity = parserToken(token,UserEntity.class);
+    public static String getId(String token,String secret){
+        UserEntity userEntity = parserToken(token,UserEntity.class,secret);
         if(userEntity != null)return userEntity.getId();
         return null;
     }

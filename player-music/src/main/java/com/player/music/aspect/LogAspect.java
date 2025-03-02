@@ -31,6 +31,9 @@ import java.util.stream.Stream;
 @Aspect
 @Component
 public class LogAspect {
+    @Value("${token.secret}")
+    private String secret;
+
     @Autowired
     private MyMusicMapper myMusicMapper;
 
@@ -95,7 +98,7 @@ public class LogAspect {
 
         String token = request.getHeader("Authorization");
         if(StringUtils.isNotEmpty(token)){
-            UserEntity userEntity =jwtToken.parserToken(token, UserEntity.class);
+            UserEntity userEntity =jwtToken.parserToken(token, UserEntity.class,secret);
             if(userEntity != null && !"".equals(userEntity)){
                 sysLog.setUserId(userEntity.getId());
             }
