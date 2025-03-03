@@ -20,11 +20,11 @@ public interface IMyMusicService {
 
     ResultEntity getMusicListByAuthorId(String redisKey,String token, int authorId, int pageNum, int pageSize);
 
-    ResultEntity getMyLikeMusicAuthor(String token,int pageNum, int pageSize);
+    ResultEntity getFavoriteAuthor(String token,int pageNum, int pageSize);
 
-    ResultEntity insertMyLikeMusicAuthor(String token,int authorId);
+    ResultEntity insertFavoriteAuthor(String token,int authorId);
 
-    ResultEntity deleteMyLikeMusicAuthor(String token,int authorId);
+    ResultEntity deleteFavoriteAuthor(String token,int authorId);
 
     ResultEntity getMusicRecord(String token, int pageNum, int pageSize);
 

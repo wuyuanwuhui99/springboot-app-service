@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -146,28 +147,27 @@ public class MyMusicService implements IMyMusicService {
 
 
     @Override
-    public ResultEntity getMyLikeMusicAuthor(String token,int pageNum, int pageSize){
+    public ResultEntity getFavoriteAuthor(String token,int pageNum, int pageSize){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
         if (pageSize > 500) pageSize = 500;
         int start = (pageNum - 1) * pageSize;
-        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMyLikeMusicAuthor(userEntity.getId(),start,pageSize));
-        Long mySingerCount = myMusicMapper.getMyLikeMusicAuthorCount(userEntity.getId());
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getFavoriteAuthor(userEntity.getId(),start,pageSize));
+        Long mySingerCount = myMusicMapper.getFavoriteAuthorCount(userEntity.getId());
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
     }
 
     @Override
-    public ResultEntity insertMyLikeMusicAuthor(String token,int authorId){
+    public ResultEntity insertFavoriteAuthor(String token,int authorId){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
-        return ResultUtil.success(myMusicMapper.insertMyLikeMusicAuthor(userEntity.getId(),authorId));
+        return ResultUtil.success(myMusicMapper.insertFavoriteAuthor(userEntity.getId(),authorId));
     }
 
     @Override
-    public ResultEntity deleteMyLikeMusicAuthor(String token,int authorId){
+    public ResultEntity deleteFavoriteAuthor(String token,int authorId){
         UserEntity userEntity = JwtToken.parserToken(token, UserEntity.class,secret);
-        return ResultUtil.success(myMusicMapper.deleteMyLikeMusicAuthor(userEntity.getId(),authorId));
+        return ResultUtil.success(myMusicMapper.deleteFavoriteAuthor(userEntity.getId(),authorId));
     }
-
 
     @Override
     public ResultEntity getMusicRecord(String token, int pageNum, int pageSize){
@@ -326,9 +326,12 @@ public class MyMusicService implements IMyMusicService {
      * @return: ResultEntity
      * @date: 2024-06-2 11:16
      */
+    @Transactional
     @Override
-    public ResultEntity deleteFavoriteDirectory(String token, Long favoriteId) { ;
-        return ResultUtil.success(myMusicMapper.deleteFavoriteDirectory(JwtToken.parserToken(token, UserEntity.class,secret).getId(),favoriteId));
+    public ResultEntity deleteFavoriteDirectory(String token, Long favoriteId) {
+        String id = JwtToken.parserToken(token, UserEntity.class, secret).getId();
+        myMusicMapper.deleteMusicFavoriteByFavoriteId(id,favoriteId);
+        return ResultUtil.success(myMusicMapper.deleteFavoriteDirectory(id,favoriteId));
     }
 
     /**

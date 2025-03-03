@@ -123,7 +123,7 @@
         select count(*) as total from music WHERE author_id = #{authorId}
     </select>
 
-    <select id="getMyLikeMusicAuthor" resultType="MyMusicAuthorEntity">
+    <select id="getFavoriteAuthor" resultType="MyMusicAuthorEntity">
         select t4.*,COUNT(t5.author_id) as total from
             (select t3.* from
                 (select t1.* from music_author_like t1 WHERE user_id = #{userId} LIMIT #{start},#{pageSize}) t2
@@ -132,15 +132,15 @@
         GROUP BY t5.author_id,t4.id
     </select>
 
-    <insert id="insertMyLikeMusicAuthor">
+    <insert id="insertFavoriteAuthor">
         INSERT INTO music_author_like (author_id,create_time,update_time,user_id) VALUES (#{authorId},now(),now(),#{userId})
     </insert>
 
-    <delete id="deleteMyLikeMusicAuthor">
+    <delete id="deleteFavoriteAuthor">
         DELETE FROM music_author_like WHERE author_id = #{authorId} and user_id= #{userId}
     </delete>
 
-    <select id="getMyLikeMusicAuthorCount" resultType="Long">
+    <select id="getFavoriteAuthorCount" resultType="Long">
        SELECT count(*) as total FROM music_author_like where user_id = #{userId}
     </select>
 
@@ -291,9 +291,9 @@
         update music_favorite_directory set `name` = #{name} where user_id = #{userId}
     </update>
 
-    <update id="deleteFavoriteDirectory">
-        delete from music_favorite_directory where id = #{favoriteId}
-    </update>
+    <delete id="deleteFavoriteDirectory">
+        delete from music_favorite_directory where id = #{favoriteId} and user_id =  #{userId}
+    </delete>
 
     <select id="isMusicFavorite" resultType="Long">
         SELECT COUNT(id) FROM music_favorite_list where music_id = #{musicId} and favorite_id in (SELECT id FROM music_favorite_directory WHERE user_id = #{userId})
@@ -301,6 +301,10 @@
 
     <delete id="deleteMusicFavorite">
         DELETE FROM music_favorite_list WHERE favorite_id IN (SELECT id FROM music_favorite_directory WHERE user_id = #{userId}) and music_id = #{musicId}
+    </delete>
+
+    <delete id="deleteMusicFavoriteByFavoriteId">
+        DELETE FROM music_favorite_list WHERE favorite_id IN (SELECT id FROM music_favorite_directory WHERE user_id = #{userId}) and favorite_id = #{favoriteId}
     </delete>
 
     <insert id="insertMusicFavorite">

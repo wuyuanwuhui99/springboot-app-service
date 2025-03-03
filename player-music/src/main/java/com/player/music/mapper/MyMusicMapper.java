@@ -23,13 +23,13 @@ public interface MyMusicMapper {
 
     Long getMusicListByAuthorIdTotal(int authorId);
 
-    List<MyMusicAuthorEntity> getMyLikeMusicAuthor(String userId, int start, int pageSize);
+    List<MyMusicAuthorEntity> getFavoriteAuthor(String userId, int start, int pageSize);
 
-    Long getMyLikeMusicAuthorCount(String userId);
+    Long getFavoriteAuthorCount(String userId);
 
-    Long insertMyLikeMusicAuthor(String userId,int authorId);
+    Long insertFavoriteAuthor(String userId,int authorId);
 
-    Long deleteMyLikeMusicAuthor(String userId,int authorId);
+    Long deleteFavoriteAuthor(String userId,int authorId);
 
     List<MyMusicEntity> getMusicRecord(String userId, int start, int pageSize);
 
@@ -68,6 +68,8 @@ public interface MyMusicMapper {
     Long insertMusicFavorite(List<MyMusicFavoriteEntity> myMusicFavoriteEntityList);
 
     Long deleteMusicFavorite(String userId,Long musicId);
+
+    Long deleteMusicFavoriteByFavoriteId(String userId,Long favoriteId);
 
     Long isMusicFavorite(String userId,Long musicId);
 
