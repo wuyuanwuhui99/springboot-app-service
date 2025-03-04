@@ -187,11 +187,11 @@
         delete from music_like where user_id = #{userId} and music_id = #{musicId}
     </delete>
 
-    <select id="queryMusicLike" resultType="MyMusicEntity">
-        SELECT t2.* FROM music_like t1 LEFT JOIN music t2 on t1.music_id = t2.id where t1.user_id = #{userId}  LIMIT #{start}, #{pageSize}
+    <select id="getMusicLike" resultType="MyMusicEntity">
+        SELECT t2.* FROM music_like t1 LEFT JOIN music t2 on t1.music_id = t2.id where t1.user_id = #{userId} ORDER BY create_time desc LIMIT #{start}, #{pageSize}
     </select>
 
-    <select id="queryMusicLikeCount" resultType="Long">
+    <select id="getMusicLikeCount" resultType="Long">
         select count(*) as total from (SELECT DISTINCT id,music_id,user_id,create_time,update_time FROM music_like WHERE user_id = #{userId}) t1
     </select>
 

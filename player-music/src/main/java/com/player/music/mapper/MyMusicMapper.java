@@ -41,9 +41,9 @@ public interface MyMusicMapper {
 
     Long deleteMusicLike(String userId,int musicId);
 
-    List<MyMusicEntity> queryMusicLike(String userId, int start, int pageSize);
+    List<MyMusicEntity> getMusicLike(String userId, int start, int pageSize);
 
-    Long queryMusicLikeCount(String userId);
+    Long getMusicLikeCount(String userId);
 
     List<MyMusicEntity> searchMusic(String userId,String keyword, int start, int pageSize);
 

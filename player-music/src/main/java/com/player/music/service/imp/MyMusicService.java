@@ -219,24 +219,24 @@ public class MyMusicService implements IMyMusicService {
 
     /**
      * @author: wuwenqiang
-     * @methodsName: queryMusicLike
+     * @methodsName: getMusicLike
      * @description: 查询收藏
      * @return: ResultEntity
      * @date: 2024-01-05 21:50
      */
     @Override
-    public ResultEntity queryMusicLike(String token, int pageNum, int pageSize){
+    public ResultEntity getMusicLike(String token, int pageNum, int pageSize){
         if (pageSize > 500) pageSize = 500;
         int start = (pageNum - 1) * pageSize;
-        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.queryMusicLike(JwtToken.parserToken(token, UserEntity.class,secret).getId(),start,pageSize));
-        Long mySingerCount = myMusicMapper.queryMusicLikeCount(JwtToken.parserToken(token, UserEntity.class,secret).getId());
+        ResultEntity resultEntity = ResultUtil.success(myMusicMapper.getMusicLike(JwtToken.parserToken(token, UserEntity.class,secret).getId(),start,pageSize));
+        Long mySingerCount = myMusicMapper.getMusicLikeCount(JwtToken.parserToken(token, UserEntity.class,secret).getId());
         resultEntity.setTotal(mySingerCount);
         return resultEntity;
     }
 
     /**
      * @author: wuwenqiang
-     * @methodsName: queryMusicLike
+     * @methodsName: getMusicLike
      * @description: 查询收藏
      * @return: ResultEntity
      * @date: 2024-01-27 16:57

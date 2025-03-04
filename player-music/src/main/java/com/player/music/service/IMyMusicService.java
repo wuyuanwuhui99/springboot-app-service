@@ -37,7 +37,7 @@ public interface IMyMusicService {
     @Transactional
     ResultEntity deleteMusicLike(String token,int id);
 
-    ResultEntity queryMusicLike(String token, int pageNum, int pageSize);
+    ResultEntity getMusicLike(String token, int pageNum, int pageSize);
 
     ResultEntity searchMusic(String token,String keyword, int pageNum, int pageSize);
 

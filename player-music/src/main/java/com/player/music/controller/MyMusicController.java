@@ -135,13 +135,13 @@ public class MyMusicController {
     }
 
     @ApiOperation("查询音乐收藏")
-    @GetMapping("/myMusic-getway/queryMusicLike")
-    public ResultEntity queryMusicLike(
+    @GetMapping("/myMusic-getway/getMusicLike")
+    public ResultEntity getMusicLike(
             @RequestHeader("Authorization") String token,
             @RequestParam(name = "pageNum",required = true) int pageNum,
             @RequestParam(name = "pageSize",required = true) int pageSize
     ) {
-        return myMusicService.queryMusicLike(token,pageNum,pageSize);
+        return myMusicService.getMusicLike(token,pageNum,pageSize);
     }
 
     @ApiOperation("查询音乐收藏")
