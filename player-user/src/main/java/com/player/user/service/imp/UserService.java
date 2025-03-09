@@ -220,6 +220,7 @@ public class UserService implements IUserService {
         message.setSentDate(new Date());
 
         javaMailSender.send(message);
+        System.out.println("验证码：" + code);
 
         return ResultUtil.success(1,"验证码已发送到邮箱，请五分钟内完成操作");
     }
@@ -241,6 +242,7 @@ public class UserService implements IUserService {
             userMapper.resetPassword(resetPasswordEntity);
             UserEntity userEntity = new UserEntity();
             userEntity.setEmail(resetPasswordEntity.getEmail());
+            userEntity.setUserAccount(resetPasswordEntity.getEmail());
             userEntity.setPassword(resetPasswordEntity.getPassword());
             UserEntity mUserEntity = userMapper.login(userEntity);
             String token = JwtToken.createToken(mUserEntity,secret);//token有效期30天

@@ -14,7 +14,7 @@
     </select>
 
     <select id="login" resultType="com.player.common.entity.UserEntity" parameterType="com.player.common.entity.UserEntity">
-        <include refid="userData"></include> WHERE (user_account=#{userAccount} or email = #{email}) and password=#{password}
+        <include refid="userData"></include> WHERE (user_account=#{userAccount} or email = #{userAccount}) and password=#{password}
     </select>
 
     <insert id="register" parameterType="com.player.common.entity.UserEntity">

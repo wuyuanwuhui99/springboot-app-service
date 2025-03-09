@@ -48,12 +48,12 @@
                     t3.user_id AS reply_user_id
                 FROM
                     social_comment t1
-                    LEFT JOIN USER t2 ON t1.user_id = t2.user_id
+                    LEFT JOIN USER t2 ON t1.user_id = t2.id
                     LEFT JOIN social_comment t3 ON t1.top_id = t3.id
                 WHERE
                     t1.top_id = #{id}
                 ) t4
-                LEFT JOIN USER t5 ON t4.reply_user_id = t5.user_id)t6
+                LEFT JOIN USER t5 ON t4.reply_user_id = t5.id)t6
             ORDER BY t6.create_time DESC limit 0 ,5
     </select>
 
@@ -89,8 +89,8 @@
     <select id="getReplyCommentList" resultType="com.player.common.entity.CommentEntity">
         SELECT t3.*,t4.username as reply_user_name from (
                 SELECT t1.*, t2.user_id as reply_user_id from
-                            (SELECT c.*,u.username,u.avater FROM social_comment c LEFT JOIN `user` u ON c.user_id = u.user_id WHERE c.top_id = #{topId} limit #{start},#{pageSize}) t1 					LEFT JOIN social_comment T2 ON T1.top_id = t2.id
-        ) t3 LEFT JOIN `user` t4 ON t3.reply_user_id = t4.user_id
+                            (SELECT c.*,u.username,u.avater FROM social_comment c LEFT JOIN `user` u ON c.user_id = u.id WHERE c.top_id = #{topId} limit #{start},#{pageSize}) t1 					LEFT JOIN social_comment T2 ON T1.top_id = t2.id
+        ) t3 LEFT JOIN `user` t4 ON t3.reply_user_id = t4.id
     </select>
 
     <select id="getCommentItem" resultType="com.player.common.entity.CommentEntity">
@@ -100,11 +100,11 @@
                 u.avater,
                 s.user_id as reply_user_id
                  FROM social_comment c
-                 LEFT JOIN user u on c.user_id = u.user_id
+                 LEFT JOIN user u on c.user_id = u.id
                  LEFT JOIN social_comment s on c.parent_id = s.id
                  WHERE c.id =  #{id} and c.type = #{type}
         ) t
-        LEFT JOIN user us on t.reply_user_id = us.user_id
+        LEFT JOIN user us on t.reply_user_id = us.id
     </select>
 
     <insert id="saveLike" parameterType="com.player.common.entity.LikeEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -115,7 +115,7 @@
     </insert>
 
     <select id="getLikeById" resultType="com.player.common.entity.LikeEntity">
-        SELECT t1.*,t2.username FROM social_like t1 LEFT JOIN user t2 ON t1.user_id = t2.user_id WHERE id = #{id}
+        SELECT t1.*,t2.username FROM social_like t1 LEFT JOIN user t2 ON t1.user_id = t2.id WHERE id = #{id}
     </select>
 
     <delete id="deleteLike">
