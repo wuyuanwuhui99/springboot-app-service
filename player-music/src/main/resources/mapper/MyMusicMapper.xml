@@ -172,7 +172,17 @@
     </select>
 
     <select id="getMusicRecordCount" resultType="Long">
-        select count(*) as total from (SELECT DISTINCT id,music_id,user_id,create_time,update_time FROM music_record WHERE user_id = #{userId}) t1
+        SELECT
+            COUNT( * )
+        FROM
+            (
+            SELECT
+                t1.*
+            FROM
+                ( SELECT * FROM music_record WHERE user_id = #{userId} ) t1
+                INNER JOIN ( SELECT music_id, MAX( create_time ) AS max_date FROM ( SELECT * FROM music_record WHERE user_id = #{userId} ) t2 GROUP BY music_id ) t3 ON t1.music_id = t3.music_id
+            AND t1.create_time = t3.max_date
+            ) t4
     </select>
 
     <insert id="insertMusicRecord" parameterType="MyMusicRecordEntity">
