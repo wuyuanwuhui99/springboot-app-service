@@ -165,7 +165,7 @@
                 ) t4
                 LEFT JOIN user t5 ON t4.reply_user_id = t5.id
             ) t6,
-            ( SELECT parent_id, count( parent_id ) AS cnt FROM social_comment GROUP BY parent_id ) t7
+            ( SELECT parent_id, count( parent_id ) AS cnt FROM social_comment  WHERE parent_id IS NOT NULL GROUP BY parent_id ) t7
         WHERE
             t6.id = t7.parent_id
     </select>

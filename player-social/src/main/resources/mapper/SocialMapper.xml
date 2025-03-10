@@ -115,7 +115,7 @@
     </insert>
 
     <select id="getLikeById" resultType="com.player.common.entity.LikeEntity">
-        SELECT t1.*,t2.username FROM social_like t1 LEFT JOIN user t2 ON t1.user_id = t2.id WHERE id = #{id}
+        SELECT t1.*,t2.username FROM social_like t1 LEFT JOIN user t2 ON t1.user_id = t2.id WHERE t1.id = #{id}
     </select>
 
     <delete id="deleteLike">
