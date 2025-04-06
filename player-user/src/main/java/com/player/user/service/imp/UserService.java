@@ -69,16 +69,21 @@ public class UserService implements IUserService {
     /**
      * @author: wuwenqiang
      * @description: 登录校验
-     * @date: 2020-12-25 00:04
+     * @date: 2024-12-25 00:04
      */
     @Override
     public ResultEntity login(UserEntity userEntity) {
+        // 查询redis账号是否是在黑名单内
+        String isBlackList = (String)redisTemplate.opsForValue().get("black_list_" + userEntity.getUserAccount());
+        // 如果在黑名单内，禁止登录，返回错误信息给用户
+        if(!StringUtils.isEmpty(isBlackList))return  ResultUtil.fail(null, "该账号被禁止登录", ResultCode.FAIL);
+        // 使用账号密码查询数据库
         UserEntity resultUserEntity = userMapper.login(userEntity);
-        if (resultUserEntity != null) {
-            String token = JwtToken.createToken(resultUserEntity,secret);//token有效期30天
-            redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);
-            return ResultUtil.success(resultUserEntity, "登录成功", token);
-        } else {
+        if (resultUserEntity != null) {// 如果返回用户信息，说明账号密码正确
+            String token = JwtToken.createToken(resultUserEntity,secret);//生成新的token
+            redisTemplate.opsForValue().set(token, "1",30, TimeUnit.DAYS);// token保存到redis中，有效期30天
+            return ResultUtil.success(resultUserEntity, "登录成功", token);// 返回用户信息和token给用户
+        } else {// 没有查询到用户信息登录失败，用户账号密码错误
             return ResultUtil.fail(null, "登录失败，账号或密码错误", ResultCode.FAIL);
         }
     }
@@ -205,21 +210,21 @@ public class UserService implements IUserService {
         }
         Random random = new Random();
         int code = random.nextInt(9000) + 1000;
-        mailRequest.setText("验证码：" + code + "，请在五分钟内完成操作");
+//        mailRequest.setText("验证码：" + code + "，请在五分钟内完成操作");
         redisTemplate.opsForValue().set(mailRequest.getEmail(), code,5, TimeUnit.MINUTES);
-        SimpleMailMessage message = new SimpleMailMessage();
-        //邮件发件人
-        message.setFrom(sendMailer);
-        //邮件收件人 1或多个
-        message.setTo(mailRequest.getEmail());
-        //邮件主题
-        message.setSubject("验证码");
-        //邮件内容
-        message.setText(mailRequest.getText());
-        //邮件发送时间
-        message.setSentDate(new Date());
-
-        javaMailSender.send(message);
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        //邮件发件人
+//        message.setFrom(sendMailer);
+//        //邮件收件人 1或多个
+//        message.setTo(mailRequest.getEmail());
+//        //邮件主题
+//        message.setSubject("验证码");
+//        //邮件内容
+//        message.setText(mailRequest.getText());
+//        //邮件发送时间
+//        message.setSentDate(new Date());
+//
+//        javaMailSender.send(message);
         System.out.println("验证码：" + code);
 
         return ResultUtil.success(1,"验证码已发送到邮箱，请五分钟内完成操作");

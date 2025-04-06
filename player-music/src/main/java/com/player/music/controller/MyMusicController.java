@@ -57,7 +57,7 @@ public class MyMusicController {
         return myMusicService.getMusicAuthorListByCategoryId(HttpUtils.getPath(request),token, categoryId, pageNum, pageSize);
     }
 
-    @ApiOperation("获取歌手")
+    @ApiOperation("获取歌手专辑")
     @GetMapping("/myMusic/getMusicListByAuthorId")
     public ResultEntity getMusicListByAuthorId(
             HttpServletRequest request,
