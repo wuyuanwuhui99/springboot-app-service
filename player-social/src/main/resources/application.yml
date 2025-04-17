@@ -1,7 +1,7 @@
 static:
   file-path: E:/
 server:
-  port: 8002
+  port: 3003
   tomcat:
     uri-encoding: UTF-8
 token:

@@ -1,7 +1,7 @@
 static:
   file-path: E:/
 server:
-  port: 4000
+  port: 3002
 token:
   secret: ${SECRET} #token秘钥
 cookie:

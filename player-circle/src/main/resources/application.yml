@@ -1,7 +1,7 @@
 static:
   upload-path: F:/static/circle/
 server:
-  port: 8003
+  port: 3004
   tomcat:
     uri-encoding: UTF-8
 token:
